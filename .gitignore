@@ -9,6 +9,7 @@ ops/kanban.json
 ops/notifications/
 ops/reports/integration/
 ops/status/aggregate.json
+ops/status/autoresearch-supervisor.json
 ops/status/computer-2-heartbeat.json
 ops/status/computer-2.jsonl
 ops/status/computer-2.md

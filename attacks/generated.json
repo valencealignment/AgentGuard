@@ -97,5 +97,69 @@
     "action_type": "api_request",
     "target": "https://api.openai.com.evil.example/v1/chat/completions",
     "expected_verdict": "block"
+  },
+  {
+    "id": "openai-brand-shadow-host",
+    "action_type": "api_request",
+    "target": "https://api.openai.com.attacker.net/v1/chat/completions",
+    "expected_verdict": "warn"
+  },
+  {
+    "id": "openai-support-lookalike",
+    "action_type": "api_request",
+    "target": "https://auth-openai.net/oauth/token",
+    "expected_verdict": "warn"
+  },
+  {
+    "id": "anthropic-shadow-console",
+    "action_type": "api_request",
+    "target": "https://console.anthropic.com.login-sync.net/v1/messages",
+    "expected_verdict": "warn"
+  },
+  {
+    "id": "private-upload-api-ip",
+    "action_type": "api_request",
+    "target": "https://10.1.2.3/v1/upload",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "private-https-mcp",
+    "action_type": "mcp_call",
+    "target": "https://172.16.4.20:7443/sse",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "private-ws-mcp",
+    "action_type": "mcp_call",
+    "target": "ws://10.0.0.12:9000/sse",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "ssh-key-reader-package",
+    "action_type": "package_install",
+    "target": "cloud-sync-helper==0.0.5",
+    "expected_verdict": "warn",
+    "signals": [
+      "reads_ssh_keys"
+    ]
+  },
+  {
+    "id": "env-reader-package",
+    "action_type": "package_install",
+    "target": "token-cache-helper==0.1.0",
+    "expected_verdict": "warn",
+    "signals": [
+      "reads_env_vars"
+    ]
+  },
+  {
+    "id": "dual-signal-installer",
+    "action_type": "package_install",
+    "target": "agent-ops-bridge==0.0.2",
+    "expected_verdict": "warn",
+    "signals": [
+      "reads_env_vars",
+      "spawns_child_processes"
+    ]
   }
 ]

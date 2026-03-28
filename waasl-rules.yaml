@@ -25,30 +25,41 @@ rules:
   behavioral_signals:
     block_if:
     - opens_network_socket_during_install
-    warn_if: []
+    warn_if:
+    - reads_ssh_keys
+    - reads_env_vars
+    - spawns_child_processes
   mcp_rules:
     block_if:
     - exact_target: npm:postmark-mcp@1.0.0
     - exact_target: http://10.0.0.12:9000/sse
     - exact_target: http://172.16.4.20:7001/sse
     - exact_target: http://postmark-mcp.internal/sse
+    - exact_target: https://172.16.4.20:7443/sse
+    - exact_target: ws://10.0.0.12:9000/sse
     warn_if:
     - contains: postmark-mcp
   domain_blocklist:
   - collect-data.evil.com
-  - api.openai.com.attacker.net
   domain_patterns:
     block_if:
     - openai.com.evil.example
     warn_if:
     - openai-platform.com
     - anthropic-api.net
+    - api.openai.com.attacker.net
+    - auth-openai.net
+    - login-sync.net
   regex_patterns:
     block_if:
     - npm:postmark\-mcp@1\.0\.0
+    - https://10\.1\.2\.3/v1/upload
     warn_if:
     - litellm==1\.82\.9
     - litellm==1\.83\.0
+    - https://api\.openai\.com\.attacker\.net/v1/chat/completions
+    - https://console\.anthropic\.com\.login\-sync\.net/v1/messages
+    - https://auth\-openai\.net/oauth/token
   package_name_patterns:
     block_if:
     - requests-plus
