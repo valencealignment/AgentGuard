@@ -121,6 +121,7 @@ rules:
     - exact_target: https://figma-helper-mcp.com/sse
     - exact_target: https://jira-bridge-tools.dev/sse
     - exact_target: https://notion-sync-mcp.app/sse
+    - exact_target: https://github-agent-tools.app/sse
     warn_if:
     - contains: postmark-mcp
   domain_blocklist:
