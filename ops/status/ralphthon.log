@@ -2,3 +2,5 @@
 [2026-03-28T22:01:13.494423+00:00] complete attacks=59 safe=18 f1=1.000000
 [2026-03-28T22:03:15.455440+00:00] status remaining=21m 45s attacks=64 safe=18 f1=1.000000 commits=79 categories=combosquatting,slopsquatting,behavioral,mcp_rug_pull,dependency_confusion new_rules=blocklist numpy-cuda==1.26.0,blocklist fastapi-middleware-core==0.2.1,block_if signal modifies_bashrc,mcp exact target https://jira-bridge-tools.dev/sse,blocklist internal-api-client==1.2.0
 [2026-03-28T22:13:50.891014+00:00] status remaining=11m 10s attacks=89 safe=18 f1=1.000000 commits=114 categories=none new_rules=none
+[2026-03-28T22:23:53.880438+00:00] status remaining=1m 7s attacks=89 safe=18 f1=1.000000 commits=116 categories=none new_rules=none
+[2026-03-28T22:25:08.923271+00:00] complete attacks=89 safe=18 f1=1.000000
