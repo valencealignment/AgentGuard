@@ -1,0 +1,28 @@
+{
+  "scenario_id": "scenario-c-poor-reputation-external-agent",
+  "events": [
+    {
+      "type": "agent.registered",
+      "summary": "External Plugin Runner registered from external."
+    },
+    {
+      "type": "action.requested",
+      "summary": "agent_interaction requested for notify-and-install."
+    },
+    {
+      "type": "decision.block",
+      "summary": "External low-reputation agent lacks trusted provenance and requested unsafe side effects."
+    }
+  ],
+  "notifications": [
+    {
+      "channel": "security-alerts",
+      "message": "Blocked poor-reputation external agent before side effects executed."
+    },
+    {
+      "channel": "human-approval-queue",
+      "message": "Review external agent trust posture before allowing future interactions."
+    }
+  ],
+  "generated_at": "2026-03-28T12:58:21-07:00"
+}
