@@ -40,28 +40,54 @@ export default function AutoResearcherPanel({
         />
       </div>
 
-      {/* Sparkline */}
-      <Sparkline points={iterations.map((i) => i.score)} />
+      {/* Sparkline — only kept iterations represent actual score progression */}
+      <Sparkline points={iterations.filter((i) => i.kept !== false).map((i) => i.score)} />
 
       {/* Iteration history */}
       <div className="flex flex-1 flex-col gap-1 overflow-y-auto">
         <p className="text-[10px] uppercase tracking-wider text-foreground/50">
           Iterations
         </p>
-        {iterations.map((iter) => (
-          <div
-            key={iter.id}
-            className="flex items-center justify-between rounded bg-surface-2 px-2 py-1.5 text-xs"
-          >
-            <span className="font-mono text-foreground/70">{iter.label}</span>
-            <span className="tabular-nums">
-              {iter.score}
-              {iter.delta > 0 && (
-                <span className="ml-1 text-verdict-allow">+{iter.delta}</span>
-              )}
-            </span>
-          </div>
-        ))}
+        {iterations.map((iter) => {
+          const rolledBack = iter.kept === false;
+          return (
+            <div
+              key={iter.id}
+              className={`flex items-center justify-between rounded px-2 py-1.5 text-xs ${
+                rolledBack
+                  ? "bg-verdict-block/10 border border-verdict-block/20"
+                  : "bg-surface-2"
+              }`}
+            >
+              <span
+                className={`font-mono ${
+                  rolledBack ? "text-verdict-block" : "text-foreground/70"
+                }`}
+              >
+                {iter.label}
+                {rolledBack && (
+                  <span className="ml-1.5 text-[10px] font-semibold text-verdict-block">
+                    ✕ rolled back
+                  </span>
+                )}
+              </span>
+              <span className="tabular-nums">
+                {rolledBack ? (
+                  <span className="text-verdict-block">{iter.delta}</span>
+                ) : (
+                  <>
+                    {iter.score}
+                    {iter.delta > 0 && (
+                      <span className="ml-1 text-verdict-allow">
+                        +{iter.delta}
+                      </span>
+                    )}
+                  </>
+                )}
+              </span>
+            </div>
+          );
+        })}
       </div>
 
       {/* Run button */}

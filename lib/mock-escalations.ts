@@ -1,6 +1,67 @@
 import type { EscalationReport } from "./types";
+import { transformScenarioEscalation, type ScenarioReport } from "./scenario-transforms";
+
+// Scenario reports are loaded lazily and cached. In a real deployment these
+// would come from the scenario runner artifacts on disk; here we inline the
+// data so the module works in both Node and edge environments.
+const SCENARIO_REPORTS: ScenarioReport[] = [
+  {
+    scenario_id: "scenario-b-litellm-risk",
+    title: "LiteLLM-centered risky path",
+    summary: "A sandboxed agent attempts to install a flagged LiteLLM version associated with suspicious install-time behavior.",
+    decision: "BLOCK",
+    severity: "high",
+    reason: "Flagged dependency version and suspicious install-time signals require immediate blocking.",
+    evidence: ["flagged_dependency_version", "reads_env_vars", "reads_ssh_keys", "opens_network_socket_during_install"],
+    agent: { id: "agent-sandbox-risky", name: "Sandbox Runner", reputation: "unknown", origin: "sandbox" },
+    action: { type: "package_install", target: "litellm==1.82.8", context: { workspace_only: false, network_required: true, package_install: true } },
+    notifications: [{ channel: "human-approval-queue", message: "Review flagged LiteLLM installation attempt and verify safe replacement guidance." }],
+    generated_at: "2026-03-28T12:58:21-07:00",
+  },
+  {
+    scenario_id: "scenario-c-poor-reputation-external-agent",
+    title: "Poor-reputation external agent interaction",
+    summary: "A low-reputation external agent attempts to invoke our system with weak provenance and outbound notification side effects.",
+    decision: "BLOCK",
+    severity: "critical",
+    reason: "External low-reputation agent lacks trusted provenance and requested unsafe side effects.",
+    evidence: ["poor_reputation", "unsigned_provenance", "network_side_effect_requested"],
+    agent: { id: "agent-external-lowrep", name: "External Plugin Runner", reputation: "poor", origin: "external" },
+    action: { type: "agent_interaction", target: "notify-and-install", context: { workspace_only: false, network_required: true, provenance: "unsigned" } },
+    notifications: [
+      { channel: "security-alerts", message: "Blocked poor-reputation external agent before side effects executed." },
+      { channel: "human-approval-queue", message: "Review external agent trust posture before allowing future interactions." },
+    ],
+    generated_at: "2026-03-28T12:58:21-07:00",
+  },
+  {
+    scenario_id: "scenario-d-remediation-follow-through",
+    title: "Remediation follow-through support",
+    summary: "A blocked dependency path produces follow-up artifacts that explain remediation and support downstream advisory generation.",
+    decision: "ALLOW",
+    severity: "warning",
+    reason: "Generating remediation guidance is safe and needed after the blocked scenario.",
+    evidence: ["derived_from_block_event", "read_only_reporting", "human_review_required"],
+    agent: { id: "agent-remediation", name: "Remediation Assistant", reputation: "trusted", origin: "internal" },
+    action: { type: "report_generation", target: "litellm-remediation-brief", context: { workspace_only: true, depends_on: "scenario-b-litellm-risk" } },
+    notifications: [{ channel: "human-approval-queue", message: "Approve publication of the LiteLLM remediation brief." }],
+    generated_at: "2026-03-28T12:58:21-07:00",
+  },
+];
+
+// Build scenario escalation reports and merge into the registry
+const SCENARIO_ESCALATIONS: Record<string, EscalationReport> = {};
+for (const report of SCENARIO_REPORTS) {
+  const escalation = transformScenarioEscalation(report);
+  if (escalation) {
+    SCENARIO_ESCALATIONS[escalation.id] = escalation;
+  }
+}
 
 export const MOCK_ESCALATIONS: Record<string, EscalationReport> = {
+  // Scenario-derived escalations first
+  ...SCENARIO_ESCALATIONS,
+  // Then hand-crafted mock escalations (can override if IDs collide)
   "esc-numpy-1-24-0": {
     id: "esc-numpy-1-24-0",
     target: "numpy",

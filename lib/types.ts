@@ -26,6 +26,7 @@ export interface Decision {
   agent_verdicts?: AgentVerdict[];
   pypi_status?: "available" | "yanked" | "unknown";
   version?: string;
+  advisory_md?: string;
 }
 
 // Thread & Message interfaces
@@ -51,6 +52,7 @@ export interface Iteration {
   delta: number;
   mutation: string;
   timestamp: string;
+  kept: boolean;
 }
 
 // Escalation report

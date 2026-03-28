@@ -153,6 +153,23 @@ export default function DecisionDetail({ decision, onViewThread }: DecisionDetai
           </div>
         </div>
       )}
+      {/* Agent-Generated Advisory */}
+      {decision.advisory_md && (
+        <div>
+          <div className="mb-2 flex items-center gap-2">
+            <p className="text-[10px] uppercase tracking-wider text-foreground/50">
+              Agent-Generated Advisory
+            </p>
+            <span className="rounded bg-accent-blue/20 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-accent-blue">
+              Auto
+            </span>
+          </div>
+          <div className="rounded border border-surface-3 bg-surface-1 p-3">
+            <SimpleMarkdown content={decision.advisory_md} />
+          </div>
+        </div>
+      )}
+
       {/* Thread link */}
       {onViewThread && (
         <button
@@ -175,4 +192,76 @@ function MetaField({ label, value }: { label: string; value: string }) {
       <p className="font-mono text-foreground/80 truncate">{value}</p>
     </div>
   );
+}
+
+/** Lightweight markdown renderer for advisory content (headers, lists, bold, paragraphs). */
+function SimpleMarkdown({ content }: { content: string }) {
+  const lines = content.split("\n");
+  const elements: React.ReactNode[] = [];
+  let listItems: string[] = [];
+  let key = 0;
+
+  function flushList() {
+    if (listItems.length === 0) return;
+    elements.push(
+      <ul key={key++} className="ml-3 list-disc space-y-0.5 text-[11px] text-foreground/70">
+        {listItems.map((item, i) => (
+          <li key={i}>{inlineFormat(item)}</li>
+        ))}
+      </ul>
+    );
+    listItems = [];
+  }
+
+  function inlineFormat(text: string): React.ReactNode {
+    // Bold: **text** or __text__, Code: `text`
+    const parts = text.split(/(`.+?`|\*\*[^*]+\*\*|__[^_]+__)/g);
+    return parts.map((part, i) => {
+      if (part.startsWith("`") && part.endsWith("`")) {
+        return <code key={i} className="rounded bg-surface-2 px-1 py-0.5 text-[10px] font-mono text-accent-blue">{part.slice(1, -1)}</code>;
+      }
+      if (part.startsWith("**") && part.endsWith("**")) {
+        return <strong key={i} className="font-semibold text-foreground">{part.slice(2, -2)}</strong>;
+      }
+      if (part.startsWith("__") && part.endsWith("__")) {
+        return <strong key={i} className="font-semibold text-foreground">{part.slice(2, -2)}</strong>;
+      }
+      return <span key={i}>{part}</span>;
+    });
+  }
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+
+    if (trimmed.startsWith("# ")) {
+      flushList();
+      // Skip the top-level title — it's redundant with the section header
+      continue;
+    }
+    if (trimmed.startsWith("## ")) {
+      flushList();
+      elements.push(
+        <h4 key={key++} className="mt-3 mb-1 text-xs font-semibold text-foreground/90">
+          {trimmed.slice(3)}
+        </h4>
+      );
+    } else if (trimmed.startsWith("- ")) {
+      listItems.push(trimmed.slice(2));
+    } else if (trimmed === "") {
+      flushList();
+    } else if (trimmed.startsWith("Date:")) {
+      // Skip metadata line
+      continue;
+    } else {
+      flushList();
+      elements.push(
+        <p key={key++} className="text-[11px] leading-relaxed text-foreground/70">
+          {inlineFormat(trimmed)}
+        </p>
+      );
+    }
+  }
+  flushList();
+
+  return <div className="space-y-1">{elements}</div>;
 }

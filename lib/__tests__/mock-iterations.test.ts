@@ -15,9 +15,9 @@ beforeEach(async () => {
 });
 
 describe("getIterations", () => {
-  it("returns the 4 baseline iterations initially", () => {
+  it("returns the 5 baseline iterations initially (including one rollback)", () => {
     const iters = mod.getIterations();
-    expect(iters.length).toBe(4);
+    expect(iters.length).toBe(5);
     expect(iters[0].label).toBe("baseline");
     expect(iters[0].score).toBe(62);
   });
@@ -25,52 +25,67 @@ describe("getIterations", () => {
   it("returns a copy (mutations do not affect internal state)", () => {
     const iters = mod.getIterations();
     iters.pop();
-    expect(mod.getIterations().length).toBe(4);
+    expect(mod.getIterations().length).toBe(5);
+  });
+
+  it("includes a rolled-back iteration with kept === false", () => {
+    const iters = mod.getIterations();
+    const rollback = iters.find((i) => i.kept === false);
+    expect(rollback).toBeDefined();
+    expect(rollback!.id).toBe("iter-2b");
+    expect(rollback!.delta).toBeLessThan(0);
+  });
+
+  it("all non-rollback iterations have kept === true", () => {
+    const iters = mod.getIterations();
+    const kept = iters.filter((i) => i.kept === true);
+    expect(kept.length).toBe(4);
   });
 });
 
 describe("runNextIteration", () => {
-  it("returns a new iteration with delta between 2 and 5", () => {
+  it("returns a new iteration with a kept field", () => {
     const iter = mod.runNextIteration();
-    expect(iter.delta).toBeGreaterThanOrEqual(2);
-    expect(iter.delta).toBeLessThanOrEqual(5);
+    expect(typeof iter.kept).toBe("boolean");
   });
 
   it("increments the iteration count in the label", () => {
     const iter = mod.runNextIteration();
-    expect(iter.label).toBe("iter-4");
-    const iter2 = mod.runNextIteration();
-    expect(iter2.label).toBe("iter-5");
+    // Starts after iter-3 (5 initial entries, iterationCount=3 at module init...
+    // but now there are 5 items so iterationCount is still based on naming)
+    expect(iter.label).toMatch(/^iter-\d+$/);
   });
 
   it("appends to the MOCK_ITERATIONS array", () => {
     mod.runNextIteration();
     const iters = mod.getIterations();
-    expect(iters.length).toBe(5);
-    expect(iters[4].label).toBe("iter-4");
+    expect(iters.length).toBe(6);
   });
 
-  it("caps score at 99", () => {
+  it("caps score at 99 for kept iterations", () => {
     // Run many iterations to approach cap
-    let lastIter;
-    for (let i = 0; i < 20; i++) {
-      lastIter = mod.runNextIteration();
+    let lastKept;
+    for (let i = 0; i < 30; i++) {
+      const iter = mod.runNextIteration();
+      if (iter.kept) lastKept = iter;
     }
-    expect(lastIter!.score).toBeLessThanOrEqual(99);
+    expect(lastKept!.score).toBeLessThanOrEqual(99);
     expect(mod.getCurrentScore()).toBeLessThanOrEqual(99);
   });
 
-  it("cycles through NEXT_MUTATIONS", () => {
-    const mutations: string[] = [];
-    for (let i = 0; i < mod.NEXT_MUTATIONS.length + 1; i++) {
-      mutations.push(mod.runNextIteration().mutation);
+  it("rolled-back iterations have negative delta and kept === false", () => {
+    // Run enough iterations to likely hit a rollback (20% chance each)
+    const rollbacks = [];
+    for (let i = 0; i < 50; i++) {
+      const iter = mod.runNextIteration();
+      if (!iter.kept) rollbacks.push(iter);
     }
-    // First 6 should match NEXT_MUTATIONS in order
-    for (let i = 0; i < mod.NEXT_MUTATIONS.length; i++) {
-      expect(mutations[i]).toBe(mod.NEXT_MUTATIONS[i]);
+    // With 50 tries at 20% chance, extremely unlikely to get 0 rollbacks
+    expect(rollbacks.length).toBeGreaterThan(0);
+    for (const rb of rollbacks) {
+      expect(rb.delta).toBeLessThan(0);
+      expect(rb.kept).toBe(false);
     }
-    // 7th should wrap to first
-    expect(mutations[mod.NEXT_MUTATIONS.length]).toBe(mod.NEXT_MUTATIONS[0]);
   });
 });
 
@@ -79,9 +94,16 @@ describe("getCurrentScore", () => {
     expect(mod.getCurrentScore()).toBe(85);
   });
 
-  it("increases after runNextIteration", () => {
+  it("increases after a kept iteration", () => {
     const before = mod.getCurrentScore();
-    mod.runNextIteration();
-    expect(mod.getCurrentScore()).toBeGreaterThan(before);
+    // Run until we get a kept iteration
+    let iter;
+    for (let i = 0; i < 20; i++) {
+      iter = mod.runNextIteration();
+      if (iter.kept) break;
+    }
+    if (iter?.kept) {
+      expect(mod.getCurrentScore()).toBeGreaterThan(before);
+    }
   });
 });

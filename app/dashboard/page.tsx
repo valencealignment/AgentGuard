@@ -15,6 +15,7 @@ import { useDecisions } from "@/lib/use-decisions";
 import { useScore } from "@/lib/use-score";
 import { GOLDEN_INSTANCES, CVE_DETAILS } from "@/lib/golden-dataset";
 import { APT_DESCRIPTIONS } from "@/lib/constants";
+import { getIterations } from "@/lib/mock-iterations";
 import type { Iteration, EscalationReport } from "@/lib/types";
 
 type Tab = "enforcement" | "threat-intel";
@@ -34,7 +35,7 @@ export default function DashboardPage() {
     fetch("/api/iterations")
       .then((r) => r.json())
       .then((data: Iteration[]) => setIterations(data))
-      .catch(() => {});
+      .catch(() => setIterations(getIterations()));
   }, []);
 
   const handleRunIteration = useCallback(async () => {
