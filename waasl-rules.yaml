@@ -42,6 +42,11 @@ rules:
     - 0.1.0
     reason: MERCK learned exact block
     severity: high
+  - name: company-auth
+    versions:
+    - 0.9.1
+    reason: MERCK learned exact block
+    severity: high
   reputation_thresholds:
     block_below_score: 10
     warn_below_score: 30
