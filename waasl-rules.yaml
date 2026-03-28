@@ -151,6 +151,7 @@ rules:
     - reads_browser_cookies
     - modifies_shell_rc
     - clears_shell_history
+    - reads_ssh_config
     warn_if:
     - reads_ssh_keys
     - reads_env_vars
