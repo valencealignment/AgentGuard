@@ -3,6 +3,9 @@
 __pycache__/
 merck_loop.out
 merck_results.jsonl
+packages/*/build/
+packages/*/dist/
+packages/*/*.egg-info/
 ops/approvals/
 ops/events/
 ops/kanban.json
