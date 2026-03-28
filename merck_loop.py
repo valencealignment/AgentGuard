@@ -396,6 +396,29 @@ def evaluate_sample(
     return {"verdict": "allow", "reason": f"reputation_score:{score}"}
 
 
+def build_live_verdict(sample: dict[str, Any], rules_document: dict[str, Any]) -> dict[str, Any]:
+    safe_cases = load_safe_corpus()
+    safe_package_names = {
+        parse_package_target(case["target"])[0]
+        for case in safe_cases
+        if case["action_type"] == "package_install"
+    }
+    normalized = {
+        "id": sample.get("id", "live-check"),
+        "action_type": sample["action_type"],
+        "target": sample["target"],
+        "signals": sample.get("signals", []),
+    }
+    result = evaluate_sample(normalized, rules_document, safe_package_names)
+    heuristic = heuristic_score(normalized, rules_document, safe_package_names)
+    return {
+        "verdict": result["verdict"],
+        "reason": result["reason"],
+        "risk_score": max(0, min(100, 100 - heuristic)),
+        "action": normalized,
+    }
+
+
 def macro_f1(expected: list[str], predicted: list[str]) -> float:
     scores = []
     for label in VERDICTS:
@@ -928,6 +951,16 @@ def create_app(shared_state: SharedState) -> FastAPI:
             "port": shared_state.port,
             "f1_score": f1_score,
             "timestamp": current_timestamp(),
+        }
+
+    @app.post("/check")
+    def post_check(sample: dict[str, Any]) -> dict[str, Any]:
+        rules_document = load_rules()
+        result = build_live_verdict(sample, rules_document)
+        return {
+            "ok": True,
+            "timestamp": current_timestamp(),
+            **result,
         }
 
     return app
