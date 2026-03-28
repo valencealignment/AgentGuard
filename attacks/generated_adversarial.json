@@ -250,5 +250,41 @@
     "signals": [
       "modifies_shell_rc"
     ]
+  },
+  {
+    "id": "mcp-rugpull-linear-sync",
+    "action_type": "mcp_call",
+    "target": "https://linear-sync-mcp.dev/sse",
+    "expected_verdict": "block",
+    "signals": [
+      "tool_description_changed"
+    ]
+  },
+  {
+    "id": "depconf-enterprise-sso-client",
+    "action_type": "package_install",
+    "target": "enterprise-sso-client==1.0.1",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "combo-anthropic-cli-tools",
+    "action_type": "package_install",
+    "target": "anthropic-cli-tools==1.1.0",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "slop-llm-cache-proxy",
+    "action_type": "package_install",
+    "target": "llm-cache-proxy==0.0.8",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "signal-history-cleaner",
+    "action_type": "package_install",
+    "target": "session-cleaner==0.9.0",
+    "expected_verdict": "block",
+    "signals": [
+      "clears_shell_history"
+    ]
   }
 ]
