@@ -1,0 +1,16 @@
+.pycache_local/
+.venv/
+__pycache__/
+merck_loop.out
+merck_results.jsonl
+ops/approvals/
+ops/events/
+ops/kanban.json
+ops/notifications/
+ops/reports/integration/
+ops/status/aggregate.json
+ops/status/computer-2-heartbeat.json
+ops/status/computer-2.jsonl
+ops/status/computer-2.md
+ops/status/security.json
+ops/watchboard-state.json

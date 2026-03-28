@@ -1,0 +1,9 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "waasl-policy-engine"
+version = "0.1.0"
+description = "Policy evaluation helpers for the WAASL MERCK loop."
+requires-python = ">=3.12"

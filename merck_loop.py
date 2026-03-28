@@ -5,6 +5,7 @@ import difflib
 import ipaddress
 import json
 import math
+import os
 import random
 import re
 import subprocess
@@ -32,9 +33,12 @@ except ImportError as exc:  # pragma: no cover - handled at runtime
 ROOT = Path(__file__).resolve().parent
 RULES_PATH = ROOT / "waasl-rules.yaml"
 ATTACKS_PATH = ROOT / "attacks" / "known_malicious.json"
+GENERATED_ATTACKS_PATH = ROOT / "attacks" / "generated.json"
 SAFE_PATH = ROOT / "safe_packages" / "known_good.json"
 RESULTS_PATH = ROOT / "merck_results.jsonl"
+SECURITY_STATUS_PATH = ROOT / "ops" / "status" / "security.json"
 DEFAULT_PROGRESS_SECONDS = 30 * 60
+DEFAULT_STATUS_SECONDS = 60
 VERDICTS = ("allow", "warn", "block")
 
 
@@ -54,10 +58,34 @@ class SharedState:
         self.rules_added = 0
         self.rules_reverted = 0
         self.category_counts: Counter[str] = Counter()
+        self.started_at = datetime.now(timezone.utc).isoformat()
+        self.pid = os.getpid()
+        self.port = 0
+        self.latest_record: dict[str, Any] = {}
+        self.corpus_counts = {"attacks": 0, "safe_cases": 0}
 
 
 def load_json(path: Path) -> list[dict[str, Any]]:
+    if not path.exists():
+        return []
     return json.loads(path.read_text())
+
+
+def write_json(path: Path, payload: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp_path = path.with_suffix(f"{path.suffix}.tmp")
+    tmp_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    tmp_path.replace(path)
+
+
+def ensure_runtime_paths() -> None:
+    GENERATED_ATTACKS_PATH.parent.mkdir(parents=True, exist_ok=True)
+    SECURITY_STATUS_PATH.parent.mkdir(parents=True, exist_ok=True)
+    (ROOT / "ops" / "reports" / "blogs").mkdir(parents=True, exist_ok=True)
+
+
+def load_attack_corpus() -> list[dict[str, Any]]:
+    return [*load_json(ATTACKS_PATH), *load_json(GENERATED_ATTACKS_PATH)]
 
 
 def default_rules_document() -> dict[str, Any]:
@@ -787,6 +815,62 @@ def build_progress_report(
     )
 
 
+def current_timestamp() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+def git_status_snapshot() -> dict[str, Any]:
+    head = run_git_command("rev-parse", "--short", "HEAD")
+    branch = run_git_command("rev-parse", "--abbrev-ref", "HEAD")
+    dirty = run_git_command("status", "--short")
+    return {
+        "head": head.stdout.strip() or None,
+        "branch": branch.stdout.strip() or None,
+        "dirty": bool(dirty.stdout.strip()),
+        "changes": [line for line in dirty.stdout.splitlines() if line.strip()],
+        "refreshed_at": current_timestamp(),
+    }
+
+
+def build_status_payload(shared_state: SharedState) -> dict[str, Any]:
+    with shared_state.lock:
+        metrics = dict(shared_state.metrics)
+        latest_record = dict(shared_state.latest_record)
+        iteration = shared_state.iteration
+        best_f1 = shared_state.best_f1
+        corpus_counts = dict(shared_state.corpus_counts)
+        pid = shared_state.pid
+        port = shared_state.port
+        started_at = shared_state.started_at
+        rules_added = shared_state.rules_added
+        rules_reverted = shared_state.rules_reverted
+        category_counts = dict(shared_state.category_counts)
+
+    return {
+        "service": "merck-loop",
+        "healthy": True,
+        "timestamp": current_timestamp(),
+        "started_at": started_at,
+        "pid": pid,
+        "port": port,
+        "iteration": iteration,
+        "best_f1": best_f1,
+        "metrics": metrics,
+        "corpus": corpus_counts,
+        "rules_added": rules_added,
+        "rules_reverted": rules_reverted,
+        "mutation_categories": category_counts,
+        "last_record": latest_record,
+        "git": git_status_snapshot(),
+    }
+
+
+def status_writer(shared_state: SharedState, interval_seconds: int) -> None:
+    while True:
+        write_json(SECURITY_STATUS_PATH, build_status_payload(shared_state))
+        time.sleep(interval_seconds)
+
+
 def create_app(shared_state: SharedState) -> FastAPI:
     app = FastAPI()
 
@@ -812,6 +896,22 @@ def create_app(shared_state: SharedState) -> FastAPI:
         lines = RESULTS_PATH.read_text().splitlines()[-20:]
         return [json.loads(line) for line in lines if line.strip()]
 
+    @app.get("/status")
+    def get_status() -> dict[str, Any]:
+        return build_status_payload(shared_state)
+
+    @app.get("/health")
+    def get_health() -> dict[str, Any]:
+        with shared_state.lock:
+            f1_score = shared_state.metrics.get("f1_score", 0.0)
+        return {
+            "ok": True,
+            "service": "merck-loop",
+            "port": shared_state.port,
+            "f1_score": f1_score,
+            "timestamp": current_timestamp(),
+        }
+
     return app
 
 
@@ -824,13 +924,28 @@ def start_api_server(shared_state: SharedState, port: int) -> threading.Thread:
     return thread
 
 
+def start_status_writer(shared_state: SharedState, interval_seconds: int) -> threading.Thread:
+    thread = threading.Thread(
+        target=status_writer,
+        args=(shared_state, interval_seconds),
+        name="merck-status-writer",
+        daemon=True,
+    )
+    thread.start()
+    return thread
+
+
 def run_loop(args: argparse.Namespace) -> None:
     random.seed(args.seed)
+    ensure_runtime_paths()
     ensure_baseline_commit()
-    attacks = load_json(ATTACKS_PATH)
+    attacks = load_attack_corpus()
     safe_cases = load_json(SAFE_PATH)
     shared_state = SharedState()
+    shared_state.port = args.port
+    shared_state.corpus_counts = {"attacks": len(attacks), "safe_cases": len(safe_cases)}
     start_api_server(shared_state, args.port)
+    start_status_writer(shared_state, args.status_seconds)
 
     current_rules = load_rules()
     current_metrics = evaluate_rules(current_rules, attacks, safe_cases)
@@ -847,6 +962,54 @@ def run_loop(args: argparse.Namespace) -> None:
     iteration = 0
     while time.monotonic() < deadline:
         iteration += 1
+        attacks = load_attack_corpus()
+        safe_cases = load_json(SAFE_PATH)
+        current_rules = load_rules()
+        current_metrics = evaluate_rules(current_rules, attacks, safe_cases)
+        with shared_state.lock:
+            shared_state.metrics = dict(current_metrics)
+            shared_state.best_f1 = max(shared_state.best_f1, current_metrics["f1_score"])
+            shared_state.corpus_counts = {"attacks": len(attacks), "safe_cases": len(safe_cases)}
+            shared_state.iteration = iteration
+
+        if not current_metrics["remaining_mistakes"]:
+            record = {
+                "timestamp": current_timestamp(),
+                "iteration": iteration,
+                "accuracy": current_metrics["accuracy"],
+                "f1_score": current_metrics["f1_score"],
+                "catch_rate": current_metrics["catch_rate"],
+                "false_pos_rate": current_metrics["false_pos_rate"],
+                "mutation": "steady_state",
+                "mutation_category": "none",
+                "result": "steady",
+                "remaining_mistakes": [],
+            }
+            append_jsonl(record)
+            with shared_state.lock:
+                shared_state.latest_record = dict(record)
+            print(
+                f"Iteration {iteration}: "
+                f"f1={current_metrics['f1_score']:.3f} "
+                f"catch={current_metrics['catch_rate']:.3f} "
+                f"fp={current_metrics['false_pos_rate']:.3f} "
+                "mutation=steady_state result=steady",
+                flush=True,
+            )
+            if time.monotonic() >= progress_deadline:
+                with shared_state.lock:
+                    report = build_progress_report(
+                        iteration=shared_state.iteration,
+                        best_f1=shared_state.best_f1,
+                        rules_added=shared_state.rules_added,
+                        rules_reverted=shared_state.rules_reverted,
+                        category_counts=shared_state.category_counts,
+                    )
+                print(report, flush=True)
+                progress_deadline += args.progress_seconds
+            time.sleep(max(args.sleep_seconds, args.status_seconds))
+            continue
+
         mutation = choose_mutation(
             current_rules,
             current_metrics,
@@ -886,7 +1049,7 @@ def run_loop(args: argparse.Namespace) -> None:
                 shared_state.rules_reverted += 1
 
         record = {
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": current_timestamp(),
             "iteration": iteration,
             "accuracy": current_metrics["accuracy"] if kept else new_metrics["accuracy"],
             "f1_score": current_metrics["f1_score"] if kept else new_metrics["f1_score"],
@@ -903,6 +1066,8 @@ def run_loop(args: argparse.Namespace) -> None:
             shared_state.iteration = iteration
             shared_state.metrics = dict(current_metrics)
             shared_state.best_f1 = best_f1
+            shared_state.latest_record = dict(record)
+            shared_state.corpus_counts = {"attacks": len(attacks), "safe_cases": len(safe_cases)}
 
         print(
             f"Iteration {iteration}: "
@@ -938,6 +1103,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--duration-hours", type=float, default=3.0)
     parser.add_argument("--port", type=int, default=8081)
     parser.add_argument("--progress-seconds", type=int, default=DEFAULT_PROGRESS_SECONDS)
+    parser.add_argument("--status-seconds", type=int, default=DEFAULT_STATUS_SECONDS)
     parser.add_argument("--sleep-seconds", type=float, default=0.2)
     parser.add_argument("--seed", type=int, default=7)
     return parser.parse_args()

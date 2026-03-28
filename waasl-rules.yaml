@@ -29,16 +29,23 @@ rules:
   mcp_rules:
     block_if:
     - exact_target: npm:postmark-mcp@1.0.0
-    warn_if: []
+    - exact_target: http://10.0.0.12:9000/sse
+    warn_if:
+    - contains: postmark-mcp
   domain_blocklist:
   - collect-data.evil.com
   domain_patterns:
     block_if: []
-    warn_if: []
+    warn_if:
+    - openai-platform.com
   regex_patterns:
-    block_if: []
-    warn_if: []
+    block_if:
+    - npm:postmark\-mcp@1\.0\.0
+    warn_if:
+    - litellm==1\.82\.9
   package_name_patterns:
     block_if: []
     warn_if:
     - ai-helper-toolkit
+  host_suffix_patterns:
+    block_if: []

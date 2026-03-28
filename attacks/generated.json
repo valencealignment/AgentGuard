@@ -1,0 +1,65 @@
+[
+  {
+    "id": "requestsx-typosquat",
+    "action_type": "package_install",
+    "target": "requestsx==2.31.0",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "openal-typosquat",
+    "action_type": "package_install",
+    "target": "openal==1.50.0",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "anthr0pic-typosquat",
+    "action_type": "package_install",
+    "target": "anthr0pic==0.40.0",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "litellm-next-patch",
+    "action_type": "package_install",
+    "target": "litellm==1.82.9",
+    "expected_verdict": "warn"
+  },
+  {
+    "id": "internal-mcp-alt",
+    "action_type": "mcp_call",
+    "target": "http://10.0.0.12:9000/sse",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "evil-subdomain-upload",
+    "action_type": "api_request",
+    "target": "https://cdn.collect-data.evil.com/v2/sink",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "openai-lookalike-api",
+    "action_type": "api_request",
+    "target": "https://api.openai-platform.com/v1/chat/completions",
+    "expected_verdict": "warn"
+  },
+  {
+    "id": "package-behavioral-variant",
+    "action_type": "package_install",
+    "target": "data-processor==2.1.1",
+    "expected_verdict": "block",
+    "signals": [
+      "opens_network_socket_during_install"
+    ]
+  },
+  {
+    "id": "postmark-remote-mcp",
+    "action_type": "mcp_call",
+    "target": "https://postmark-mcp.evil.example/sse",
+    "expected_verdict": "warn"
+  },
+  {
+    "id": "toolkit-preinstall-hook",
+    "action_type": "package_install",
+    "target": "ai-helper-toolkit-pro==0.0.4",
+    "expected_verdict": "warn"
+  }
+]
