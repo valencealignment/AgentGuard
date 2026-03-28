@@ -38,4 +38,5 @@ rules:
     warn_if: []
   package_name_patterns:
     block_if: []
-    warn_if: []
+    warn_if:
+    - ai-helper-toolkit
