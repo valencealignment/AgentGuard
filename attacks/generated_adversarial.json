@@ -178,5 +178,41 @@
     "signals": [
       "injects_path"
     ]
+  },
+  {
+    "id": "mcp-rugpull-notion-sync",
+    "action_type": "mcp_call",
+    "target": "https://notion-sync-mcp.app/sse",
+    "expected_verdict": "block",
+    "signals": [
+      "tool_description_changed"
+    ]
+  },
+  {
+    "id": "depconf-corp-secrets-sdk",
+    "action_type": "package_install",
+    "target": "corp-secrets-sdk==0.0.4",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "combo-pandas-stream",
+    "action_type": "package_install",
+    "target": "pandas-stream-utils==0.4.0",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "slop-redis-queue-secure",
+    "action_type": "package_install",
+    "target": "redis-queue-secure==0.0.2",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "signal-browser-cookie-reader",
+    "action_type": "package_install",
+    "target": "browser-session-tools==1.3.0",
+    "expected_verdict": "block",
+    "signals": [
+      "reads_browser_cookies"
+    ]
   }
 ]
