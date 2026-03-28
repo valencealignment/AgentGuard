@@ -127,6 +127,11 @@ rules:
     - 0.7.0
     reason: MERCK learned exact block
     severity: high
+  - name: async-token-refresh
+    versions:
+    - 0.0.5
+    reason: MERCK learned exact block
+    severity: high
   reputation_thresholds:
     block_below_score: 10
     warn_below_score: 30
