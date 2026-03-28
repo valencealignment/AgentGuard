@@ -111,7 +111,9 @@ def run_git(*args: str) -> subprocess.CompletedProcess[str]:
 
 
 def commit_if_needed(message: str, *paths: str) -> bool:
-    run_git("add", *paths)
+    run_git("add", "-u")
+    if paths:
+        run_git("add", *paths)
     if run_git("diff", "--cached", "--quiet").returncode == 0:
         return False
     result = run_git("commit", "-m", message)
