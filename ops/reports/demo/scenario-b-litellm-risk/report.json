@@ -1,0 +1,41 @@
+{
+  "scenario_id": "scenario-b-litellm-risk",
+  "title": "LiteLLM-centered risky path",
+  "summary": "A sandboxed agent attempts to install a flagged LiteLLM version associated with suspicious install-time behavior.",
+  "decision": "BLOCK",
+  "severity": "high",
+  "reason": "Flagged dependency version and suspicious install-time signals require immediate blocking.",
+  "evidence": [
+    "flagged_dependency_version",
+    "reads_env_vars",
+    "reads_ssh_keys",
+    "opens_network_socket_during_install"
+  ],
+  "agent": {
+    "id": "agent-sandbox-risky",
+    "name": "Sandbox Runner",
+    "reputation": "unknown",
+    "origin": "sandbox"
+  },
+  "action": {
+    "type": "package_install",
+    "target": "litellm==1.82.8",
+    "context": {
+      "workspace_only": false,
+      "network_required": true,
+      "package_install": true,
+      "signals": [
+        "reads_env_vars",
+        "reads_ssh_keys",
+        "opens_network_socket_during_install"
+      ]
+    }
+  },
+  "notifications": [
+    {
+      "channel": "human-approval-queue",
+      "message": "Review flagged LiteLLM installation attempt and verify safe replacement guidance."
+    }
+  ],
+  "generated_at": "2026-03-28T12:54:09-07:00"
+}

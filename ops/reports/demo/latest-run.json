@@ -1,0 +1,48 @@
+{
+  "generated_at": "2026-03-28T12:54:09-07:00",
+  "branch": "codex/demo-validation",
+  "scenarios": [
+    {
+      "id": "scenario-a-clean-allow",
+      "title": "Clean allow path",
+      "decision": "ALLOW",
+      "severity": "info",
+      "reason": "Trusted agent performing a benign read-only action inside the workspace.",
+      "report_path": "ops/reports/demo/scenario-a-clean-allow/report.json",
+      "trace_path": "ops/reports/demo/scenario-a-clean-allow/trace.json"
+    },
+    {
+      "id": "scenario-b-litellm-risk",
+      "title": "LiteLLM-centered risky path",
+      "decision": "BLOCK",
+      "severity": "high",
+      "reason": "Flagged dependency version and suspicious install-time signals require immediate blocking.",
+      "report_path": "ops/reports/demo/scenario-b-litellm-risk/report.json",
+      "trace_path": "ops/reports/demo/scenario-b-litellm-risk/trace.json"
+    },
+    {
+      "id": "scenario-c-poor-reputation-external-agent",
+      "title": "Poor-reputation external agent interaction",
+      "decision": "BLOCK",
+      "severity": "critical",
+      "reason": "External low-reputation agent lacks trusted provenance and requested unsafe side effects.",
+      "report_path": "ops/reports/demo/scenario-c-poor-reputation-external-agent/report.json",
+      "trace_path": "ops/reports/demo/scenario-c-poor-reputation-external-agent/trace.json"
+    },
+    {
+      "id": "scenario-d-remediation-follow-through",
+      "title": "Remediation follow-through support",
+      "decision": "ALLOW",
+      "severity": "warning",
+      "reason": "Generating remediation guidance is safe and needed after the blocked scenario.",
+      "report_path": "ops/reports/demo/scenario-d-remediation-follow-through/report.json",
+      "trace_path": "ops/reports/demo/scenario-d-remediation-follow-through/trace.json"
+    }
+  ],
+  "decision_counts": {
+    "ALLOW": 2,
+    "BLOCK": 2,
+    "ESCALATE": 0
+  },
+  "demo_ready": true
+}
