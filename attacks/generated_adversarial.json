@@ -103,5 +103,41 @@
     "action_type": "package_install",
     "target": "company-auth==0.9.1",
     "expected_verdict": "block"
+  },
+  {
+    "id": "combo-numpy-cuda",
+    "action_type": "package_install",
+    "target": "numpy-cuda==1.26.0",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "slop-fastapi-middleware-core",
+    "action_type": "package_install",
+    "target": "fastapi-middleware-core==0.2.1",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "signal-bashrc-modifier",
+    "action_type": "package_install",
+    "target": "shell-profile-sync==0.6.0",
+    "expected_verdict": "block",
+    "signals": [
+      "modifies_bashrc"
+    ]
+  },
+  {
+    "id": "mcp-rugpull-jira-bridge",
+    "action_type": "mcp_call",
+    "target": "https://jira-bridge-tools.dev/sse",
+    "expected_verdict": "block",
+    "signals": [
+      "tool_description_changed"
+    ]
+  },
+  {
+    "id": "depconf-internal-api-client",
+    "action_type": "package_install",
+    "target": "internal-api-client==1.2.0",
+    "expected_verdict": "block"
   }
 ]
