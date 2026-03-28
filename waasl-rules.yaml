@@ -68,6 +68,7 @@ rules:
     - exact_target: ws://10.0.0.12:9000/sse
     - exact_target: http://127.0.0.1:8080/sse
     - exact_target: https://mcp.legitimate-looking-domain.com/sse
+    - exact_target: https://figma-helper-mcp.com/sse
     warn_if:
     - contains: postmark-mcp
   domain_blocklist:
