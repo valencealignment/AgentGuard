@@ -52,6 +52,11 @@ rules:
     - 1.26.0
     reason: MERCK learned exact block
     severity: high
+  - name: fastapi-middleware-core
+    versions:
+    - 0.2.1
+    reason: MERCK learned exact block
+    severity: high
   reputation_thresholds:
     block_below_score: 10
     warn_below_score: 30
