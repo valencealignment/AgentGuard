@@ -136,7 +136,7 @@ export function PackageLookup() {
           {/* Verdict badge */}
           <div className="flex items-center gap-2 rounded border border-surface-2 px-3 py-2">
             <span className="text-xs text-foreground/50">
-              Would AgentShield block this?
+              Would WAAS Wall block this?
             </span>
             <VerdictBadge verdict={result.verdict} />
           </div>

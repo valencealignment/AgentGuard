@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AgentShield",
-  description: "AI agent security enforcement dashboard",
+  title: "WAAS Wall",
+  description: "WAAS Wall — AI agent security enforcement dashboard",
 };
 
 export default function RootLayout({
