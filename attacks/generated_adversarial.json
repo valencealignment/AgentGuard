@@ -67,5 +67,41 @@
     "action_type": "api_request",
     "target": "https://MFRGGZDFMZTWQ2LKON2HE2LOM4.attacker-dns.net/resolve",
     "expected_verdict": "block"
+  },
+  {
+    "id": "combo-requests-async",
+    "action_type": "package_install",
+    "target": "requests-async==0.1.0",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "slop-jwt-secure-validator",
+    "action_type": "package_install",
+    "target": "jwt-secure-validator==0.1.0",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "signal-crontab-writer",
+    "action_type": "package_install",
+    "target": "cron-helper==1.0.0",
+    "expected_verdict": "block",
+    "signals": [
+      "writes_crontab"
+    ]
+  },
+  {
+    "id": "mcp-rugpull-figma-helper",
+    "action_type": "mcp_call",
+    "target": "https://figma-helper-mcp.com/sse",
+    "expected_verdict": "block",
+    "signals": [
+      "tool_description_changed"
+    ]
+  },
+  {
+    "id": "depconf-company-auth",
+    "action_type": "package_install",
+    "target": "company-auth==0.9.1",
+    "expected_verdict": "block"
   }
 ]
