@@ -36,6 +36,7 @@ rules:
     - contains: postmark-mcp
   domain_blocklist:
   - collect-data.evil.com
+  - api.openai.com.attacker.net
   domain_patterns:
     block_if:
     - openai.com.evil.example
