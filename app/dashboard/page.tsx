@@ -7,6 +7,7 @@ import EnforcementLog from "@/components/dashboard/EnforcementLog";
 import DecisionDetail from "@/components/dashboard/DecisionDetail";
 import { EscalationPanel } from "@/components/dashboard/EscalationPanel";
 import AutoResearcherPanel from "@/components/dashboard/AutoResearcherPanel";
+import DemoStepper from "@/components/dashboard/DemoStepper";
 import { ExposedInstanceTable } from "@/components/threat-intel/ExposedInstanceTable";
 import WorldMap from "@/components/threat-intel/WorldMap";
 import { InstanceDetail } from "@/components/threat-intel/InstanceDetail";
@@ -30,6 +31,37 @@ export default function DashboardPage() {
   const [iterations, setIterations] = useState<Iteration[]>([]);
   const [isRunning, setIsRunning] = useState(false);
   const [escalation, setEscalation] = useState<EscalationReport | null>(null);
+  const [demoStep, setDemoStep] = useState<number | null>(null);
+
+  const handleDemoStep = useCallback((step: number) => {
+    setDemoStep(step);
+    switch (step) {
+      case 0: // Real Attack
+        setActiveTab("enforcement");
+        setSelectedDecisionId("litellm-supply-chain");
+        break;
+      case 1: // Agent Advisory (same decision, advisory is visible on scroll)
+        setActiveTab("enforcement");
+        setSelectedDecisionId("litellm-supply-chain");
+        break;
+      case 2: // Self-Correcting Loop (presenter clicks Run Iteration manually)
+        setActiveTab("enforcement");
+        setSelectedDecisionId("litellm-supply-chain");
+        break;
+      case 3: // Threat Intel
+        setActiveTab("threat-intel");
+        setSelectedInstanceId("inst-004");
+        break;
+      case 4: // Human Escalation
+        setActiveTab("enforcement");
+        setSelectedDecisionId("suspicious-new-pkg");
+        break;
+      case 5: // Live Lookup
+        setActiveTab("threat-intel");
+        setSelectedInstanceId(null);
+        break;
+    }
+  }, []);
 
   useEffect(() => {
     fetch("/api/iterations")
@@ -37,6 +69,14 @@ export default function DashboardPage() {
       .then((data: Iteration[]) => setIterations(data))
       .catch(() => setIterations(getIterations()));
   }, []);
+
+  // Auto-select the first decision (pinned litellm) so the center panel
+  // shows the advisory immediately instead of a "Select an entry" placeholder.
+  useEffect(() => {
+    if (!selectedDecisionId && decisions.length > 0) {
+      setSelectedDecisionId(decisions[0].id);
+    }
+  }, [decisions, selectedDecisionId]);
 
   const handleRunIteration = useCallback(async () => {
     setIsRunning(true);
@@ -108,6 +148,7 @@ export default function DashboardPage() {
     <div className="flex h-screen flex-col bg-surface-0 text-foreground">
       <TopBar score={score} />
       <TabBar activeTab={activeTab} onTabChange={setActiveTab} />
+      <DemoStepper currentStep={demoStep} onStep={handleDemoStep} />
 
       <main className="flex min-h-0 flex-1">
         {activeTab === "enforcement" ? (

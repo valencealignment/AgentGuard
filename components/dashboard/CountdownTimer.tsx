@@ -1,15 +1,25 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
-export function CountdownTimer({ resetKey }: { resetKey: string }) {
+interface CountdownTimerProps {
+  resetKey: string;
+  onExpire?: () => void;
+}
+
+export function CountdownTimer({ resetKey, onExpire }: CountdownTimerProps) {
   const [seconds, setSeconds] = useState(600); // 10 minutes
+  const onExpireRef = useRef(onExpire);
+  onExpireRef.current = onExpire;
 
   useEffect(() => {
     setSeconds(600);
     const id = setInterval(() => {
       setSeconds((s) => {
-        if (s <= 0) return 0;
+        if (s <= 1) {
+          onExpireRef.current?.();
+          return 0;
+        }
         return s - 1;
       });
     }, 1000);

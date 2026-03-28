@@ -49,7 +49,7 @@ export function ExposedInstanceTable({
                 {/* Instance column */}
                 <td className="px-3 py-2">
                   <div className="font-mono text-foreground">{inst.ip}</div>
-                  <div className="text-[10px] text-foreground/40 truncate max-w-[180px]">
+                  <div className="text-[10px] text-foreground/40 truncate max-w-[180px]" title={inst.hostname}>
                     {inst.hostname}
                   </div>
                 </td>

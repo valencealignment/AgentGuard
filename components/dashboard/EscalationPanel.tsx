@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { EscalationReport } from "@/lib/types";
 import { CountdownTimer } from "./CountdownTimer";
+import { SimpleMarkdown } from "./DecisionDetail";
 
 interface EscalationPanelProps {
   report: EscalationReport;
@@ -13,6 +14,7 @@ export function EscalationPanel({ report }: EscalationPanelProps) {
     "pending" | "approving" | "denying" | "approved" | "denied"
   >(report.status === "pending" ? "pending" : report.status);
   const [reviewError, setReviewError] = useState<string | null>(null);
+  const [isExpired, setIsExpired] = useState(false);
 
   async function handleReview(action: "approve" | "deny") {
     setReviewState(action === "approve" ? "approving" : "denying");
@@ -54,7 +56,7 @@ export function EscalationPanel({ report }: EscalationPanelProps) {
       {/* Countdown timer */}
       <div className="flex items-center gap-2 rounded bg-surface-2 px-3 py-1.5">
         <span className="text-xs text-foreground/50">Expires in:</span>
-        <CountdownTimer resetKey={report.id} />
+        <CountdownTimer resetKey={report.id} onExpire={() => setIsExpired(true)} />
       </div>
 
       {/* Signal summary */}
@@ -103,11 +105,9 @@ export function EscalationPanel({ report }: EscalationPanelProps) {
         </div>
       </div>
 
-      {/* Body markdown (simple rendering) */}
-      <div className="flex flex-col gap-2 text-xs text-foreground/70">
-        {report.body_markdown.split("\n\n").map((para, i) => (
-          <p key={i}>{para}</p>
-        ))}
+      {/* Body markdown */}
+      <div className="text-xs">
+        <SimpleMarkdown content={report.body_markdown} />
       </div>
 
       {/* Review error */}
@@ -131,14 +131,14 @@ export function EscalationPanel({ report }: EscalationPanelProps) {
           <>
             <button
               onClick={() => handleReview("approve")}
-              disabled={isActioning}
+              disabled={isActioning || isExpired}
               className="flex-1 rounded bg-verdict-allow/15 px-3 py-2 text-xs font-semibold text-verdict-allow transition-colors hover:bg-verdict-allow/25 disabled:opacity-50"
             >
               {reviewState === "approving" ? "Approving..." : "Approve"}
             </button>
             <button
               onClick={() => handleReview("deny")}
-              disabled={isActioning}
+              disabled={isActioning || isExpired}
               className="flex-1 rounded bg-verdict-block/15 px-3 py-2 text-xs font-semibold text-verdict-block transition-colors hover:bg-verdict-block/25 disabled:opacity-50"
             >
               {reviewState === "denying" ? "Denying..." : "Deny"}

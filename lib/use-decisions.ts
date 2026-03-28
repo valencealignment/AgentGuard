@@ -6,12 +6,21 @@ import type { Decision } from "./types";
 const POLL_INTERVAL = 2000;
 const ANIMATION_DURATION = 600;
 
+function sortDecisions(list: Decision[]): Decision[] {
+  return list.sort((a, b) => {
+    if (a.is_real_attack && !b.is_real_attack) return -1;
+    if (!a.is_real_attack && b.is_real_attack) return 1;
+    return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+  });
+}
+
 export function useDecisions() {
   const [decisions, setDecisions] = useState<Decision[]>([]);
   const [newIds, setNewIds] = useState<Set<string>>(new Set());
   const sinceRef = useRef<string | null>(null);
   const isFirstFetch = useRef(true);
   const animationTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const fetchDecisions = useCallback(async () => {
     const params = new URLSearchParams();
@@ -29,16 +38,8 @@ export function useDecisions() {
         const existingIds = new Set(prev.map((d) => d.id));
         const incoming = data.filter((d) => !existingIds.has(d.id));
 
-        const merged = [...prev, ...incoming];
+        const merged = sortDecisions([...prev, ...incoming]);
 
-        // Sort: litellm (is_real_attack) always first, then by timestamp desc
-        merged.sort((a, b) => {
-          if (a.is_real_attack && !b.is_real_attack) return -1;
-          if (!a.is_real_attack && b.is_real_attack) return 1;
-          return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
-        });
-
-        // Update since watermark using numeric comparison
         if (merged.length > 0) {
           const latest = merged.reduce((max, d) => {
             const t = new Date(d.timestamp).getTime();
@@ -47,11 +48,8 @@ export function useDecisions() {
           sinceRef.current = latest;
         }
 
-        // Track new entries for animation (outside updater logic via closure)
         if (!isFirstFetch.current && incoming.length > 0) {
-          // Clear any pending animation timeout
           if (animationTimer.current) clearTimeout(animationTimer.current);
-          // Schedule newIds update after this render
           queueMicrotask(() => {
             setNewIds(new Set(incoming.map((d) => d.id)));
             animationTimer.current = setTimeout(
@@ -69,27 +67,48 @@ export function useDecisions() {
     }
   }, []);
 
-  // Seed scenario decisions once on mount (they're static artifacts)
+  // Initial load: fetch scenarios + first decisions together, then start polling.
+  // This eliminates the empty-log gap and the visible "jump" when scenarios arrive late.
   useEffect(() => {
-    fetch("/api/scenarios")
-      .then((r) => (r.ok ? r.json() : []))
-      .then((data: Decision[]) => {
-        if (data.length > 0) {
-          setDecisions((prev) => {
-            const existingIds = new Set(prev.map((d) => d.id));
-            const incoming = data.filter((d) => !existingIds.has(d.id));
-            return [...prev, ...incoming];
-          });
-        }
-      })
-      .catch(() => {});
-  }, []);
+    async function initialLoad() {
+      const [scenarios, drip] = await Promise.all([
+        fetch("/api/scenarios").then((r) => (r.ok ? r.json() : [])).catch(() => []),
+        fetch("/api/decisions").then((r) => (r.ok ? r.json() : [])).catch(() => []),
+      ]);
 
-  useEffect(() => {
-    fetchDecisions();
-    const id = setInterval(fetchDecisions, POLL_INTERVAL);
+      const allDecisions: Decision[] = [...drip];
+      const existingTargets = new Set(allDecisions.map((d: Decision) => d.target));
+
+      // Merge scenarios, but skip entries whose target duplicates an existing
+      // mock decision (e.g. scenario-b litellm==1.82.8 vs pinned mock litellm)
+      for (const sd of scenarios as Decision[]) {
+        if (!existingTargets.has(sd.target)) {
+          allDecisions.push(sd);
+          existingTargets.add(sd.target);
+        }
+      }
+
+      const sorted = sortDecisions(allDecisions);
+
+      if (sorted.length > 0) {
+        const latest = sorted.reduce((max, d) => {
+          const t = new Date(d.timestamp).getTime();
+          return t > new Date(max).getTime() ? d.timestamp : max;
+        }, sorted[0].timestamp);
+        sinceRef.current = latest;
+      }
+
+      isFirstFetch.current = false;
+      setDecisions(sorted);
+
+      // Now start the drip-feed polling
+      pollRef.current = setInterval(fetchDecisions, POLL_INTERVAL);
+    }
+
+    initialLoad();
+
     return () => {
-      clearInterval(id);
+      if (pollRef.current) clearInterval(pollRef.current);
       if (animationTimer.current) clearTimeout(animationTimer.current);
     };
   }, [fetchDecisions]);

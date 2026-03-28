@@ -25,7 +25,7 @@ export default function DecisionDetail({ decision, onViewThread }: DecisionDetai
       {/* Header */}
       <div className="flex items-center gap-2">
         <VerdictBadge verdict={decision.verdict} />
-        <h2 className="text-sm font-semibold text-foreground truncate">
+        <h2 className="text-sm font-semibold text-foreground truncate" title={decision.target}>
           {decision.target}
         </h2>
         {decision.version && (
@@ -195,7 +195,7 @@ function MetaField({ label, value }: { label: string; value: string }) {
 }
 
 /** Lightweight markdown renderer for advisory content (headers, lists, bold, paragraphs). */
-function SimpleMarkdown({ content }: { content: string }) {
+export function SimpleMarkdown({ content }: { content: string }) {
   const lines = content.split("\n");
   const elements: React.ReactNode[] = [];
   let listItems: string[] = [];
