@@ -69,6 +69,7 @@ rules:
     - drops_pth_persistence
     - delayed_execution
     - writes_crontab
+    - modifies_bashrc
     warn_if:
     - reads_ssh_keys
     - reads_env_vars
