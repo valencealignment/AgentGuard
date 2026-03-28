@@ -214,5 +214,41 @@
     "signals": [
       "reads_browser_cookies"
     ]
+  },
+  {
+    "id": "mcp-rugpull-github-agent",
+    "action_type": "mcp_call",
+    "target": "https://github-agent-tools.app/sse",
+    "expected_verdict": "block",
+    "signals": [
+      "tool_description_changed"
+    ]
+  },
+  {
+    "id": "depconf-private-build-utils",
+    "action_type": "package_install",
+    "target": "private-build-utils==0.3.2",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "combo-fastapi-auth-kit",
+    "action_type": "package_install",
+    "target": "fastapi-auth-kit==0.3.0",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "slop-vector-db-router",
+    "action_type": "package_install",
+    "target": "vector-db-router==0.1.4",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "signal-zshrc-modifier",
+    "action_type": "package_install",
+    "target": "shell-login-helper==1.4.0",
+    "expected_verdict": "block",
+    "signals": [
+      "modifies_shell_rc"
+    ]
   }
 ]
