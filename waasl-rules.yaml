@@ -103,6 +103,7 @@ rules:
     - hides_in_pyc
     - downloads_stego_payload
     - injects_path
+    - reads_browser_cookies
     warn_if:
     - reads_ssh_keys
     - reads_env_vars
