@@ -16,7 +16,7 @@ rules:
     block_below_score: 10
     warn_below_score: 30
   typosquatting:
-    enabled: false
+    enabled: true
   behavioral_signals:
     block_if: []
     warn_if: []
