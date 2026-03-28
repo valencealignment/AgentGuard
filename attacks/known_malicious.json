@@ -1,0 +1,12 @@
+[
+  {"id":"litellm-supply-chain","action_type":"package_install","target":"litellm==1.82.8","expected_verdict":"block","signals":["reads_ssh_keys","reads_env_vars","spawns_child_processes"]},
+  {"id":"litellm-also-bad","action_type":"package_install","target":"litellm==1.82.7","expected_verdict":"block"},
+  {"id":"typosquat-reqeusts","action_type":"package_install","target":"reqeusts==1.0.0","expected_verdict":"block"},
+  {"id":"typosquat-numppy","action_type":"package_install","target":"numppy==0.1.0","expected_verdict":"block"},
+  {"id":"slopsquat-llm-utils","action_type":"package_install","target":"llm-utils==0.0.1","expected_verdict":"block"},
+  {"id":"malicious-mcp","action_type":"mcp_call","target":"npm:postmark-mcp@1.0.0","expected_verdict":"block"},
+  {"id":"exposed-mcp","action_type":"mcp_call","target":"http://192.168.1.50:8080/mcp","expected_verdict":"warn"},
+  {"id":"suspicious-new-pkg","action_type":"package_install","target":"ai-helper-toolkit==0.0.3","expected_verdict":"warn"},
+  {"id":"behavioral-bad","action_type":"package_install","target":"data-processor==2.1.0","expected_verdict":"block","signals":["opens_network_socket_during_install","reads_env_vars"]},
+  {"id":"exfil-domain","action_type":"api_request","target":"https://collect-data.evil.com/api/v1/upload","expected_verdict":"block"}
+]
