@@ -17,6 +17,16 @@ rules:
     - 0.0.1
     reason: MERCK learned exact block
     severity: high
+  - name: aiocpa
+    versions:
+    - 0.1.13
+    reason: Known sleeper-package takeover
+    severity: critical
+  - name: fshec2
+    versions:
+    - 0.1.0
+    reason: Compiled bytecode payload
+    severity: critical
   reputation_thresholds:
     block_below_score: 10
     warn_below_score: 30
@@ -37,10 +47,13 @@ rules:
     - exact_target: http://postmark-mcp.internal/sse
     - exact_target: https://172.16.4.20:7443/sse
     - exact_target: ws://10.0.0.12:9000/sse
+    - exact_target: http://127.0.0.1:8080/sse
     warn_if:
     - contains: postmark-mcp
   domain_blocklist:
   - collect-data.evil.com
+  - packages.storeartifact.com
+  - models.litellm.cloud
   domain_patterns:
     block_if:
     - openai.com.evil.example
@@ -54,15 +67,21 @@ rules:
     block_if:
     - npm:postmark\-mcp@1\.0\.0
     - https://10\.1\.2\.3/v1/upload
+    - packages\.storeartifact\.com/npm/unused\-imports
+    - http://127\.0\.0\.1:8080/latest/meta-data/iam/security-credentials/
     warn_if:
     - litellm==1\.82\.9
     - litellm==1\.83\.0
     - https://api\.openai\.com\.attacker\.net/v1/chat/completions
     - https://console\.anthropic\.com\.login\-sync\.net/v1/messages
     - https://auth\-openai\.net/oauth/token
+    - https://api\.telegram\.org/bot[^/]+/sendMessage
   package_name_patterns:
     block_if:
     - requests-plus
+    - huggingface-cli
+    - rest_framework_simplejwt
+    - noblox.js-proxy-server
     warn_if:
     - ai-helper-toolkit
   host_suffix_patterns:

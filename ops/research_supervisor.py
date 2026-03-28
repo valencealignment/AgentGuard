@@ -67,6 +67,13 @@ def load_generated_cases() -> list[dict[str, Any]]:
     return json.loads(path.read_text())
 
 
+def load_generated_safe_cases() -> list[dict[str, Any]]:
+    path = ROOT / "safe_packages" / "generated.json"
+    if not path.exists():
+        return []
+    return json.loads(path.read_text())
+
+
 def breaker_cycle(min_f1: float) -> dict[str, Any]:
     merck = load_merck_module()
     breaker = load_breaker_module()
@@ -76,6 +83,12 @@ def breaker_cycle(min_f1: float) -> dict[str, Any]:
         breaker.write_generated_cases(merged)
 
     safe_cases = merck.load_json(merck.SAFE_PATH)
+    generated_safe = load_generated_safe_cases()
+    merged_safe, added_safe = breaker.merge_safe_cases(generated_safe)
+    if added_safe:
+        breaker.write_generated_safe_cases(merged_safe)
+        generated_safe = merged_safe
+    safe_cases.extend(generated_safe)
     attacks = merck.load_attack_corpus()
     current_rules = breaker.apply_breaker_repairs(merck.load_rules())
     merck.save_rules(current_rules)
@@ -130,6 +143,7 @@ def breaker_cycle(min_f1: float) -> dict[str, Any]:
             "ts": now_iso(),
             "lane": "breaker",
             "new_cases_added": [case["id"] for case in added],
+            "new_safe_cases_added": [case["id"] for case in added_safe],
             "kept_mutations": kept_mutations,
             "reverted_mutations": reverted_mutations,
             "attack_count": len(merck.load_attack_corpus()),
@@ -141,6 +155,7 @@ def breaker_cycle(min_f1: float) -> dict[str, Any]:
     )
     return {
         "added": added,
+        "added_safe": added_safe,
         "metrics": final_metrics,
         "kept_mutations": kept_mutations,
         "reverted_mutations": reverted_mutations,
@@ -269,9 +284,11 @@ def write_report(local_result: dict[str, Any], remote_result: dict[str, Any]) ->
         "",
         f"- Refreshed: {now_iso()}",
         f"- Attack corpus: {len(load_merck_module().load_attack_corpus())} attacks",
+        f"- Safe corpus: {len(load_merck_module().load_json(load_merck_module().SAFE_PATH)) + len(load_generated_safe_cases())} cases",
         f"- F1 score: {metrics['f1_score']:.3f}",
         f"- False positive rate: {metrics['false_pos_rate']:.3f}",
         f"- New breaker cases this cycle: {', '.join(case['id'] for case in local_result['added']) or 'none'}",
+        f"- New safe cases this cycle: {', '.join(case['id'] for case in local_result['added_safe']) or 'none'}",
         f"- Kept mutations: {', '.join(local_result['kept_mutations']) or 'none'}",
         f"- Last autoresearch result: {remote_result['last_result']}",
         f"- Remote recovery actions: {', '.join(remote_result['recovery_actions']) or 'none'}",
