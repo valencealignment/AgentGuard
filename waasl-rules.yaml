@@ -112,6 +112,11 @@ rules:
     - 1.1.0
     reason: MERCK learned exact block
     severity: high
+  - name: llm-cache-proxy
+    versions:
+    - 0.0.8
+    reason: MERCK learned exact block
+    severity: high
   reputation_thresholds:
     block_below_score: 10
     warn_below_score: 30
