@@ -155,6 +155,7 @@ rules:
     - exact_target: https://notion-sync-mcp.app/sse
     - exact_target: https://github-agent-tools.app/sse
     - exact_target: https://linear-sync-mcp.dev/sse
+    - exact_target: https://obsidian-bridge-mcp.net/sse
     warn_if:
     - contains: postmark-mcp
   domain_blocklist:
