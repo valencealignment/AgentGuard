@@ -17,6 +17,7 @@ EVENTS_PATH = REPO_ROOT / "ops" / "events" / "demo.jsonl"
 STATUS_PATH = REPO_ROOT / "ops" / "status" / "demo.json"
 REPORTS_DIR = REPO_ROOT / "ops" / "reports" / "demo"
 SANDBOX_DIR = REPO_ROOT / "ops" / "reports" / "sandbox"
+DOMAIN_EVENTS_PATH = REPORTS_DIR / "domain-events.json"
 
 
 @dataclass
@@ -73,7 +74,34 @@ def write_json(path: Path, payload: dict[str, Any] | list[dict[str, Any]]) -> No
     path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
 
-def event_record(
+def lane_event_record(
+    message_type: str,
+    event_type: str,
+    severity: str,
+    title: str,
+    summary: str,
+    status: str = "open",
+    artifacts: list[str] | None = None,
+    extra: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    record: dict[str, Any] = {
+      "id": str(uuid.uuid4()),
+      "ts": iso_now(),
+      "source": "demo",
+      "message_type": message_type,
+      "type": event_type,
+      "title": title,
+      "summary": summary,
+      "status": status,
+      "severity": severity,
+      "artifacts": artifacts or [],
+    }
+    if extra:
+        record.update(extra)
+    return record
+
+
+def domain_event_record(
     event_type: str,
     subject_kind: str,
     subject_id: str,
@@ -86,18 +114,18 @@ def event_record(
     extra: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     record: dict[str, Any] = {
-      "id": str(uuid.uuid4()),
-      "ts": iso_now(),
-      "source": "demo-validation",
-      "type": event_type,
-      "subject_kind": subject_kind,
-      "subject_id": subject_id,
-      "severity": severity,
-      "decision": decision,
-      "title": title,
-      "summary": summary,
-      "status": status,
-      "artifacts": artifacts or [],
+        "id": str(uuid.uuid4()),
+        "ts": iso_now(),
+        "source": "demo-validation",
+        "type": event_type,
+        "subject_kind": subject_kind,
+        "subject_id": subject_id,
+        "severity": severity,
+        "decision": decision,
+        "title": title,
+        "summary": summary,
+        "status": status,
+        "artifacts": artifacts or [],
     }
     if extra:
         record.update(extra)
@@ -169,16 +197,18 @@ def evaluate_scenario(scenario: dict[str, Any]) -> ScenarioOutcome:
 def emit_claim(branch: str) -> None:
     append_jsonl(
         EVENTS_PATH,
-        event_record(
-            event_type="CLAIM",
-            subject_kind="lane",
-            subject_id="computer-4-demo-validation",
+        lane_event_record(
+            message_type="CLAIM",
+            event_type="claim.created",
             severity="info",
             title="Computer 4 lane claimed",
             summary="Computer 4 claimed the demo-validation lane and initialized sandbox outputs.",
             status="claimed",
             artifacts=[repo_relative(STATUS_PATH)],
-            extra={"branch": branch},
+            extra={
+                "lane": "demo",
+                "branch": branch,
+            },
         ),
     )
 
@@ -187,6 +217,7 @@ def emit_status(branch: str, current_task: str, percent_complete: int, active_sc
     write_json(
         STATUS_PATH,
         {
+            "lane": "demo",
             "branch": branch,
             "current_task": current_task,
             "percent_complete": percent_complete,
@@ -198,16 +229,16 @@ def emit_status(branch: str, current_task: str, percent_complete: int, active_sc
     )
     append_jsonl(
         EVENTS_PATH,
-        event_record(
-            event_type="STATUS",
-            subject_kind="lane",
-            subject_id="computer-4-demo-validation",
+        lane_event_record(
+            message_type="STATUS",
+            event_type="heartbeat",
             severity="info",
             title="Computer 4 status heartbeat",
             summary=current_task,
             status="active",
             artifacts=[repo_relative(STATUS_PATH)],
             extra={
+                "lane": "demo",
                 "branch": branch,
                 "percent_complete": percent_complete,
                 "active_scenarios": active_scenarios,
@@ -218,57 +249,55 @@ def emit_status(branch: str, current_task: str, percent_complete: int, active_sc
     )
 
 
-def emit_scenario_events(outcome: ScenarioOutcome) -> None:
+def emit_handoff(outcome: ScenarioOutcome) -> None:
     append_jsonl(
         EVENTS_PATH,
-        event_record(
-            event_type="scenario.started",
-            subject_kind="scenario",
-            subject_id=outcome.scenario_id,
-            severity=outcome.severity,
-            title=outcome.title,
-            summary=f"Started {outcome.title}.",
-            artifacts=[outcome.trace_path],
-        ),
-    )
-    append_jsonl(
-        EVENTS_PATH,
-        event_record(
+        lane_event_record(
+            message_type="HANDOFF",
             event_type=f"decision.{outcome.decision.lower()}",
-            subject_kind="scenario",
-            subject_id=outcome.scenario_id,
             severity=outcome.severity,
-            title=f"{outcome.title} -> {outcome.decision}",
+            title=f"{outcome.title} ready for aggregation",
             summary=outcome.reason,
-            decision=outcome.decision,
             status="completed",
-            artifacts=[outcome.report_path, outcome.trace_path],
-            extra={"evidence": outcome.evidence},
+            artifacts=[outcome.report_path, outcome.trace_path, repo_relative(DOMAIN_EVENTS_PATH)],
+            extra={
+                "lane": "demo",
+                "scenario_id": outcome.scenario_id,
+                "decision": outcome.decision,
+            },
         ),
     )
     for notification in outcome.notifications:
+        notification_type = "human.approval_requested"
+        if notification["channel"] == "security-alerts":
+            notification_type = "notification.sent"
         append_jsonl(
             EVENTS_PATH,
-            event_record(
-                event_type="notification.queued",
-                subject_kind="notification",
-                subject_id=f"{outcome.scenario_id}:{notification['channel']}",
+            lane_event_record(
+                message_type="HANDOFF",
+                event_type=notification_type,
                 severity=outcome.severity,
-                title=f"Notification queued for {notification['channel']}",
+                title=f"{outcome.title} notification ready",
                 summary=notification["message"],
-                decision=outcome.decision,
-                artifacts=[outcome.report_path],
+                status="completed",
+                artifacts=[outcome.report_path, repo_relative(DOMAIN_EVENTS_PATH)],
+                extra={
+                    "lane": "demo",
+                    "scenario_id": outcome.scenario_id,
+                    "channel": notification["channel"],
+                },
             ),
         )
 
 
-def write_summary(outcomes: list[ScenarioOutcome], branch: str) -> None:
+def write_summary(outcomes: list[ScenarioOutcome], branch: str, blockers: list[str]) -> None:
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     SANDBOX_DIR.mkdir(parents=True, exist_ok=True)
 
     summary = {
         "generated_at": iso_now(),
         "branch": branch,
+        "blockers": blockers,
         "scenarios": [
             {
                 "id": outcome.scenario_id,
@@ -290,11 +319,53 @@ def write_summary(outcomes: list[ScenarioOutcome], branch: str) -> None:
     }
     write_json(REPORTS_DIR / "latest-run.json", summary)
 
+    domain_events: list[dict[str, Any]] = []
+    for outcome in outcomes:
+        domain_events.append(
+            domain_event_record(
+                event_type="agent.registered",
+                subject_kind="agent",
+                subject_id=outcome.scenario_id,
+                severity=outcome.severity,
+                title=f"{outcome.title} agent registered",
+                summary=f"Registered agent for {outcome.title}.",
+                artifacts=[outcome.trace_path],
+            )
+        )
+        domain_events.append(
+            domain_event_record(
+                event_type=f"decision.{outcome.decision.lower()}",
+                subject_kind="scenario",
+                subject_id=outcome.scenario_id,
+                severity=outcome.severity,
+                title=f"{outcome.title} decision",
+                summary=outcome.reason,
+                decision=outcome.decision,
+                status="completed",
+                artifacts=[outcome.report_path, outcome.trace_path],
+            )
+        )
+        for notification in outcome.notifications:
+            domain_events.append(
+                domain_event_record(
+                    event_type="human.approval_requested" if notification["channel"] == "human-approval-queue" else "notification.sent",
+                    subject_kind="notification",
+                    subject_id=f"{outcome.scenario_id}:{notification['channel']}",
+                    severity=outcome.severity,
+                    title=f"{outcome.title} notification",
+                    summary=notification["message"],
+                    decision=outcome.decision,
+                    artifacts=[outcome.report_path],
+                )
+            )
+    write_json(DOMAIN_EVENTS_PATH, domain_events)
+
     markdown_lines = [
         "# WAAL Sandbox Demo Summary",
         "",
         f"- Generated at: `{summary['generated_at']}`",
         f"- Branch: `{branch}`",
+        f"- Local blockers: `{'; '.join(blockers) if blockers else 'none'}`",
         "",
         "## Canonical Outcomes",
     ]
@@ -323,6 +394,7 @@ def write_summary(outcomes: list[ScenarioOutcome], branch: str) -> None:
         "generated_at": summary["generated_at"],
         "mode": "local-fallback",
         "gcp_ready": False,
+        "blockers": blockers,
         "notes": [
             "Deterministic local scenario runner is available immediately.",
             "GCP deployment is optional and can reuse the same artifacts and schema later.",
@@ -332,9 +404,21 @@ def write_summary(outcomes: list[ScenarioOutcome], branch: str) -> None:
     write_json(SANDBOX_DIR / "local-sandbox-report.json", sandbox_report)
 
 
-def run_once(emit_claim_event: bool) -> None:
+def gcloud_available() -> bool:
+    result = subprocess.run(
+        ["which", "gcloud"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    return result.returncode == 0
+
+
+def run_once(emit_claim_event: bool, finalize: bool) -> None:
     branch = git_branch()
     scenarios = load_scenarios()
+    blockers = [] if gcloud_available() else ["gcloud CLI unavailable on this machine; using local fallback"]
     if emit_claim_event:
         emit_claim(branch)
     emit_status(
@@ -343,46 +427,53 @@ def run_once(emit_claim_event: bool) -> None:
         percent_complete=25,
         active_scenarios=[scenario["id"] for scenario in scenarios],
         demo_readiness="warming_up",
+        blockers=blockers,
     )
 
     outcomes = [evaluate_scenario(scenario) for scenario in scenarios]
     for outcome in outcomes:
-        emit_scenario_events(outcome)
+        emit_handoff(outcome)
 
-    write_summary(outcomes, branch)
+    write_summary(outcomes, branch, blockers)
     emit_status(
         branch=branch,
         current_task="Demo scenarios generated and reports refreshed",
         percent_complete=100,
         active_scenarios=[outcome.scenario_id for outcome in outcomes],
         demo_readiness="ready",
+        blockers=blockers,
     )
-    append_jsonl(
-        EVENTS_PATH,
-        event_record(
-            event_type="DONE",
-            subject_kind="lane",
-            subject_id="computer-4-demo-validation",
-            severity="info",
-            title="Computer 4 demo lane ready",
-            summary="Deterministic scenario traces, reports, and status artifacts are ready for aggregation.",
-            status="completed",
-            artifacts=[
-                repo_relative(REPORTS_DIR / "summary.md"),
-                repo_relative(REPORTS_DIR / "latest-run.json"),
-                repo_relative(SANDBOX_DIR / "local-sandbox-report.json"),
-            ],
-            extra={"branch": branch},
-        ),
-    )
+    if finalize:
+        append_jsonl(
+            EVENTS_PATH,
+            lane_event_record(
+                message_type="DONE",
+                event_type="lane.message",
+                severity="info",
+                title="Computer 4 demo lane ready",
+                summary="Deterministic scenario traces, reports, and status artifacts are ready for aggregation.",
+                status="completed",
+                artifacts=[
+                    repo_relative(REPORTS_DIR / "summary.md"),
+                    repo_relative(REPORTS_DIR / "latest-run.json"),
+                    repo_relative(DOMAIN_EVENTS_PATH),
+                    repo_relative(SANDBOX_DIR / "local-sandbox-report.json"),
+                ],
+                extra={
+                    "lane": "demo",
+                    "branch": branch,
+                },
+            ),
+        )
 
 
 def watch_loop(until_epoch: float | None, interval: int, emit_claim_event: bool) -> None:
     first = True
     while True:
-        run_once(emit_claim_event=emit_claim_event and first)
+        reached_deadline = until_epoch is not None and time.time() >= until_epoch
+        run_once(emit_claim_event=emit_claim_event and first, finalize=reached_deadline)
         first = False
-        if until_epoch is not None and time.time() >= until_epoch:
+        if reached_deadline:
             break
         time.sleep(interval)
 
@@ -406,7 +497,7 @@ def main() -> None:
     if args.watch:
         watch_loop(args.until_epoch, args.interval, args.emit_claim)
         return
-    run_once(emit_claim_event=args.emit_claim)
+    run_once(emit_claim_event=args.emit_claim, finalize=True)
 
 
 if __name__ == "__main__":

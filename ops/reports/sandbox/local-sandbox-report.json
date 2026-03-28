@@ -1,7 +1,10 @@
 {
-  "generated_at": "2026-03-28T12:54:09-07:00",
+  "generated_at": "2026-03-28T12:58:21-07:00",
   "mode": "local-fallback",
   "gcp_ready": false,
+  "blockers": [
+    "gcloud CLI unavailable on this machine; using local fallback"
+  ],
   "notes": [
     "Deterministic local scenario runner is available immediately.",
     "GCP deployment is optional and can reuse the same artifacts and schema later.",

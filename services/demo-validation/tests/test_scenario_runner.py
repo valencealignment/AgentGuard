@@ -25,14 +25,28 @@ class ScenarioRunnerTests(unittest.TestCase):
         self.assertIn("ALLOW", decisions)
         self.assertIn("BLOCK", decisions)
 
+    def test_lane_event_record_uses_contract_message_types(self) -> None:
+        payload = scenario_runner.lane_event_record(
+            message_type="HANDOFF",
+            event_type="decision.block",
+            severity="high",
+            title="Scenario handoff",
+            summary="Blocked risky package path.",
+        )
+        self.assertEqual(payload["message_type"], "HANDOFF")
+        self.assertEqual(payload["type"], "decision.block")
+        self.assertEqual(payload["source"], "demo")
+
     def test_write_summary_marks_demo_ready(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             repo_root = Path(temp_dir)
             original_reports_dir = scenario_runner.REPORTS_DIR
             original_sandbox_dir = scenario_runner.SANDBOX_DIR
+            original_domain_events_path = scenario_runner.DOMAIN_EVENTS_PATH
             try:
                 scenario_runner.REPORTS_DIR = repo_root / "ops" / "reports" / "demo"
                 scenario_runner.SANDBOX_DIR = repo_root / "ops" / "reports" / "sandbox"
+                scenario_runner.DOMAIN_EVENTS_PATH = scenario_runner.REPORTS_DIR / "domain-events.json"
                 outcomes = [
                     scenario_runner.ScenarioOutcome(
                         scenario_id="scenario-a",
@@ -57,14 +71,17 @@ class ScenarioRunnerTests(unittest.TestCase):
                         notifications=[],
                     ),
                 ]
-                scenario_runner.write_summary(outcomes, "codex/demo-validation")
+                scenario_runner.write_summary(outcomes, "codex/demo-validation", ["gcloud CLI unavailable on this machine; using local fallback"])
                 payload = json.loads((scenario_runner.REPORTS_DIR / "latest-run.json").read_text())
                 self.assertTrue(payload["demo_ready"])
                 self.assertEqual(payload["decision_counts"]["ALLOW"], 1)
                 self.assertEqual(payload["decision_counts"]["BLOCK"], 1)
+                domain_events = json.loads((scenario_runner.DOMAIN_EVENTS_PATH).read_text())
+                self.assertGreaterEqual(len(domain_events), 4)
             finally:
                 scenario_runner.REPORTS_DIR = original_reports_dir
                 scenario_runner.SANDBOX_DIR = original_sandbox_dir
+                scenario_runner.DOMAIN_EVENTS_PATH = original_domain_events_path
 
 
 if __name__ == "__main__":

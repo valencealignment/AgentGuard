@@ -1,6 +1,9 @@
 {
-  "generated_at": "2026-03-28T12:54:09-07:00",
+  "generated_at": "2026-03-28T12:58:21-07:00",
   "branch": "codex/demo-validation",
+  "blockers": [
+    "gcloud CLI unavailable on this machine; using local fallback"
+  ],
   "scenarios": [
     {
       "id": "scenario-a-clean-allow",

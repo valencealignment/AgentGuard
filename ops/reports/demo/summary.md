@@ -1,7 +1,8 @@
 # WAAL Sandbox Demo Summary
 
-- Generated at: `2026-03-28T12:54:09-07:00`
+- Generated at: `2026-03-28T12:58:21-07:00`
 - Branch: `codex/demo-validation`
+- Local blockers: `gcloud CLI unavailable on this machine; using local fallback`
 
 ## Canonical Outcomes
 - `scenario-a-clean-allow`: `ALLOW`
