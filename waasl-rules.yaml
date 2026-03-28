@@ -135,6 +135,7 @@ rules:
     - injects_path
     - reads_browser_cookies
     - modifies_shell_rc
+    - clears_shell_history
     warn_if:
     - reads_ssh_keys
     - reads_env_vars
