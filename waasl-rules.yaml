@@ -97,6 +97,11 @@ rules:
     - 0.3.0
     reason: MERCK learned exact block
     severity: high
+  - name: vector-db-router
+    versions:
+    - 0.1.4
+    reason: MERCK learned exact block
+    severity: high
   reputation_thresholds:
     block_below_score: 10
     warn_below_score: 30
