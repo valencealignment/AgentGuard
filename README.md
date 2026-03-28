@@ -13,6 +13,8 @@ Important branch note:
 - `main` is the public collaboration branch and contains ongoing dashboard work.
 - `codex/public-demo-integration` is the off-`main` integration branch that
   keeps the Next.js dashboard while wiring it to the merged WAAL artifact set.
+- `codex/public-demo-integration` is explicitly a preview/integration branch,
+  not the final source-of-truth implementation branch.
 - `codex/mail-core` is the canonical integrated hackathon snapshot that ties the
   four lanes together and is the safest branch to use if you want to reproduce
   the exact end-of-run WAAL demo described below.
@@ -97,6 +99,13 @@ That branch keeps the public dashboard app, but the `/api/*` routes are fed by
 the integrated WAAL outputs under `ops/` rather than the original mock-only
 feeds.
 
+Important:
+
+- `codex/public-demo-integration` is the deployable off-branch preview.
+- It is useful for showing the `main` dashboard with real merged WAAL data.
+- It is not the final implementation source of truth.
+- `codex/mail-core` remains the canonical final integrated implementation.
+
 ## Demo Narrative
 
 The intended judge-facing flow is:
@@ -123,5 +132,7 @@ The most important generated outputs are:
 - The local API path is the authoritative way to run the full integrated wall.
 - The off-`main` integration branch is the deployable bridge between the public
   dashboard code and the full WAAL artifact pipeline.
+- The off-`main` deployment should be described as an integration preview, not
+  as the final implementation branch.
 - If you only need the public artifact for judges, use the Vercel link.
 - If you need the reproducible local demo, use `codex/mail-core`.

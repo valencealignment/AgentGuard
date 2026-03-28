@@ -18,6 +18,9 @@ work, not the guaranteed end-of-run snapshot.
 If you want the deployable dashboard that stays off `main` while consuming the
 full integrated WAAL artifact set, use `codex/public-demo-integration`.
 
+That branch is an off-branch integration preview only. It is not the final
+source-of-truth implementation branch.
+
 ## Fastest Demo Path
 
 On any machine with Node and Python installed:
@@ -63,6 +66,13 @@ real WAAL artifacts from:
 - `ops/reports/demo/**`
 - `ops/watchboard-state.json`
 - `merck_results.jsonl`
+
+When describing it, use this framing:
+
+- off-`main` integration preview
+- deployable demo bridge
+- not the final implementation branch
+- canonical final implementation remains `codex/mail-core`
 
 ## Expected Demo Outcomes
 

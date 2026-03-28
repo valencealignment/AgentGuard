@@ -26,10 +26,13 @@ export default function TopBar({ score }: TopBarProps) {
 
   return (
     <header className="flex h-12 shrink-0 items-center justify-between border-b border-surface-2 bg-surface-1 px-4">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         <div className="h-2 w-2 rounded-full bg-verdict-allow animate-pulse-dot" />
         <span className="text-sm font-bold tracking-wide text-foreground">
           WAAS Wall
+        </span>
+        <span className="rounded-full border border-verdict-escalate/30 bg-verdict-escalate/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-verdict-escalate">
+          Off-Branch Preview
         </span>
       </div>
 
