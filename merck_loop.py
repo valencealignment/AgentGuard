@@ -76,6 +76,7 @@ def default_rules_document() -> dict[str, Any]:
             "domain_patterns": {"block_if": [], "warn_if": []},
             "regex_patterns": {"block_if": [], "warn_if": []},
             "package_name_patterns": {"block_if": [], "warn_if": []},
+            "host_suffix_patterns": {"block_if": []},
         },
     }
 
@@ -420,6 +421,8 @@ def mutation_exists(sequence: list[Any], item: Any) -> bool:
 
 def add_blocklist_mutation(rules_document: dict[str, Any], sample: dict[str, Any]) -> Mutation | None:
     if sample["action_type"] != "package_install":
+        return None
+    if sample["expected_verdict"] != "block":
         return None
     package_name, version = parse_package_target(sample["target"])
     if not version:
