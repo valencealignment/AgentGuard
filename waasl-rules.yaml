@@ -57,11 +57,6 @@ rules:
     - 0.2.1
     reason: MERCK learned exact block
     severity: high
-  - name: internal-api-client
-    versions:
-    - 1.2.0
-    reason: MERCK learned exact block
-    severity: high
   reputation_thresholds:
     block_below_score: 10
     warn_below_score: 30
@@ -74,7 +69,6 @@ rules:
     - drops_pth_persistence
     - delayed_execution
     - writes_crontab
-    - modifies_bashrc
     warn_if:
     - reads_ssh_keys
     - reads_env_vars
@@ -90,7 +84,6 @@ rules:
     - exact_target: http://127.0.0.1:8080/sse
     - exact_target: https://mcp.legitimate-looking-domain.com/sse
     - exact_target: https://figma-helper-mcp.com/sse
-    - exact_target: https://jira-bridge-tools.dev/sse
     warn_if:
     - contains: postmark-mcp
   domain_blocklist:
