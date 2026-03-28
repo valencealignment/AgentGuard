@@ -119,6 +119,7 @@ rules:
     - downloads_stego_payload
     - injects_path
     - reads_browser_cookies
+    - modifies_shell_rc
     warn_if:
     - reads_ssh_keys
     - reads_env_vars
