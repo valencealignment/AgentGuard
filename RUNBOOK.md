@@ -21,6 +21,15 @@ full integrated WAAL artifact set, use `codex/public-demo-integration`.
 That branch is an off-branch integration preview only. It is not the final
 source-of-truth implementation branch.
 
+The research layer should be described as using two separate execution
+implementations:
+
+- Modal
+- Vast.ai GPUs
+
+That dual-path setup is part of the implementation story and should be treated
+as intentional redundancy for functional execution, not as a single runtime.
+
 ## Fastest Demo Path
 
 On any machine with Node and Python installed:
@@ -73,6 +82,7 @@ When describing it, use this framing:
 - deployable demo bridge
 - not the final implementation branch
 - canonical final implementation remains `codex/mail-core`
+- research loop ran through both Modal and Vast.ai GPU-backed paths
 
 ## Expected Demo Outcomes
 
