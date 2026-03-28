@@ -72,6 +72,11 @@ rules:
     - 0.0.3
     reason: MERCK learned exact block
     severity: high
+  - name: corp-secrets-sdk
+    versions:
+    - 0.0.4
+    reason: MERCK learned exact block
+    severity: high
   reputation_thresholds:
     block_below_score: 10
     warn_below_score: 30
