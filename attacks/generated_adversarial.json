@@ -139,5 +139,44 @@
     "action_type": "package_install",
     "target": "internal-api-client==1.2.0",
     "expected_verdict": "block"
+  },
+  {
+    "id": "pyc-hidden-loader",
+    "action_type": "package_install",
+    "target": "compiled-runtime-helper==0.5.0",
+    "expected_verdict": "block",
+    "signals": [
+      "hides_in_pyc"
+    ]
+  },
+  {
+    "id": "stego-image-payload",
+    "action_type": "package_install",
+    "target": "theme-assets-plus==3.2.0",
+    "expected_verdict": "block",
+    "signals": [
+      "downloads_stego_payload"
+    ]
+  },
+  {
+    "id": "combo-flask-admin-tools",
+    "action_type": "package_install",
+    "target": "flask-admin-tools==2.0.0",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "slop-openai-session-manager",
+    "action_type": "package_install",
+    "target": "openai-session-manager==0.0.3",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "signal-path-injector",
+    "action_type": "package_install",
+    "target": "path-bootstrapper==2.2.0",
+    "expected_verdict": "block",
+    "signals": [
+      "injects_path"
+    ]
   }
 ]
