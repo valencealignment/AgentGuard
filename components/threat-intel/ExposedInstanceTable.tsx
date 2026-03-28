@@ -14,9 +14,9 @@ export function ExposedInstanceTable({
   const sorted = [...instances].sort((a, b) => b.risk_score - a.risk_score);
 
   return (
-    <div className="flex flex-col overflow-hidden">
+    <div className="flex flex-col overflow-y-auto">
       <table className="w-full text-xs">
-        <thead>
+        <thead className="sticky top-0 z-10 bg-surface-0">
           <tr className="border-b border-surface-2 text-left text-foreground/50">
             <th className="px-3 py-2 font-medium">INSTANCE</th>
             <th className="px-3 py-2 font-medium">CLOUD</th>

@@ -10,8 +10,8 @@ export function PackageLookup() {
   const [result, setResult] = useState<PackageLookupResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  async function handleLookup() {
-    const pkg = query.trim().toLowerCase();
+  async function handleLookup(override?: string) {
+    const pkg = (override ?? query).trim().toLowerCase();
     if (!pkg) return;
 
     setLoading(true);
@@ -126,7 +126,7 @@ export function PackageLookup() {
                     >
                       CVSS {cve.cvss.toFixed(1)}
                     </span>
-                    <span className="text-foreground/50">{cve.summary}</span>
+                    <span className="text-foreground/50 truncate">{cve.summary}</span>
                   </div>
                 ))}
               </div>
@@ -148,11 +148,11 @@ export function PackageLookup() {
         <div className="flex flex-col items-center gap-2 py-8 text-foreground/30">
           <p className="text-sm">Search for any package to see its risk profile</p>
           <p className="text-xs">
-            Try: <button className="text-accent-blue hover:underline" onClick={() => { setQuery("litellm"); }}>litellm</button>
+            Try: <button className="text-accent-blue hover:underline" onClick={() => { setQuery("litellm"); handleLookup("litellm"); }}>litellm</button>
             {" · "}
-            <button className="text-accent-blue hover:underline" onClick={() => { setQuery("httpx"); }}>httpx</button>
+            <button className="text-accent-blue hover:underline" onClick={() => { setQuery("httpx"); handleLookup("httpx"); }}>httpx</button>
             {" · "}
-            <button className="text-accent-blue hover:underline" onClick={() => { setQuery("numpy"); }}>numpy</button>
+            <button className="text-accent-blue hover:underline" onClick={() => { setQuery("numpy"); handleLookup("numpy"); }}>numpy</button>
           </p>
         </div>
       )}

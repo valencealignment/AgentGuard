@@ -12,9 +12,11 @@ export function EscalationPanel({ report }: EscalationPanelProps) {
   const [reviewState, setReviewState] = useState<
     "pending" | "approving" | "denying" | "approved" | "denied"
   >(report.status === "pending" ? "pending" : report.status);
+  const [reviewError, setReviewError] = useState<string | null>(null);
 
   async function handleReview(action: "approve" | "deny") {
     setReviewState(action === "approve" ? "approving" : "denying");
+    setReviewError(null);
     try {
       await fetch(`/api/escalations/${report.id}/review`, {
         method: "POST",
@@ -24,6 +26,7 @@ export function EscalationPanel({ report }: EscalationPanelProps) {
       setReviewState(action === "approve" ? "approved" : "denied");
     } catch {
       setReviewState("pending");
+      setReviewError(`Failed to ${action} — check connection and retry`);
     }
   }
 
@@ -106,6 +109,11 @@ export function EscalationPanel({ report }: EscalationPanelProps) {
           <p key={i}>{para}</p>
         ))}
       </div>
+
+      {/* Review error */}
+      {reviewError && (
+        <p className="text-xs text-verdict-block">{reviewError}</p>
+      )}
 
       {/* Action buttons */}
       <div className="flex gap-2 pt-2">

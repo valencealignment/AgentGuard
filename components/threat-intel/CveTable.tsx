@@ -60,7 +60,7 @@ export function CveTable({ cveIds, cveDetails }: CveTableProps) {
                 {(cve.epss * 100).toFixed(0)}%
               </span>
             </td>
-            <td className="px-2 py-1.5 text-foreground/70">{cve.summary}</td>
+            <td className="px-2 py-1.5 text-foreground/70 max-w-[300px] truncate">{cve.summary}</td>
           </tr>
         ))}
       </tbody>
