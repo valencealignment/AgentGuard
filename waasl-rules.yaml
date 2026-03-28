@@ -122,6 +122,11 @@ rules:
     - 0.5.0
     reason: MERCK learned exact block
     severity: high
+  - name: openai-agent-utils
+    versions:
+    - 0.7.0
+    reason: MERCK learned exact block
+    severity: high
   reputation_thresholds:
     block_below_score: 10
     warn_below_score: 30
