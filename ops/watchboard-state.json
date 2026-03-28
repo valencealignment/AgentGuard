@@ -1,0 +1,209 @@
+{
+  "decisions": [
+    {
+      "artifacts": [
+        "ops/reports/demo/scenario-a-clean-allow/report.json",
+        "ops/reports/demo/scenario-a-clean-allow/trace.json",
+        "ops/reports/demo/domain-events.json"
+      ],
+      "decision": "ALLOW",
+      "id": "0c062ad5-deb2-490d-9883-b9ee67a1a206",
+      "lane": "demo",
+      "message_type": "HANDOFF",
+      "scenario_id": "scenario-a-clean-allow",
+      "severity": "info",
+      "source": "demo",
+      "status": "completed",
+      "summary": "Trusted agent performing a benign read-only action inside the workspace.",
+      "title": "Clean allow path ready for aggregation",
+      "ts": "2026-03-28T12:58:21-07:00",
+      "type": "decision.allow"
+    },
+    {
+      "artifacts": [
+        "ops/reports/demo/scenario-b-litellm-risk/report.json",
+        "ops/reports/demo/scenario-b-litellm-risk/trace.json",
+        "ops/reports/demo/domain-events.json"
+      ],
+      "decision": "BLOCK",
+      "id": "f6e5a2e7-92b3-4f9b-83b4-134ff113b6f2",
+      "lane": "demo",
+      "message_type": "HANDOFF",
+      "scenario_id": "scenario-b-litellm-risk",
+      "severity": "high",
+      "source": "demo",
+      "status": "completed",
+      "summary": "Flagged dependency version and suspicious install-time signals require immediate blocking.",
+      "title": "LiteLLM-centered risky path ready for aggregation",
+      "ts": "2026-03-28T12:58:21-07:00",
+      "type": "decision.block"
+    },
+    {
+      "artifacts": [
+        "ops/reports/demo/scenario-c-poor-reputation-external-agent/report.json",
+        "ops/reports/demo/scenario-c-poor-reputation-external-agent/trace.json",
+        "ops/reports/demo/domain-events.json"
+      ],
+      "decision": "BLOCK",
+      "id": "a3a88774-4082-49a9-97ba-31989f6f35ee",
+      "lane": "demo",
+      "message_type": "HANDOFF",
+      "scenario_id": "scenario-c-poor-reputation-external-agent",
+      "severity": "critical",
+      "source": "demo",
+      "status": "completed",
+      "summary": "External low-reputation agent lacks trusted provenance and requested unsafe side effects.",
+      "title": "Poor-reputation external agent interaction ready for aggregation",
+      "ts": "2026-03-28T12:58:21-07:00",
+      "type": "decision.block"
+    },
+    {
+      "artifacts": [
+        "ops/reports/demo/scenario-d-remediation-follow-through/report.json",
+        "ops/reports/demo/scenario-d-remediation-follow-through/trace.json",
+        "ops/reports/demo/domain-events.json"
+      ],
+      "decision": "ALLOW",
+      "id": "3c12fecb-9d63-427f-aa70-cb102c91b214",
+      "lane": "demo",
+      "message_type": "HANDOFF",
+      "scenario_id": "scenario-d-remediation-follow-through",
+      "severity": "warning",
+      "source": "demo",
+      "status": "completed",
+      "summary": "Generating remediation guidance is safe and needed after the blocked scenario.",
+      "title": "Remediation follow-through support ready for aggregation",
+      "ts": "2026-03-28T12:58:21-07:00",
+      "type": "decision.allow"
+    }
+  ],
+  "demo": [
+    {
+      "path": "ops/reports/demo/summary.md",
+      "updated_at": "2026-03-28T19:58:21Z"
+    },
+    {
+      "path": "ops/reports/demo/domain-events.json",
+      "updated_at": "2026-03-28T19:58:21Z"
+    },
+    {
+      "path": "ops/reports/demo/latest-run.json",
+      "updated_at": "2026-03-28T19:58:21Z"
+    },
+    {
+      "path": "ops/reports/demo/scenario-d-remediation-follow-through/trace.json",
+      "updated_at": "2026-03-28T19:58:21Z"
+    },
+    {
+      "path": "ops/reports/demo/scenario-d-remediation-follow-through/report.json",
+      "updated_at": "2026-03-28T19:58:21Z"
+    },
+    {
+      "path": "ops/reports/demo/scenario-c-poor-reputation-external-agent/trace.json",
+      "updated_at": "2026-03-28T19:58:21Z"
+    },
+    {
+      "path": "ops/reports/demo/scenario-c-poor-reputation-external-agent/report.json",
+      "updated_at": "2026-03-28T19:58:21Z"
+    },
+    {
+      "path": "ops/reports/demo/scenario-b-litellm-risk/trace.json",
+      "updated_at": "2026-03-28T19:58:21Z"
+    },
+    {
+      "path": "ops/reports/demo/scenario-b-litellm-risk/report.json",
+      "updated_at": "2026-03-28T19:58:21Z"
+    },
+    {
+      "path": "ops/reports/demo/scenario-a-clean-allow/trace.json",
+      "updated_at": "2026-03-28T19:58:21Z"
+    }
+  ],
+  "generated_at": "2026-03-28T20:07:34Z",
+  "lane_cards": [
+    {
+      "blockers": [],
+      "branch": "codex/mail-core",
+      "current_task": "api, hooks, and aggregate loop ready",
+      "demo_readiness": "substrate-ready",
+      "heartbeat_age_seconds": 733,
+      "lane": "integration",
+      "last_heartbeat": "2026-03-28T19:55:21Z",
+      "percent_complete": 55,
+      "stale": true
+    },
+    {
+      "blockers": [],
+      "branch": "codex/waas-wall-ui",
+      "current_task": "watchboard UX shell, hierarchy, and live data wiring",
+      "demo_readiness": "ux-pass-live",
+      "heartbeat_age_seconds": 0,
+      "lane": "ui",
+      "last_heartbeat": "2026-03-28T20:07:34Z",
+      "percent_complete": 42,
+      "stale": false
+    },
+    {
+      "blockers": [],
+      "branch": "",
+      "current_task": "unknown",
+      "demo_readiness": "unknown",
+      "heartbeat_age_seconds": null,
+      "lane": "security",
+      "last_heartbeat": null,
+      "percent_complete": 0,
+      "stale": true
+    },
+    {
+      "blockers": [
+        "gcloud CLI unavailable on this machine; using local fallback"
+      ],
+      "branch": "codex/demo-validation",
+      "current_task": "Demo scenarios generated and reports refreshed",
+      "demo_readiness": "ready",
+      "heartbeat_age_seconds": 553,
+      "lane": "demo",
+      "last_heartbeat": "2026-03-28T12:58:21-07:00",
+      "percent_complete": 100,
+      "stale": true
+    }
+  ],
+  "notifications": [
+    {
+      "artifacts": [
+        "ops/reports/demo/scenario-c-poor-reputation-external-agent/report.json",
+        "ops/reports/demo/domain-events.json"
+      ],
+      "channel": "security-alerts",
+      "id": "9efc24e6-6450-44c9-8001-662b7cd5789b",
+      "lane": "demo",
+      "message_type": "HANDOFF",
+      "scenario_id": "scenario-c-poor-reputation-external-agent",
+      "severity": "critical",
+      "source": "demo",
+      "status": "completed",
+      "summary": "Blocked poor-reputation external agent before side effects executed.",
+      "title": "Poor-reputation external agent interaction notification ready",
+      "ts": "2026-03-28T12:58:21-07:00",
+      "type": "notification.sent"
+    }
+  ],
+  "product": {
+    "name": "WAAL",
+    "surface": "WAAS Wall"
+  },
+  "research": [
+    {
+      "path": "ops/reports/integration/modal_research_summary.md",
+      "updated_at": "2026-03-28T20:04:56Z"
+    },
+    {
+      "path": "ops/reports/integration/modal_research_summary.json",
+      "updated_at": "2026-03-28T20:04:56Z"
+    },
+    {
+      "path": "ops/reports/integration/bootstrap.md",
+      "updated_at": "2026-03-28T20:04:56Z"
+    }
+  ]
+}

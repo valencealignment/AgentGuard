@@ -1,0 +1,54 @@
+{
+  "decision_count": 0,
+  "event_count": 4,
+  "generated_at": "2026-03-28T19:55:30Z",
+  "latest_decisions": [],
+  "latest_events": [
+    {
+      "branch": "codex/mail-core",
+      "current_task": "bootstrap shared substrate",
+      "id": "14e8a32ea00a229d",
+      "message_type": "CLAIM",
+      "source": "integration",
+      "status": "open",
+      "summary": "Starting task: bootstrap shared substrate",
+      "title": "integration claimed lane",
+      "ts": "2026-03-28T19:54:25Z",
+      "type": "claim.created"
+    },
+    {
+      "branch": "codex/mail-core",
+      "current_task": "build shared contracts, hooks, api, aggregation",
+      "id": "4e42fa22ea58160d",
+      "message_type": "STATUS",
+      "source": "integration",
+      "status": "open",
+      "summary": "Scaffolded shared substrate for WAAL",
+      "title": "integration bootstrap",
+      "ts": "2026-03-28T19:54:25Z",
+      "type": "lane.status"
+    },
+    {
+      "id": "ff7722874883e815",
+      "message_type": "STATUS",
+      "source": "integration",
+      "status": "ok",
+      "summary": "Heartbeat for integration monitor loop",
+      "title": "integration heartbeat",
+      "ts": "2026-03-28T19:55:21Z",
+      "type": "heartbeat"
+    },
+    {
+      "branch": "codex/mail-core",
+      "current_task": "api, hooks, and aggregate loop ready",
+      "id": "a3c9d24c5c69665f",
+      "message_type": "STATUS",
+      "source": "integration",
+      "status": "open",
+      "summary": "Contracts, API, hooks, and aggregate watchboard state are available",
+      "title": "integration ready for lane consumption",
+      "ts": "2026-03-28T19:55:21Z",
+      "type": "lane.status"
+    }
+  ]
+}
