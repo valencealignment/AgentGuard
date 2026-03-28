@@ -26,7 +26,8 @@ rules:
     block_if: []
     warn_if: []
   mcp_rules:
-    block_if: []
+    block_if:
+    - exact_target: npm:postmark-mcp@1.0.0
     warn_if: []
   domain_blocklist: []
   domain_patterns:
