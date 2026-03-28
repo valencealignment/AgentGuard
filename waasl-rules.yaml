@@ -92,6 +92,11 @@ rules:
     - 0.3.2
     reason: MERCK learned exact block
     severity: high
+  - name: fastapi-auth-kit
+    versions:
+    - 0.3.0
+    reason: MERCK learned exact block
+    severity: high
   reputation_thresholds:
     block_below_score: 10
     warn_below_score: 30
