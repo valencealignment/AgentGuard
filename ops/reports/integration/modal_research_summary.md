@@ -1,8 +1,8 @@
 # Modal Research Summary
 
-Generated at `2026-03-28T22:18:41Z`
+Generated at `2026-03-28T22:30:41Z`
 
-- Events observed: `59`
+- Events observed: `68`
 - Decisions observed: `13`
 
 ## Latest Decisions

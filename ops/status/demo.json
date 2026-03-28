@@ -7,9 +7,9 @@
   ],
   "blockers": [],
   "branch": "codex/mail-core",
-  "current_task": "Demo scenarios generated and reports refreshed",
-  "demo_readiness": "ready",
+  "current_task": "demo lane finalized; traces captured",
+  "demo_readiness": "complete",
   "lane": "demo",
-  "last_heartbeat": "2026-03-28T22:18:57Z",
+  "last_heartbeat": "2026-03-28T22:32:04Z",
   "percent_complete": 100
 }

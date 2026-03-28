@@ -1,6 +1,6 @@
 # WAAL Kanban
 
-Generated at `2026-03-28T22:19:30Z`
+Generated at `2026-03-28T22:32:12Z`
 
 ## Backlog
 - none
@@ -12,7 +12,7 @@ Generated at `2026-03-28T22:19:30Z`
 - none
 
 ## Done
-- [integration] full stack verified and ready (100%)
-- [ui] watchboard integrated and serving through local API (100%)
-- [security] security decisions, research, and advisories refreshed (100%)
-- [demo] Demo scenarios generated and reports refreshed (100%)
+- [integration] autonomous run complete; final snapshot captured (100%)
+- [ui] watchboard integrated and finalized (100%)
+- [security] security lane finalized; artifacts captured (100%)
+- [demo] demo lane finalized; traces captured (100%)
