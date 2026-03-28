@@ -30,21 +30,27 @@ rules:
     block_if:
     - exact_target: npm:postmark-mcp@1.0.0
     - exact_target: http://10.0.0.12:9000/sse
+    - exact_target: http://172.16.4.20:7001/sse
+    - exact_target: http://postmark-mcp.internal/sse
     warn_if:
     - contains: postmark-mcp
   domain_blocklist:
   - collect-data.evil.com
   domain_patterns:
-    block_if: []
+    block_if:
+    - openai.com.evil.example
     warn_if:
     - openai-platform.com
+    - anthropic-api.net
   regex_patterns:
     block_if:
     - npm:postmark\-mcp@1\.0\.0
     warn_if:
     - litellm==1\.82\.9
+    - litellm==1\.83\.0
   package_name_patterns:
-    block_if: []
+    block_if:
+    - requests-plus
     warn_if:
     - ai-helper-toolkit
   host_suffix_patterns:

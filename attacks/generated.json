@@ -61,5 +61,41 @@
     "action_type": "package_install",
     "target": "ai-helper-toolkit-pro==0.0.4",
     "expected_verdict": "warn"
+  },
+  {
+    "id": "requests-plus-typo",
+    "action_type": "package_install",
+    "target": "requests-plus==2.31.0",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "litellm-future-minor",
+    "action_type": "package_install",
+    "target": "litellm==1.83.0",
+    "expected_verdict": "warn"
+  },
+  {
+    "id": "private-http-mcp-2",
+    "action_type": "mcp_call",
+    "target": "http://172.16.4.20:7001/sse",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "postmark-private-http",
+    "action_type": "mcp_call",
+    "target": "http://postmark-mcp.internal/sse",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "anthropic-login-lookalike",
+    "action_type": "api_request",
+    "target": "https://console.anthropic-api.net/v1/messages",
+    "expected_verdict": "warn"
+  },
+  {
+    "id": "shadow-openai-domain",
+    "action_type": "api_request",
+    "target": "https://api.openai.com.evil.example/v1/chat/completions",
+    "expected_verdict": "block"
   }
 ]
