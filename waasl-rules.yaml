@@ -23,7 +23,8 @@ rules:
   typosquatting:
     enabled: true
   behavioral_signals:
-    block_if: []
+    block_if:
+    - opens_network_socket_during_install
     warn_if: []
   mcp_rules:
     block_if:
