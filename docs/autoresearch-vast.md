@@ -9,19 +9,11 @@
 
 ## Current State
 
-- Refreshed: 2026-03-28T21:53:29.371453+00:00
+- Refreshed: 2026-03-28T21:54:34.558893+00:00
 - Last result: train.py running
 - Recovery actions: training_running
 
 ```text
-step 05483 (99.4%) | loss: 2.836731 | lrm: 0.01 | dt: 326ms | tok/sec: 402,489 | mfu: 4.9% | epoch: 2 | remaining: 11s    
-step 05484 (99.4%) | loss: 2.847727 | lrm: 0.01 | dt: 326ms | tok/sec: 402,297 | mfu: 4.9% | epoch: 2 | remaining: 11s    
-step 05485 (99.4%) | loss: 2.856913 | lrm: 0.01 | dt: 326ms | tok/sec: 402,383 | mfu: 4.9% | epoch: 2 | remaining: 10s    
-step 05486 (99.4%) | loss: 2.861058 | lrm: 0.01 | dt: 326ms | tok/sec: 402,127 | mfu: 4.9% | epoch: 2 | remaining: 10s    
-step 05487 (99.5%) | loss: 2.849568 | lrm: 0.01 | dt: 326ms | tok/sec: 402,311 | mfu: 4.9% | epoch: 2 | remaining: 10s    
-step 05488 (99.5%) | loss: 2.855222 | lrm: 0.01 | dt: 326ms | tok/sec: 402,214 | mfu: 4.9% | epoch: 2 | remaining: 9s    
-step 05489 (99.5%) | loss: 2.858007 | lrm: 0.01 | dt: 326ms | tok/sec: 402,342 | mfu: 4.9% | epoch: 2 | remaining: 9s    
-step 05490 (99.5%) | loss: 2.854570 | lrm: 0.01 | dt: 326ms | tok/sec: 402,171 | mfu: 4.9% | epoch: 2 | remaining: 9s    
 step 05491 (99.5%) | loss: 2.875691 | lrm: 0.01 | dt: 326ms | tok/sec: 402,438 | mfu: 4.9% | epoch: 2 | remaining: 8s    
 step 05492 (99.5%) | loss: 2.877056 | lrm: 0.01 | dt: 326ms | tok/sec: 402,242 | mfu: 4.9% | epoch: 2 | remaining: 8s    
 step 05493 (99.6%) | loss: 2.874083 | lrm: 0.01 | dt: 326ms | tok/sec: 402,327 | mfu: 4.9% | epoch: 2 | remaining: 8s    
@@ -48,10 +40,18 @@ step 05513 (99.9%) | loss: 2.891495 | lrm: 0.00 | dt: 326ms | tok/sec: 402,444 |
 step 05514 (99.9%) | loss: 2.873685 | lrm: 0.00 | dt: 326ms | tok/sec: 402,387 | mfu: 4.9% | epoch: 2 | remaining: 1s    
 step 05515 (100.0%) | loss: 2.896408 | lrm: 0.00 | dt: 327ms | tok/sec: 400,647 | mfu: 4.9% | epoch: 2 | remaining: 0s    
 step 05516 (100.0%) | loss: 2.894287 | lrm: 0.00 | dt: 326ms | tok/sec: 402,284 | mfu: 4.9% | epoch: 2 | remaining: 0s    
-step 05517 (100.0%) | loss: 2.893818 | lrm: 0.00 | dt: 326ms | tok/sec: 402,473 | mfu: 4.9% | epoch: 2 | remaining: 0s    ===TRAIN===
-  15806 bash -lc /root/.local/bin/uv run train.py > baseline.log 2>&1
-  15811 /root/.local/bin/uv run train.py
-  15814 /root/autoresearch/.venv/bin/python3 train.py
+step 05517 (100.0%) | loss: 2.893818 | lrm: 0.00 | dt: 326ms | tok/sec: 402,473 | mfu: 4.9% | epoch: 2 | remaining: 0s    
+---
+val_bpb:          1.027379
+training_seconds: 1800.3
+total_seconds:    1836.1
+peak_vram_mb:     4390.3
+mfu_percent:      4.88
+total_tokens_M:   723.3
+num_steps:        5518
+num_params_M:     26.3
+depth:            6
+===TRAIN===
 ===RESULTS===
 commit	val_bpb	memory_gb	status	description
 ```
