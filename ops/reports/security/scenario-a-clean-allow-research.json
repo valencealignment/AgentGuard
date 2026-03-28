@@ -1,0 +1,30 @@
+{
+  "generated_at": "2026-03-28T22:15:31.518Z",
+  "scenario_id": "scenario-a-clean-allow",
+  "scenario_title": "Clean allow path",
+  "evaluation": {
+    "scenario_id": "scenario-a-clean-allow",
+    "title": "Clean allow path",
+    "severity": "info",
+    "summary": "A trusted internal agent requests a safe read-only action inside the workspace.",
+    "verdict": "ALLOW",
+    "reason": "Trusted read-only workspace action stays inside the approved boundary.",
+    "risk_score": 0,
+    "confidence": 0.97,
+    "explanation": "Trusted read-only workspace action stays inside the approved boundary.",
+    "evidence": [
+      "workspace_scoped_target"
+    ],
+    "signals": [],
+    "package": {
+      "name": "docs/usage.md",
+      "version": ""
+    },
+    "reputation_delta": 4
+  },
+  "summary": "Trusted read-only workspace action stays inside the approved boundary. Evidence: workspace_scoped_target.",
+  "remediation": [
+    "Hold the action behind approval until the evidence trail is reviewed.",
+    "Prefer a safe pinned dependency or read-only fallback while the risky path is investigated."
+  ]
+}

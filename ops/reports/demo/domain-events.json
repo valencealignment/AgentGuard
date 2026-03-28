@@ -1,0 +1,198 @@
+[
+  {
+    "id": "b1a23ce7-9c59-4729-b7eb-c9a5b6d4b0de",
+    "ts": "2026-03-28T15:15:41-07:00",
+    "source": "demo-validation",
+    "type": "agent.registered",
+    "subject_kind": "agent",
+    "subject_id": "scenario-a-clean-allow",
+    "severity": "info",
+    "decision": null,
+    "title": "Clean allow path agent registered",
+    "summary": "Registered agent for Clean allow path.",
+    "status": "emitted",
+    "artifacts": [
+      "ops/reports/demo/scenario-a-clean-allow/trace.json"
+    ]
+  },
+  {
+    "id": "3f460610-ea0d-4474-876d-d3577b4c3c1e",
+    "ts": "2026-03-28T15:15:41-07:00",
+    "source": "demo-validation",
+    "type": "decision.allow",
+    "subject_kind": "scenario",
+    "subject_id": "scenario-a-clean-allow",
+    "severity": "info",
+    "decision": "ALLOW",
+    "title": "Clean allow path decision",
+    "summary": "Trusted agent performing a benign read-only action inside the workspace.",
+    "status": "completed",
+    "artifacts": [
+      "ops/reports/demo/scenario-a-clean-allow/report.json",
+      "ops/reports/demo/scenario-a-clean-allow/trace.json"
+    ]
+  },
+  {
+    "id": "fa7e7735-a10f-4b88-b80f-a93bf61f3f27",
+    "ts": "2026-03-28T15:15:41-07:00",
+    "source": "demo-validation",
+    "type": "agent.registered",
+    "subject_kind": "agent",
+    "subject_id": "scenario-b-litellm-risk",
+    "severity": "high",
+    "decision": null,
+    "title": "LiteLLM-centered risky path agent registered",
+    "summary": "Registered agent for LiteLLM-centered risky path.",
+    "status": "emitted",
+    "artifacts": [
+      "ops/reports/demo/scenario-b-litellm-risk/trace.json"
+    ]
+  },
+  {
+    "id": "78c65960-af8f-40cf-8d1b-87dd7d7b2ad6",
+    "ts": "2026-03-28T15:15:41-07:00",
+    "source": "demo-validation",
+    "type": "decision.block",
+    "subject_kind": "scenario",
+    "subject_id": "scenario-b-litellm-risk",
+    "severity": "high",
+    "decision": "BLOCK",
+    "title": "LiteLLM-centered risky path decision",
+    "summary": "Flagged dependency version and suspicious install-time signals require immediate blocking.",
+    "status": "completed",
+    "artifacts": [
+      "ops/reports/demo/scenario-b-litellm-risk/report.json",
+      "ops/reports/demo/scenario-b-litellm-risk/trace.json"
+    ]
+  },
+  {
+    "id": "95224c97-d880-4614-a8bf-68eae4063fb4",
+    "ts": "2026-03-28T15:15:41-07:00",
+    "source": "demo-validation",
+    "type": "human.approval_requested",
+    "subject_kind": "notification",
+    "subject_id": "scenario-b-litellm-risk:human-approval-queue",
+    "severity": "high",
+    "decision": "BLOCK",
+    "title": "LiteLLM-centered risky path notification",
+    "summary": "Review flagged LiteLLM installation attempt and verify safe replacement guidance.",
+    "status": "emitted",
+    "artifacts": [
+      "ops/reports/demo/scenario-b-litellm-risk/report.json"
+    ]
+  },
+  {
+    "id": "975c1814-a81f-4c8a-87e2-e21945e8245b",
+    "ts": "2026-03-28T15:15:41-07:00",
+    "source": "demo-validation",
+    "type": "agent.registered",
+    "subject_kind": "agent",
+    "subject_id": "scenario-c-poor-reputation-external-agent",
+    "severity": "critical",
+    "decision": null,
+    "title": "Poor-reputation external agent interaction agent registered",
+    "summary": "Registered agent for Poor-reputation external agent interaction.",
+    "status": "emitted",
+    "artifacts": [
+      "ops/reports/demo/scenario-c-poor-reputation-external-agent/trace.json"
+    ]
+  },
+  {
+    "id": "2441cd8b-35fa-4a98-801f-8164eab94ceb",
+    "ts": "2026-03-28T15:15:41-07:00",
+    "source": "demo-validation",
+    "type": "decision.block",
+    "subject_kind": "scenario",
+    "subject_id": "scenario-c-poor-reputation-external-agent",
+    "severity": "critical",
+    "decision": "BLOCK",
+    "title": "Poor-reputation external agent interaction decision",
+    "summary": "External low-reputation agent lacks trusted provenance and requested unsafe side effects.",
+    "status": "completed",
+    "artifacts": [
+      "ops/reports/demo/scenario-c-poor-reputation-external-agent/report.json",
+      "ops/reports/demo/scenario-c-poor-reputation-external-agent/trace.json"
+    ]
+  },
+  {
+    "id": "de47f9e8-5994-471e-b6dd-516b82f1b7d0",
+    "ts": "2026-03-28T15:15:41-07:00",
+    "source": "demo-validation",
+    "type": "notification.sent",
+    "subject_kind": "notification",
+    "subject_id": "scenario-c-poor-reputation-external-agent:security-alerts",
+    "severity": "critical",
+    "decision": "BLOCK",
+    "title": "Poor-reputation external agent interaction notification",
+    "summary": "Blocked poor-reputation external agent before side effects executed.",
+    "status": "emitted",
+    "artifacts": [
+      "ops/reports/demo/scenario-c-poor-reputation-external-agent/report.json"
+    ]
+  },
+  {
+    "id": "b06c028e-8b66-4dcb-9609-dcb8fedd95f2",
+    "ts": "2026-03-28T15:15:41-07:00",
+    "source": "demo-validation",
+    "type": "human.approval_requested",
+    "subject_kind": "notification",
+    "subject_id": "scenario-c-poor-reputation-external-agent:human-approval-queue",
+    "severity": "critical",
+    "decision": "BLOCK",
+    "title": "Poor-reputation external agent interaction notification",
+    "summary": "Review external agent trust posture before allowing future interactions.",
+    "status": "emitted",
+    "artifacts": [
+      "ops/reports/demo/scenario-c-poor-reputation-external-agent/report.json"
+    ]
+  },
+  {
+    "id": "328c707f-dd92-469c-bc64-6dfb510e65dc",
+    "ts": "2026-03-28T15:15:41-07:00",
+    "source": "demo-validation",
+    "type": "agent.registered",
+    "subject_kind": "agent",
+    "subject_id": "scenario-d-remediation-follow-through",
+    "severity": "warning",
+    "decision": null,
+    "title": "Remediation follow-through support agent registered",
+    "summary": "Registered agent for Remediation follow-through support.",
+    "status": "emitted",
+    "artifacts": [
+      "ops/reports/demo/scenario-d-remediation-follow-through/trace.json"
+    ]
+  },
+  {
+    "id": "407d3d54-257e-4460-bf05-1791adc0faf3",
+    "ts": "2026-03-28T15:15:41-07:00",
+    "source": "demo-validation",
+    "type": "decision.allow",
+    "subject_kind": "scenario",
+    "subject_id": "scenario-d-remediation-follow-through",
+    "severity": "warning",
+    "decision": "ALLOW",
+    "title": "Remediation follow-through support decision",
+    "summary": "Generating remediation guidance is safe and needed after the blocked scenario.",
+    "status": "completed",
+    "artifacts": [
+      "ops/reports/demo/scenario-d-remediation-follow-through/report.json",
+      "ops/reports/demo/scenario-d-remediation-follow-through/trace.json"
+    ]
+  },
+  {
+    "id": "e4b21562-5c4c-4c4d-8e42-755fe7c66d60",
+    "ts": "2026-03-28T15:15:41-07:00",
+    "source": "demo-validation",
+    "type": "human.approval_requested",
+    "subject_kind": "notification",
+    "subject_id": "scenario-d-remediation-follow-through:human-approval-queue",
+    "severity": "warning",
+    "decision": "ALLOW",
+    "title": "Remediation follow-through support notification",
+    "summary": "Approve publication of the LiteLLM remediation brief.",
+    "status": "emitted",
+    "artifacts": [
+      "ops/reports/demo/scenario-d-remediation-follow-through/report.json"
+    ]
+  }
+]

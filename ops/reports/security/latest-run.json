@@ -1,0 +1,79 @@
+{
+  "generated_at": "2026-03-28T22:15:31.517Z",
+  "branch": "codex/mail-core",
+  "blockers": [],
+  "scenarios": [
+    {
+      "id": "scenario-a-clean-allow",
+      "title": "Clean allow path",
+      "decision": "ALLOW",
+      "severity": "info",
+      "risk_score": 0,
+      "reason": "Trusted read-only workspace action stays inside the approved boundary.",
+      "artifacts": [
+        "ops/reports/security/scenario-a-clean-allow-research.json",
+        "ops/reports/security/scenario-a-clean-allow-remediation.md"
+      ]
+    },
+    {
+      "id": "scenario-b-litellm-risk",
+      "title": "LiteLLM-centered risky path",
+      "decision": "BLOCK",
+      "severity": "high",
+      "risk_score": 100,
+      "reason": "litellm 1.82.8 is on the blocked package-version list.",
+      "artifacts": [
+        "ops/reports/security/scenario-b-litellm-risk-research.json",
+        "ops/reports/security/scenario-b-litellm-risk-remediation.md",
+        "ops/reports/security/litellm-remediation-brief.md",
+        "ops/reports/security/package-patch-proposal.json",
+        "ops/reports/blogs/litellm-advisory.md"
+      ]
+    },
+    {
+      "id": "scenario-c-poor-reputation-external-agent",
+      "title": "Poor-reputation external agent interaction",
+      "decision": "BLOCK",
+      "severity": "critical",
+      "risk_score": 100,
+      "reason": "External agent reputation is below the trust threshold.",
+      "artifacts": [
+        "ops/reports/security/scenario-c-poor-reputation-external-agent-research.json",
+        "ops/reports/security/scenario-c-poor-reputation-external-agent-remediation.md",
+        "ops/reports/security/external-agent-quarantine.md"
+      ]
+    },
+    {
+      "id": "scenario-d-remediation-follow-through",
+      "title": "Remediation follow-through support",
+      "decision": "ALLOW",
+      "severity": "warning",
+      "risk_score": 0,
+      "reason": "Trusted read-only workspace action stays inside the approved boundary.",
+      "artifacts": [
+        "ops/reports/security/scenario-d-remediation-follow-through-research.json",
+        "ops/reports/security/scenario-d-remediation-follow-through-remediation.md"
+      ]
+    }
+  ],
+  "research_artifacts": [
+    "ops/reports/security/scenario-a-clean-allow-research.json",
+    "ops/reports/security/scenario-a-clean-allow-remediation.md",
+    "ops/reports/security/scenario-b-litellm-risk-research.json",
+    "ops/reports/security/scenario-b-litellm-risk-remediation.md",
+    "ops/reports/security/litellm-remediation-brief.md",
+    "ops/reports/security/package-patch-proposal.json",
+    "ops/reports/blogs/litellm-advisory.md",
+    "ops/reports/security/scenario-c-poor-reputation-external-agent-research.json",
+    "ops/reports/security/scenario-c-poor-reputation-external-agent-remediation.md",
+    "ops/reports/security/external-agent-quarantine.md",
+    "ops/reports/security/scenario-d-remediation-follow-through-research.json",
+    "ops/reports/security/scenario-d-remediation-follow-through-remediation.md"
+  ],
+  "decision_counts": {
+    "ALLOW": 2,
+    "BLOCK": 2,
+    "ESCALATE": 0
+  },
+  "metrics_summary": "MERCK F1 1.000 with false-positive rate 0.000."
+}

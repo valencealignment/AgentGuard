@@ -1,0 +1,43 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 scripts/ops/hook_event.py --lane integration --event UserPromptSubmit"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 scripts/ops/hook_event.py --lane integration --event PostToolUse"
+          },
+          {
+            "type": "command",
+            "command": "python3 scripts/ops/aggregate_state.py"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 scripts/ops/hook_event.py --lane integration --event Stop"
+          },
+          {
+            "type": "command",
+            "command": "python3 scripts/ops/aggregate_state.py"
+          }
+        ]
+      }
+    ]
+  }
+}

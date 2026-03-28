@@ -1,13 +1,23 @@
 {
-  "name": "agentshield",
+  "name": "waal-demo",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest"
+    "test": "vitest",
+    "api": "node apps/api/server.js",
+    "aggregate": "python3 scripts/ops/aggregate_state.py",
+    "heartbeat:integration": "python3 scripts/ops/heartbeat.py --lane integration --task integration",
+    "status:integration": "python3 scripts/ops/status.py --lane integration --task integration --percent 5 --demo-readiness bootstrapping",
+    "modal:once": "python3 infra/modal/continuous_research.py --once",
+    "security:once": "node services/security-research/run_security_lane.js --emit-claim",
+    "security:watch": "node services/security-research/run_security_lane.js --watch --emit-claim",
+    "demo:once": "python3 services/demo-validation/scenario_runner.py --emit-claim",
+    "demo:watch": "python3 services/demo-validation/scenario_runner.py --watch --emit-claim"
   },
   "dependencies": {
     "next": "16.2.1",

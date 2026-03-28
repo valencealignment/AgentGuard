@@ -1,0 +1,62 @@
+{
+  "backlog": [],
+  "blocked": [],
+  "done": [
+    {
+      "blockers": [],
+      "branch": "codex/mail-core",
+      "current_task": "autonomous run complete; final snapshot captured",
+      "demo_readiness": "complete",
+      "heartbeat_age_seconds": 43,
+      "lane": "integration",
+      "last_heartbeat": "2026-03-28T22:31:29Z",
+      "percent_complete": 100,
+      "stale": false
+    },
+    {
+      "blockers": [],
+      "branch": "codex/mail-core",
+      "current_task": "watchboard integrated and finalized",
+      "demo_readiness": "complete",
+      "heartbeat_age_seconds": 8,
+      "lane": "ui",
+      "last_heartbeat": "2026-03-28T22:32:04Z",
+      "percent_complete": 100,
+      "stale": false
+    },
+    {
+      "active_findings": 2,
+      "blockers": [],
+      "branch": "codex/mail-core",
+      "current_task": "security lane finalized; artifacts captured",
+      "demo_readiness": "complete",
+      "heartbeat_age_seconds": 8,
+      "lane": "security",
+      "last_heartbeat": "2026-03-28T22:32:04Z",
+      "latest_decisions": [
+        "scenario-a-clean-allow:ALLOW",
+        "scenario-b-litellm-risk:BLOCK",
+        "scenario-c-poor-reputation-external-agent:BLOCK",
+        "scenario-d-remediation-follow-through:ALLOW"
+      ],
+      "latest_f1": 1,
+      "metrics_summary": "MERCK F1 1.000 with false-positive rate 0.000.",
+      "percent_complete": 100,
+      "rule_status": "self-improving",
+      "stale": false
+    },
+    {
+      "blockers": [],
+      "branch": "codex/mail-core",
+      "current_task": "demo lane finalized; traces captured",
+      "demo_readiness": "complete",
+      "heartbeat_age_seconds": 8,
+      "lane": "demo",
+      "last_heartbeat": "2026-03-28T22:32:04Z",
+      "percent_complete": 100,
+      "stale": false
+    }
+  ],
+  "generated_at": "2026-03-28T22:32:12Z",
+  "in_progress": []
+}

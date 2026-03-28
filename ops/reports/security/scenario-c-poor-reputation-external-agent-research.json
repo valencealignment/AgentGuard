@@ -1,0 +1,40 @@
+{
+  "generated_at": "2026-03-28T22:15:31.529Z",
+  "scenario_id": "scenario-c-poor-reputation-external-agent",
+  "scenario_title": "Poor-reputation external agent interaction",
+  "evaluation": {
+    "scenario_id": "scenario-c-poor-reputation-external-agent",
+    "title": "Poor-reputation external agent interaction",
+    "severity": "critical",
+    "summary": "A low-reputation external agent attempts to invoke our system with weak provenance and outbound notification side effects.",
+    "verdict": "BLOCK",
+    "reason": "External agent reputation is below the trust threshold.",
+    "risk_score": 100,
+    "confidence": 0.99,
+    "explanation": "External agent reputation is below the trust threshold. Unsigned provenance removes zero-trust guarantees.",
+    "evidence": [
+      "poor_reputation",
+      "unsigned_provenance",
+      "send_notification",
+      "install_dependency",
+      "network_required"
+    ],
+    "signals": [
+      "send_notification",
+      "install_dependency",
+      "unsigned_provenance",
+      "network_required"
+    ],
+    "package": {
+      "name": "notify-and-install",
+      "version": ""
+    },
+    "reputation_delta": -18
+  },
+  "summary": "External agent reputation is below the trust threshold. Evidence: poor_reputation, unsigned_provenance, send_notification, install_dependency, network_required.",
+  "remediation": [
+    "Keep the external agent blocked until provenance is signed and reviewable.",
+    "Require a reputation reset after evidence of patching or key rotation is supplied.",
+    "Deliver a direct notification to the remote agent owner with the exact failing signals."
+  ]
+}

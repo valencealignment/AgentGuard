@@ -1,0 +1,24 @@
+{
+  "scenario_id": "scenario-b-litellm-risk",
+  "events": [
+    {
+      "type": "agent.registered",
+      "summary": "Sandbox Runner registered from sandbox."
+    },
+    {
+      "type": "action.requested",
+      "summary": "package_install requested for litellm==1.82.8."
+    },
+    {
+      "type": "decision.block",
+      "summary": "Flagged dependency version and suspicious install-time signals require immediate blocking."
+    }
+  ],
+  "notifications": [
+    {
+      "channel": "human-approval-queue",
+      "message": "Review flagged LiteLLM installation attempt and verify safe replacement guidance."
+    }
+  ],
+  "generated_at": "2026-03-28T15:15:41-07:00"
+}

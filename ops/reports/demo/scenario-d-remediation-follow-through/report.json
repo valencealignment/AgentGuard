@@ -1,0 +1,36 @@
+{
+  "scenario_id": "scenario-d-remediation-follow-through",
+  "title": "Remediation follow-through support",
+  "summary": "A blocked dependency path produces follow-up artifacts that explain remediation and support downstream advisory generation.",
+  "decision": "ALLOW",
+  "severity": "warning",
+  "reason": "Generating remediation guidance is safe and needed after the blocked scenario.",
+  "evidence": [
+    "derived_from_block_event",
+    "read_only_reporting",
+    "human_review_required"
+  ],
+  "agent": {
+    "id": "agent-remediation",
+    "name": "Remediation Assistant",
+    "reputation": "trusted",
+    "origin": "internal"
+  },
+  "action": {
+    "type": "report_generation",
+    "target": "litellm-remediation-brief",
+    "context": {
+      "workspace_only": true,
+      "network_required": false,
+      "package_install": false,
+      "depends_on": "scenario-b-litellm-risk"
+    }
+  },
+  "notifications": [
+    {
+      "channel": "human-approval-queue",
+      "message": "Approve publication of the LiteLLM remediation brief."
+    }
+  ],
+  "generated_at": "2026-03-28T15:15:41-07:00"
+}

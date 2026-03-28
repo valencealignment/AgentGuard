@@ -1,0 +1,9 @@
+{
+  "blockers": [],
+  "branch": "codex/mail-core",
+  "current_task": "autonomous run complete; final snapshot captured",
+  "demo_readiness": "complete",
+  "lane": "integration",
+  "last_heartbeat": "2026-03-28T22:31:29Z",
+  "percent_complete": 100
+}

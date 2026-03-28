@@ -1,18 +1,62 @@
-# WAASL MERCK Loop
+# WAAL / WAAS Wall Agent Notes
 
-This repo contains a self-improving firewall rule system.
+WAAL is the product. WAAS Wall is the public watchboard surface.
 
-## Files
-- MERCK-SPEC.md — Full specification. READ THIS FIRST.
-- waasl-rules.yaml — The ONLY file you can edit. Firewall rules.
-- attacks/known_malicious.json — Test attacks. DO NOT EDIT.
-- safe_packages/known_good.json — Safe packages. DO NOT EDIT.
-- merck_loop.py — The loop runner (you build this).
-- merck_results.jsonl — Results log (append only).
+This repository now carries two realities at once:
 
-## Your job
-Build merck_loop.py that implements the MERCK loop from MERCK-SPEC.md.
-Then run it for the specified number of iterations.
+- the original public dashboard line on `main`
+- the fully integrated WAAL snapshot and artifact pipeline merged in from the
+  autonomous lanes
 
-## Stack
-Python 3.12+. No external dependencies beyond PyYAML and standard lib.
+The goal on integration branches is to keep the public Next.js dashboard
+deployable while consuming the real repo artifacts produced by the MERCK,
+security, integration, and demo lanes.
+
+## Lane Ownership
+
+- `Computer 1` owns the watchboard/UI lane.
+- `Computer 2` owns MERCK, the policy engine, research generation, and package
+  risk outputs.
+- `Computer 3` owns shared contracts, hooks, aggregation, and integration.
+- `Computer 4` owns the controlled sandbox demo lane.
+
+## Shared Rules
+
+- Never commit secrets, credentials, SSH config, or machine access details.
+- Never rename or relocate another lane's core outputs just to suit your lane.
+- Prefer adapting readers and adapters over rewriting primary artifact sources.
+- Use repo artifacts under `ops/` as the integration plane.
+
+## Core Artifact Locations
+
+- Lane events: `ops/events/*.jsonl`
+- Lane status: `ops/status/*.json`
+- Aggregate watchboard state:
+  - `ops/watchboard-state.json`
+  - `ops/status/aggregate.json`
+  - `ops/kanban.json`
+- Security outputs:
+  - `ops/reports/security/**`
+  - `merck_results.jsonl`
+  - `waasl-rules.yaml`
+- Demo outputs:
+  - `ops/reports/demo/**`
+
+## MERCK Loop Files
+
+These remain authoritative for the security lane and should not be casually
+restructured:
+
+- `MERCK-SPEC.md`
+- `waasl-rules.yaml`
+- `attacks/known_malicious.json`
+- `safe_packages/known_good.json`
+- `merck_loop.py`
+- `merck_results.jsonl`
+
+## Integration Bias
+
+- The public dashboard should use real WAAL artifacts when available.
+- Mock data should only be a fallback, not the primary source, on integrated
+  branches.
+- Keep the deploy path boring and reproducible.

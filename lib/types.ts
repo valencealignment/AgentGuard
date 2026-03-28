@@ -1,6 +1,12 @@
 export type Verdict = "BLOCK" | "ALLOW" | "ESCALATE" | "WARN";
 
-export type ActionType = "package_install" | "mcp_call" | "api_request";
+export type ActionType =
+  | "package_install"
+  | "mcp_call"
+  | "api_request"
+  | "file_read"
+  | "agent_interaction"
+  | "report_generation";
 
 export interface AgentVerdict {
   agent: string;

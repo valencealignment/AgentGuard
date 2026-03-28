@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { updateEscalationStatus } from "@/lib/mock-escalations";
+import { reviewEscalation } from "@/lib/repo-artifacts";
 
 export async function POST(
   request: NextRequest,
@@ -19,8 +19,7 @@ export async function POST(
     return NextResponse.json({ error: "Invalid action" }, { status: 400 });
   }
 
-  const status = action === "approve" ? "approved" : "denied";
-  const report = updateEscalationStatus(id, status);
+  const report = reviewEscalation(id, action);
 
   if (!report) {
     return NextResponse.json({ error: "Escalation not found" }, { status: 404 });

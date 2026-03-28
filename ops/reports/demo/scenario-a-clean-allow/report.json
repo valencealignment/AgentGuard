@@ -1,0 +1,30 @@
+{
+  "scenario_id": "scenario-a-clean-allow",
+  "title": "Clean allow path",
+  "summary": "A trusted internal agent requests a safe read-only action inside the workspace.",
+  "decision": "ALLOW",
+  "severity": "info",
+  "reason": "Trusted agent performing a benign read-only action inside the workspace.",
+  "evidence": [
+    "signed_agent_manifest",
+    "workspace_scoped_target",
+    "no_network_requested"
+  ],
+  "agent": {
+    "id": "agent-local-trusted",
+    "name": "Workspace Assistant",
+    "reputation": "trusted",
+    "origin": "internal"
+  },
+  "action": {
+    "type": "file_read",
+    "target": "docs/usage.md",
+    "context": {
+      "workspace_only": true,
+      "network_required": false,
+      "package_install": false
+    }
+  },
+  "notifications": [],
+  "generated_at": "2026-03-28T15:15:41-07:00"
+}

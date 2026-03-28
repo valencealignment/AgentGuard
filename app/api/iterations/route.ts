@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
-import { getIterations } from "@/lib/mock-iterations";
+import { loadIterations } from "@/lib/repo-artifacts";
 
 export async function GET() {
-  // TODO: return fetch("http://localhost:8002/iterations")
-  const iterations = getIterations();
-  return NextResponse.json(iterations);
+  return NextResponse.json(loadIterations());
 }

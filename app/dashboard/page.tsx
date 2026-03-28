@@ -37,6 +37,12 @@ export default function DashboardPage() {
       .catch(() => {});
   }, []);
 
+  useEffect(() => {
+    if (!selectedDecisionId && decisions.length > 0) {
+      setSelectedDecisionId(decisions[0].id);
+    }
+  }, [decisions, selectedDecisionId]);
+
   const handleRunIteration = useCallback(async () => {
     setIsRunning(true);
     await new Promise((r) => setTimeout(r, 1800));
