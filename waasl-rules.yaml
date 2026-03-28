@@ -7,6 +7,11 @@ rules:
     - 1.82.7
     reason: Supply chain attack
     severity: critical
+  - name: reqeusts
+    versions:
+    - 1.0.0
+    reason: MERCK learned exact block
+    severity: high
   reputation_thresholds:
     block_below_score: 10
     warn_below_score: 30
