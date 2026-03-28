@@ -87,6 +87,11 @@ rules:
     - 0.0.2
     reason: MERCK learned exact block
     severity: high
+  - name: private-build-utils
+    versions:
+    - 0.3.2
+    reason: MERCK learned exact block
+    severity: high
   reputation_thresholds:
     block_below_score: 10
     warn_below_score: 30
