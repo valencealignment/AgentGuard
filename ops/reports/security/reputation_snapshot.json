@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-03-28T22:15:31.532Z",
+  "agents": [
+    {
+      "generated_at": "2026-03-28T22:15:31.519Z",
+      "scenario_id": "scenario-a-clean-allow",
+      "subject_id": "agent-local-trusted",
+      "subject_name": "Workspace Assistant",
+      "origin": "internal",
+      "resulting_score": 82,
+      "resulting_label": "trusted"
+    },
+    {
+      "generated_at": "2026-03-28T22:15:31.528Z",
+      "scenario_id": "scenario-b-litellm-risk",
+      "subject_id": "agent-sandbox-risky",
+      "subject_name": "Sandbox Runner",
+      "origin": "sandbox",
+      "resulting_score": 18,
+      "resulting_label": "blocked"
+    },
+    {
+      "generated_at": "2026-03-28T22:15:31.530Z",
+      "scenario_id": "scenario-c-poor-reputation-external-agent",
+      "subject_id": "agent-external-lowrep",
+      "subject_name": "External Plugin Runner",
+      "origin": "external",
+      "resulting_score": 18,
+      "resulting_label": "blocked"
+    },
+    {
+      "generated_at": "2026-03-28T22:15:31.531Z",
+      "scenario_id": "scenario-d-remediation-follow-through",
+      "subject_id": "agent-remediation",
+      "subject_name": "Remediation Assistant",
+      "origin": "internal",
+      "resulting_score": 82,
+      "resulting_label": "trusted"
+    }
+  ]
+}

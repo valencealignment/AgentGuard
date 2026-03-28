@@ -1,0 +1,31 @@
+{
+  "generated_at": "2026-03-28T22:15:31.531Z",
+  "scenario_id": "scenario-d-remediation-follow-through",
+  "scenario_title": "Remediation follow-through support",
+  "evaluation": {
+    "scenario_id": "scenario-d-remediation-follow-through",
+    "title": "Remediation follow-through support",
+    "severity": "warning",
+    "summary": "A blocked dependency path produces follow-up artifacts that explain remediation and support downstream advisory generation.",
+    "verdict": "ALLOW",
+    "reason": "Trusted read-only workspace action stays inside the approved boundary.",
+    "risk_score": 0,
+    "confidence": 0.97,
+    "explanation": "Trusted read-only workspace action stays inside the approved boundary.",
+    "evidence": [
+      "derived_from_block_event",
+      "workspace_scoped_target"
+    ],
+    "signals": [],
+    "package": {
+      "name": "litellm-remediation-brief",
+      "version": ""
+    },
+    "reputation_delta": 4
+  },
+  "summary": "Trusted read-only workspace action stays inside the approved boundary. Evidence: derived_from_block_event, workspace_scoped_target.",
+  "remediation": [
+    "Hold the action behind approval until the evidence trail is reviewed.",
+    "Prefer a safe pinned dependency or read-only fallback while the risky path is investigated."
+  ]
+}

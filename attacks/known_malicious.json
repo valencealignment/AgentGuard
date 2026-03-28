@@ -1,0 +1,76 @@
+[
+  {
+    "id": "attack-litellm-1827",
+    "package": "litellm",
+    "version": "1.82.7",
+    "category": "supply_chain",
+    "expected": "BLOCK",
+    "origin": "sandbox",
+    "reputation": "unknown",
+    "signals": [
+      "writes_pth_file",
+      "reads_env_vars",
+      "opens_network_socket_during_install"
+    ],
+    "notes": "Flagged LiteLLM release with install-time persistence behavior."
+  },
+  {
+    "id": "attack-litellm-1828",
+    "package": "litellm",
+    "version": "1.82.8",
+    "category": "supply_chain",
+    "expected": "BLOCK",
+    "origin": "sandbox",
+    "reputation": "unknown",
+    "signals": [
+      "reads_env_vars",
+      "reads_ssh_keys",
+      "opens_network_socket_during_install"
+    ],
+    "notes": "Flagged LiteLLM release with credential and network side effects."
+  },
+  {
+    "id": "attack-reqeusts-typosquat",
+    "package": "reqeusts",
+    "version": "0.2.1",
+    "category": "typosquat",
+    "expected": "BLOCK",
+    "origin": "external",
+    "reputation": "poor",
+    "signals": [
+      "unsigned_provenance",
+      "outbound_webhook"
+    ],
+    "notes": "Typosquatted package name with poor provenance."
+  },
+  {
+    "id": "attack-ai-helper-toolkit-slopsquat",
+    "package": "ai-helper-toolkit",
+    "version": "3.4.0",
+    "category": "slopsquat",
+    "expected": "BLOCK",
+    "origin": "external",
+    "reputation": "poor",
+    "signals": [
+      "unsigned_provenance",
+      "reads_env_vars"
+    ],
+    "notes": "Suspicious slopsquat model-helper package."
+  },
+  {
+    "id": "attack-postmark-mcp",
+    "package": "postmark-mcp",
+    "version": "0.9.0",
+    "category": "mcp",
+    "expected": "BLOCK",
+    "origin": "external",
+    "reputation": "poor",
+    "transport": "mcp",
+    "tls": "absent",
+    "signals": [
+      "unsigned_provenance",
+      "no_tls"
+    ],
+    "notes": "Unsigned MCP endpoint exposed without TLS."
+  }
+]

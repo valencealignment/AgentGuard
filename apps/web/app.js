@@ -78,6 +78,28 @@ function renderEmpty(target, message) {
   target.innerHTML = `<div class="empty-state">${escapeHtml(message)}</div>`;
 }
 
+function renderLaneHighlights(card) {
+  const chips = [];
+  if (typeof card.latest_f1 === "number") {
+    chips.push(`MERCK F1 ${card.latest_f1.toFixed(3)}`);
+  }
+  if (card.metrics_summary) {
+    chips.push(card.metrics_summary);
+  }
+  if (card.active_findings) {
+    chips.push(`${card.active_findings} active findings`);
+  }
+  if (Array.isArray(card.latest_decisions) && card.latest_decisions.length) {
+    chips.push(card.latest_decisions.slice(0, 2).join(" • "));
+  }
+  if (card.rule_status) {
+    chips.push(card.rule_status);
+  }
+  return chips
+    .map((chip) => `<span class="chip">${escapeHtml(chip)}</span>`)
+    .join("");
+}
+
 function renderScoreboard(state) {
   const laneCards = state.watchboard.lane_cards || [];
   const decisions = state.domainEvents.filter((event) => event.type.startsWith("decision."));
@@ -129,6 +151,7 @@ function renderLaneGrid(state) {
           <div class="chip-row">
             <span class="chip">${escapeHtml(`${card.percent_complete || 0}% complete`)}</span>
             <span class="chip">${escapeHtml(card.stale ? "stale feed" : `heartbeat ${formatTime(card.last_heartbeat)}`)}</span>
+            ${renderLaneHighlights(card)}
           </div>
           <div class="meta-line">${escapeHtml(blockers[0])}</div>
         </article>
@@ -138,13 +161,15 @@ function renderLaneGrid(state) {
 }
 
 function renderDecisionStream(state) {
-  const decisions = state.domainEvents.filter((event) => event.type.startsWith("decision."));
+  const decisions = state.domainEvents
+    .filter((event) => event.type.startsWith("decision."))
+    .slice(-6)
+    .reverse();
   if (!decisions.length) {
     renderEmpty(decisionStreamEl, "Decision events will appear here when the demo lane emits allow, block, or escalate artifacts.");
     return;
   }
   decisionStreamEl.innerHTML = decisions
-    .slice(0, 6)
     .map(
       (event) => `
         <article class="scenario-card">
@@ -167,7 +192,10 @@ function renderDecisionStream(state) {
 }
 
 function renderApprovals(state) {
-  const approvals = state.domainEvents.filter((event) => event.type === "human.approval_requested");
+  const approvals = state.domainEvents
+    .filter((event) => event.type === "human.approval_requested")
+    .slice()
+    .reverse();
   if (!approvals.length) {
     renderEmpty(approvalListEl, "The approval queue is empty right now.");
     return;
@@ -244,6 +272,8 @@ function renderArtifacts(state) {
   const reports = [
     ...(state.aggregate.reports?.integration || []),
     ...(state.aggregate.reports?.demo || []),
+    ...(state.aggregate.reports?.security || []),
+    ...(state.aggregate.reports?.blogs || []),
     ...(state.watchboard.research || [])
   ];
   const unique = Array.from(new Map(reports.map((report) => [report.path, report])).values());

@@ -1,56 +1,62 @@
 {
-  "backlog": [
-    {
-      "blockers": [],
-      "branch": "",
-      "current_task": "unknown",
-      "demo_readiness": "unknown",
-      "heartbeat_age_seconds": null,
-      "lane": "security",
-      "last_heartbeat": null,
-      "percent_complete": 0,
-      "stale": true
-    }
-  ],
+  "backlog": [],
   "blocked": [],
   "done": [
     {
-      "blockers": [
-        "gcloud CLI unavailable on this machine; using local fallback"
-      ],
-      "branch": "codex/demo-validation",
-      "current_task": "Demo scenarios generated and reports refreshed",
-      "demo_readiness": "ready",
-      "heartbeat_age_seconds": 553,
-      "lane": "demo",
-      "last_heartbeat": "2026-03-28T12:58:21-07:00",
-      "percent_complete": 100,
-      "stale": true
-    }
-  ],
-  "generated_at": "2026-03-28T20:07:34Z",
-  "in_progress": [
-    {
       "blockers": [],
       "branch": "codex/mail-core",
-      "current_task": "api, hooks, and aggregate loop ready",
-      "demo_readiness": "substrate-ready",
-      "heartbeat_age_seconds": 733,
+      "current_task": "full stack verified and ready",
+      "demo_readiness": "ready",
+      "heartbeat_age_seconds": 0,
       "lane": "integration",
-      "last_heartbeat": "2026-03-28T19:55:21Z",
-      "percent_complete": 55,
-      "stale": true
+      "last_heartbeat": "2026-03-28T22:19:30Z",
+      "percent_complete": 100,
+      "stale": false
     },
     {
       "blockers": [],
-      "branch": "codex/waas-wall-ui",
-      "current_task": "watchboard UX shell, hierarchy, and live data wiring",
-      "demo_readiness": "ux-pass-live",
-      "heartbeat_age_seconds": 0,
+      "branch": "codex/mail-core",
+      "current_task": "watchboard integrated and serving through local API",
+      "demo_readiness": "ready",
+      "heartbeat_age_seconds": 73,
       "lane": "ui",
-      "last_heartbeat": "2026-03-28T20:07:34Z",
-      "percent_complete": 42,
+      "last_heartbeat": "2026-03-28T22:18:17Z",
+      "percent_complete": 100,
+      "stale": false
+    },
+    {
+      "active_findings": 2,
+      "blockers": [],
+      "branch": "codex/mail-core",
+      "current_task": "security decisions, research, and advisories refreshed",
+      "demo_readiness": "security-ready",
+      "heartbeat_age_seconds": 33,
+      "lane": "security",
+      "last_heartbeat": "2026-03-28T22:18:57Z",
+      "latest_decisions": [
+        "scenario-a-clean-allow:ALLOW",
+        "scenario-b-litellm-risk:BLOCK",
+        "scenario-c-poor-reputation-external-agent:BLOCK",
+        "scenario-d-remediation-follow-through:ALLOW"
+      ],
+      "latest_f1": 1,
+      "metrics_summary": "MERCK F1 1.000 with false-positive rate 0.000.",
+      "percent_complete": 100,
+      "rule_status": "self-improving",
+      "stale": false
+    },
+    {
+      "blockers": [],
+      "branch": "codex/mail-core",
+      "current_task": "Demo scenarios generated and reports refreshed",
+      "demo_readiness": "ready",
+      "heartbeat_age_seconds": 33,
+      "lane": "demo",
+      "last_heartbeat": "2026-03-28T22:18:57Z",
+      "percent_complete": 100,
       "stale": false
     }
-  ]
+  ],
+  "generated_at": "2026-03-28T22:19:30Z",
+  "in_progress": []
 }

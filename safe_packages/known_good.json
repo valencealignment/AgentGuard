@@ -1,0 +1,67 @@
+[
+  {
+    "id": "safe-requests",
+    "package": "requests",
+    "version": "2.32.0",
+    "expected": "ALLOW",
+    "origin": "internal",
+    "reputation": "trusted",
+    "signals": []
+  },
+  {
+    "id": "safe-numpy",
+    "package": "numpy",
+    "version": "2.1.1",
+    "expected": "ALLOW",
+    "origin": "internal",
+    "reputation": "trusted",
+    "signals": []
+  },
+  {
+    "id": "safe-fastapi",
+    "package": "fastapi",
+    "version": "0.115.0",
+    "expected": "ALLOW",
+    "origin": "internal",
+    "reputation": "trusted",
+    "signals": []
+  },
+  {
+    "id": "safe-openai",
+    "package": "openai",
+    "version": "2.5.0",
+    "expected": "ALLOW",
+    "origin": "internal",
+    "reputation": "trusted",
+    "signals": []
+  },
+  {
+    "id": "safe-anthropic",
+    "package": "anthropic",
+    "version": "0.71.0",
+    "expected": "ALLOW",
+    "origin": "internal",
+    "reputation": "trusted",
+    "signals": []
+  },
+  {
+    "id": "safe-litellm",
+    "package": "litellm",
+    "version": "1.82.6",
+    "expected": "ALLOW",
+    "origin": "internal",
+    "reputation": "trusted",
+    "signals": []
+  },
+  {
+    "id": "safe-figma-mcp",
+    "package": "mcp.figma.com",
+    "version": "2026.03",
+    "expected": "ALLOW",
+    "origin": "internal",
+    "reputation": "trusted",
+    "transport": "mcp",
+    "tls": "present",
+    "signals": []
+  }
+]

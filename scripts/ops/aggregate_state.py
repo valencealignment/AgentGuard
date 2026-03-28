@@ -54,19 +54,21 @@ def build_lane_cards() -> list[dict[str, Any]]:
     for lane in LANES:
         status = read_status(lane)
         seconds = age_seconds(status.get("last_heartbeat"))
-        cards.append(
-            {
-                "lane": lane,
-                "branch": status.get("branch", ""),
-                "current_task": status.get("current_task", "unknown"),
-                "percent_complete": status.get("percent_complete", 0),
-                "demo_readiness": status.get("demo_readiness", "unknown"),
-                "blockers": status.get("blockers", []),
-                "last_heartbeat": status.get("last_heartbeat"),
-                "heartbeat_age_seconds": seconds,
-                "stale": seconds is None or seconds > STALE_SECONDS,
-            }
-        )
+        card = {
+            "lane": lane,
+            "branch": status.get("branch", ""),
+            "current_task": status.get("current_task", "unknown"),
+            "percent_complete": status.get("percent_complete", 0),
+            "demo_readiness": status.get("demo_readiness", "unknown"),
+            "blockers": status.get("blockers", []),
+            "last_heartbeat": status.get("last_heartbeat"),
+            "heartbeat_age_seconds": seconds,
+            "stale": seconds is None or seconds > STALE_SECONDS,
+        }
+        for key in ("latest_f1", "latest_decisions", "metrics_summary", "active_findings", "rule_status"):
+            if key in status:
+                card[key] = status.get(key)
+        cards.append(card)
     return cards
 
 

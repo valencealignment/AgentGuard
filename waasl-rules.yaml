@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "blocked_packages": {
+    "litellm": [
+      "1.82.8",
+      "1.82.7"
+    ],
+    "postmark-mcp": [
+      "*"
+    ]
+  },
+  "typosquats": [
+    "reqeusts",
+    "numppy",
+    "pandsa",
+    "llm-utils",
+    "ai-helper-toolkit"
+  ],
+  "mcp_allowlist": [
+    "mcp.figma.com"
+  ],
+  "malicious_mcp_servers": [
+    "postmark-mcp"
+  ],
+  "signal_weights": {
+    "reads_env_vars": 18,
+    "reads_ssh_keys": 22,
+    "opens_network_socket_during_install": 24,
+    "writes_pth_file": 36,
+    "unsigned_provenance": 24,
+    "outbound_webhook": 16,
+    "no_tls": 14
+  },
+  "origin_weights": {
+    "poor_external": 34,
+    "unsigned_external": 20
+  },
+  "thresholds": {
+    "allow_max": 24,
+    "escalate_max": 63
+  },
+  "rule_status": "self-improving"
+}

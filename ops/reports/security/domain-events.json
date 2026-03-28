@@ -1,0 +1,318 @@
+[
+  {
+    "id": "4c3a4b74-b0d1-4911-b65c-9742c83938d7",
+    "ts": "2026-03-28T22:15:31.519Z",
+    "source": "security-research",
+    "type": "decision.allow",
+    "subject_kind": "scenario",
+    "subject_id": "scenario-a-clean-allow",
+    "severity": "info",
+    "decision": "ALLOW",
+    "title": "Clean allow path policy decision",
+    "summary": "Trusted read-only workspace action stays inside the approved boundary.",
+    "status": "completed",
+    "artifacts": [
+      "ops/reports/security/scenario-a-clean-allow-research.json",
+      "ops/reports/security/scenario-a-clean-allow-remediation.md"
+    ]
+  },
+  {
+    "id": "c1748433-bbe7-4349-8ba8-e7c28bb7f51b",
+    "ts": "2026-03-28T22:15:31.519Z",
+    "source": "security-research",
+    "type": "research.generated",
+    "subject_kind": "research",
+    "subject_id": "scenario-a-clean-allow:research",
+    "severity": "info",
+    "decision": null,
+    "title": "Clean allow path research bundle ready",
+    "summary": "Trusted read-only workspace action stays inside the approved boundary. Evidence: workspace_scoped_target.",
+    "status": "emitted",
+    "artifacts": [
+      "ops/reports/security/scenario-a-clean-allow-research.json",
+      "ops/reports/security/scenario-a-clean-allow-remediation.md"
+    ]
+  },
+  {
+    "id": "f1b325e4-b6eb-4af4-9ef4-baaf78ecc06e",
+    "ts": "2026-03-28T22:15:31.519Z",
+    "source": "security-research",
+    "type": "reputation.updated",
+    "subject_kind": "agent",
+    "subject_id": "agent-local-trusted",
+    "severity": "info",
+    "decision": null,
+    "title": "Workspace Assistant reputation updated",
+    "summary": "trusted (82)",
+    "status": "emitted",
+    "artifacts": [
+      "ops/reports/security/scenario-a-clean-allow-research.json",
+      "ops/reports/security/scenario-a-clean-allow-remediation.md"
+    ]
+  },
+  {
+    "id": "892c4c05-b1e0-4743-a27b-e77a7149252a",
+    "ts": "2026-03-28T22:15:31.528Z",
+    "source": "security-research",
+    "type": "decision.block",
+    "subject_kind": "scenario",
+    "subject_id": "scenario-b-litellm-risk",
+    "severity": "high",
+    "decision": "BLOCK",
+    "title": "LiteLLM-centered risky path policy decision",
+    "summary": "litellm 1.82.8 is on the blocked package-version list.",
+    "status": "completed",
+    "artifacts": [
+      "ops/reports/security/scenario-b-litellm-risk-research.json",
+      "ops/reports/security/scenario-b-litellm-risk-remediation.md",
+      "ops/reports/security/litellm-remediation-brief.md",
+      "ops/reports/security/package-patch-proposal.json",
+      "ops/reports/blogs/litellm-advisory.md"
+    ]
+  },
+  {
+    "id": "c8cfaa4f-6532-4670-9fa3-5485210e5600",
+    "ts": "2026-03-28T22:15:31.528Z",
+    "source": "security-research",
+    "type": "research.generated",
+    "subject_kind": "research",
+    "subject_id": "scenario-b-litellm-risk:research",
+    "severity": "high",
+    "decision": null,
+    "title": "LiteLLM-centered risky path research bundle ready",
+    "summary": "litellm 1.82.8 is on the blocked package-version list. Evidence: flagged_dependency_version, reads_env_vars, reads_ssh_keys, opens_network_socket_during_install, network_required.",
+    "status": "emitted",
+    "artifacts": [
+      "ops/reports/security/scenario-b-litellm-risk-research.json",
+      "ops/reports/security/scenario-b-litellm-risk-remediation.md",
+      "ops/reports/security/litellm-remediation-brief.md",
+      "ops/reports/security/package-patch-proposal.json",
+      "ops/reports/blogs/litellm-advisory.md"
+    ]
+  },
+  {
+    "id": "b4052688-d7f7-43a5-9bd4-9dcfea391e75",
+    "ts": "2026-03-28T22:15:31.528Z",
+    "source": "security-research",
+    "type": "reputation.updated",
+    "subject_kind": "agent",
+    "subject_id": "agent-sandbox-risky",
+    "severity": "high",
+    "decision": null,
+    "title": "Sandbox Runner reputation updated",
+    "summary": "blocked (18)",
+    "status": "emitted",
+    "artifacts": [
+      "ops/reports/security/scenario-b-litellm-risk-research.json",
+      "ops/reports/security/scenario-b-litellm-risk-remediation.md",
+      "ops/reports/security/litellm-remediation-brief.md",
+      "ops/reports/security/package-patch-proposal.json",
+      "ops/reports/blogs/litellm-advisory.md"
+    ]
+  },
+  {
+    "id": "73073fb9-d5a9-40cf-a3ce-4499ca8da21a",
+    "ts": "2026-03-28T22:15:31.528Z",
+    "source": "security-research",
+    "type": "blog.generated",
+    "subject_kind": "report",
+    "subject_id": "litellm-advisory",
+    "severity": "high",
+    "decision": null,
+    "title": "LiteLLM advisory draft generated",
+    "summary": "Human-readable advisory draft is ready for approval and publication.",
+    "status": "emitted",
+    "artifacts": [
+      "ops/reports/blogs/litellm-advisory.md"
+    ]
+  },
+  {
+    "id": "c9a3169e-d417-41cb-bb3f-46c2ae8917b5",
+    "ts": "2026-03-28T22:15:31.528Z",
+    "source": "security-research",
+    "type": "package.patch_proposed",
+    "subject_kind": "package",
+    "subject_id": "litellm",
+    "severity": "high",
+    "decision": null,
+    "title": "LiteLLM patch proposal ready",
+    "summary": "Pinning guidance and cleanup steps were generated for the blocked package path.",
+    "status": "emitted",
+    "artifacts": [
+      "ops/reports/security/package-patch-proposal.json"
+    ]
+  },
+  {
+    "id": "0f06bd1e-5fa1-481e-9797-429007fd9d29",
+    "ts": "2026-03-28T22:15:31.530Z",
+    "source": "security-research",
+    "type": "decision.block",
+    "subject_kind": "scenario",
+    "subject_id": "scenario-c-poor-reputation-external-agent",
+    "severity": "critical",
+    "decision": "BLOCK",
+    "title": "Poor-reputation external agent interaction policy decision",
+    "summary": "External agent reputation is below the trust threshold.",
+    "status": "completed",
+    "artifacts": [
+      "ops/reports/security/scenario-c-poor-reputation-external-agent-research.json",
+      "ops/reports/security/scenario-c-poor-reputation-external-agent-remediation.md",
+      "ops/reports/security/external-agent-quarantine.md"
+    ]
+  },
+  {
+    "id": "0c2113ac-2263-458d-be82-05d876118adc",
+    "ts": "2026-03-28T22:15:31.530Z",
+    "source": "security-research",
+    "type": "research.generated",
+    "subject_kind": "research",
+    "subject_id": "scenario-c-poor-reputation-external-agent:research",
+    "severity": "critical",
+    "decision": null,
+    "title": "Poor-reputation external agent interaction research bundle ready",
+    "summary": "External agent reputation is below the trust threshold. Evidence: poor_reputation, unsigned_provenance, send_notification, install_dependency, network_required.",
+    "status": "emitted",
+    "artifacts": [
+      "ops/reports/security/scenario-c-poor-reputation-external-agent-research.json",
+      "ops/reports/security/scenario-c-poor-reputation-external-agent-remediation.md",
+      "ops/reports/security/external-agent-quarantine.md"
+    ]
+  },
+  {
+    "id": "7fce62bb-b00b-49bd-9b50-ee3901945bea",
+    "ts": "2026-03-28T22:15:31.530Z",
+    "source": "security-research",
+    "type": "reputation.updated",
+    "subject_kind": "agent",
+    "subject_id": "agent-external-lowrep",
+    "severity": "critical",
+    "decision": null,
+    "title": "External Plugin Runner reputation updated",
+    "summary": "blocked (18)",
+    "status": "emitted",
+    "artifacts": [
+      "ops/reports/security/scenario-c-poor-reputation-external-agent-research.json",
+      "ops/reports/security/scenario-c-poor-reputation-external-agent-remediation.md",
+      "ops/reports/security/external-agent-quarantine.md"
+    ]
+  },
+  {
+    "id": "41685656-ad9a-4c3b-8cee-3d2ad9874699",
+    "ts": "2026-03-28T22:15:31.531Z",
+    "source": "security-research",
+    "type": "external_agent.blocked",
+    "subject_kind": "agent",
+    "subject_id": "agent-external-lowrep",
+    "severity": "critical",
+    "decision": "BLOCK",
+    "title": "Poor-reputation external agent blocked",
+    "summary": "Zero-trust policy denied the external agent before side effects executed.",
+    "status": "emitted",
+    "artifacts": [
+      "ops/reports/security/scenario-c-poor-reputation-external-agent-research.json",
+      "ops/reports/security/scenario-c-poor-reputation-external-agent-remediation.md",
+      "ops/reports/security/external-agent-quarantine.md"
+    ]
+  },
+  {
+    "id": "8343b2e5-0656-4adc-bece-3970be98624b",
+    "ts": "2026-03-28T22:15:31.531Z",
+    "source": "security-research",
+    "type": "notification.sent",
+    "subject_kind": "notification",
+    "subject_id": "agent-external-lowrep:remediation",
+    "severity": "critical",
+    "decision": "BLOCK",
+    "title": "Security notification sent",
+    "summary": "Notified both the human queue and the external agent owner to remediate trust posture.",
+    "status": "emitted",
+    "artifacts": [
+      "ops/reports/security/scenario-c-poor-reputation-external-agent-research.json",
+      "ops/reports/security/scenario-c-poor-reputation-external-agent-remediation.md",
+      "ops/reports/security/external-agent-quarantine.md"
+    ]
+  },
+  {
+    "id": "84edcdba-c7d0-453d-afd9-888f974047e8",
+    "ts": "2026-03-28T22:15:31.531Z",
+    "source": "security-research",
+    "type": "decision.allow",
+    "subject_kind": "scenario",
+    "subject_id": "scenario-d-remediation-follow-through",
+    "severity": "warning",
+    "decision": "ALLOW",
+    "title": "Remediation follow-through support policy decision",
+    "summary": "Trusted read-only workspace action stays inside the approved boundary.",
+    "status": "completed",
+    "artifacts": [
+      "ops/reports/security/scenario-d-remediation-follow-through-research.json",
+      "ops/reports/security/scenario-d-remediation-follow-through-remediation.md"
+    ]
+  },
+  {
+    "id": "eafbf3b6-b47f-486c-8ea0-64c5c4f069ea",
+    "ts": "2026-03-28T22:15:31.531Z",
+    "source": "security-research",
+    "type": "research.generated",
+    "subject_kind": "research",
+    "subject_id": "scenario-d-remediation-follow-through:research",
+    "severity": "warning",
+    "decision": null,
+    "title": "Remediation follow-through support research bundle ready",
+    "summary": "Trusted read-only workspace action stays inside the approved boundary. Evidence: derived_from_block_event, workspace_scoped_target.",
+    "status": "emitted",
+    "artifacts": [
+      "ops/reports/security/scenario-d-remediation-follow-through-research.json",
+      "ops/reports/security/scenario-d-remediation-follow-through-remediation.md"
+    ]
+  },
+  {
+    "id": "22901ab4-fb07-41b7-a08b-18df12a7e93c",
+    "ts": "2026-03-28T22:15:31.531Z",
+    "source": "security-research",
+    "type": "reputation.updated",
+    "subject_kind": "agent",
+    "subject_id": "agent-remediation",
+    "severity": "warning",
+    "decision": null,
+    "title": "Remediation Assistant reputation updated",
+    "summary": "trusted (82)",
+    "status": "emitted",
+    "artifacts": [
+      "ops/reports/security/scenario-d-remediation-follow-through-research.json",
+      "ops/reports/security/scenario-d-remediation-follow-through-remediation.md"
+    ]
+  },
+  {
+    "id": "10e7cc1a-9d06-4a40-afd0-ad660b8e99fb",
+    "ts": "2026-03-28T22:15:31.532Z",
+    "source": "security-research",
+    "type": "decision.escalate",
+    "subject_kind": "approval",
+    "subject_id": "litellm-advisory-publication",
+    "severity": "warning",
+    "decision": "ESCALATE",
+    "title": "Advisory publication escalated for approval",
+    "summary": "The advisory draft is ready, but publication requires a human approval checkpoint.",
+    "status": "emitted",
+    "artifacts": [
+      "ops/reports/blogs/litellm-advisory.md"
+    ]
+  },
+  {
+    "id": "6f67bfd9-b935-4b1f-b364-875b1d83862d",
+    "ts": "2026-03-28T22:15:31.532Z",
+    "source": "security-research",
+    "type": "human.approval_requested",
+    "subject_kind": "approval",
+    "subject_id": "litellm-advisory-publication",
+    "severity": "warning",
+    "decision": "ESCALATE",
+    "title": "Approve LiteLLM advisory publication",
+    "summary": "Human review is required before publishing the remediation brief to operators.",
+    "status": "emitted",
+    "artifacts": [
+      "ops/reports/blogs/litellm-advisory.md"
+    ]
+  }
+]

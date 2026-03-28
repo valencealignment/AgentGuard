@@ -8,4 +8,5 @@ __pycache__/
 .env
 .env.*
 ops/tmp/
-
+ops/status/*.pid
+ops/reports/**/*.log

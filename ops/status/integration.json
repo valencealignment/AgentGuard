@@ -1,9 +1,9 @@
 {
   "blockers": [],
   "branch": "codex/mail-core",
-  "current_task": "api, hooks, and aggregate loop ready",
-  "demo_readiness": "substrate-ready",
+  "current_task": "full stack verified and ready",
+  "demo_readiness": "ready",
   "lane": "integration",
-  "last_heartbeat": "2026-03-28T19:55:21Z",
-  "percent_complete": 55
+  "last_heartbeat": "2026-03-28T22:19:30Z",
+  "percent_complete": 100
 }

@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-03-28T22:15:31.520Z",
+  "scenario_id": "scenario-b-litellm-risk",
+  "scenario_title": "LiteLLM-centered risky path",
+  "evaluation": {
+    "scenario_id": "scenario-b-litellm-risk",
+    "title": "LiteLLM-centered risky path",
+    "severity": "high",
+    "summary": "A sandboxed agent attempts to install a flagged LiteLLM version associated with suspicious install-time behavior.",
+    "verdict": "BLOCK",
+    "reason": "litellm 1.82.8 is on the blocked package-version list.",
+    "risk_score": 100,
+    "confidence": 0.99,
+    "explanation": "litellm 1.82.8 is on the blocked package-version list.",
+    "evidence": [
+      "flagged_dependency_version",
+      "reads_env_vars",
+      "reads_ssh_keys",
+      "opens_network_socket_during_install",
+      "network_required"
+    ],
+    "signals": [
+      "reads_env_vars",
+      "reads_ssh_keys",
+      "opens_network_socket_during_install",
+      "network_required"
+    ],
+    "package": {
+      "name": "litellm",
+      "version": "1.82.8"
+    },
+    "reputation_delta": -18
+  },
+  "summary": "litellm 1.82.8 is on the blocked package-version list. Evidence: flagged_dependency_version, reads_env_vars, reads_ssh_keys, opens_network_socket_during_install, network_required.",
+  "remediation": [
+    "Pin LiteLLM to `<=1.82.6` until the flagged installer path is cleared.",
+    "Delete suspicious `.pth` startup hooks from the environment before rebuilding it.",
+    "Rotate any credentials exposed during the attempted install path.",
+    "Rebuild the virtual environment from a known-good lockfile and re-run receipt validation."
+  ]
+}

@@ -56,6 +56,13 @@ function collectEvents(lane = null, limit = 50) {
   };
 }
 
+function collectDomainEvents() {
+  return [
+    ...safeReadJson("ops/reports/demo/domain-events.json", []),
+    ...safeReadJson("ops/reports/security/domain-events.json", [])
+  ].sort((left, right) => String(left.ts || "").localeCompare(String(right.ts || "")));
+}
+
 function json(res, status, payload) {
   res.writeHead(status, {
     "Content-Type": "application/json; charset=utf-8",
@@ -172,13 +179,18 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (url.pathname === "/security/metrics") {
+    json(res, 200, safeReadJson("ops/reports/security/metrics.json", {}));
+    return;
+  }
+
   if (url.pathname === "/demo/latest-run") {
     json(res, 200, safeReadJson("ops/reports/demo/latest-run.json", {}));
     return;
   }
 
   if (url.pathname === "/demo/domain-events") {
-    json(res, 200, safeReadJson("ops/reports/demo/domain-events.json", []));
+    json(res, 200, collectDomainEvents());
     return;
   }
 

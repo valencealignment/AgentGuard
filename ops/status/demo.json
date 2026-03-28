@@ -1,17 +1,15 @@
 {
-  "lane": "demo",
-  "branch": "codex/demo-validation",
-  "current_task": "Demo scenarios generated and reports refreshed",
-  "percent_complete": 100,
-  "last_heartbeat": "2026-03-28T12:58:21-07:00",
-  "blockers": [
-    "gcloud CLI unavailable on this machine; using local fallback"
-  ],
   "active_scenarios": [
     "scenario-a-clean-allow",
     "scenario-b-litellm-risk",
     "scenario-c-poor-reputation-external-agent",
     "scenario-d-remediation-follow-through"
   ],
-  "demo_readiness": "ready"
+  "blockers": [],
+  "branch": "codex/mail-core",
+  "current_task": "Demo scenarios generated and reports refreshed",
+  "demo_readiness": "ready",
+  "lane": "demo",
+  "last_heartbeat": "2026-03-28T22:18:57Z",
+  "percent_complete": 100
 }
