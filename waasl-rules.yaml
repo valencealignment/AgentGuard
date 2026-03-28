@@ -87,6 +87,7 @@ rules:
     - modifies_bashrc
     - hides_in_pyc
     - downloads_stego_payload
+    - injects_path
     warn_if:
     - reads_ssh_keys
     - reads_env_vars
