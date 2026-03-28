@@ -34,7 +34,9 @@ ROOT = Path(__file__).resolve().parent
 RULES_PATH = ROOT / "waasl-rules.yaml"
 ATTACKS_PATH = ROOT / "attacks" / "known_malicious.json"
 GENERATED_ATTACKS_PATH = ROOT / "attacks" / "generated.json"
+GENERATED_ADVERSARIAL_ATTACKS_PATH = ROOT / "attacks" / "generated_adversarial.json"
 SAFE_PATH = ROOT / "safe_packages" / "known_good.json"
+GENERATED_SAFE_PATH = ROOT / "safe_packages" / "generated.json"
 RESULTS_PATH = ROOT / "merck_results.jsonl"
 SECURITY_STATUS_PATH = ROOT / "ops" / "status" / "security.json"
 DEFAULT_PROGRESS_SECONDS = 30 * 60
@@ -80,12 +82,28 @@ def write_json(path: Path, payload: Any) -> None:
 
 def ensure_runtime_paths() -> None:
     GENERATED_ATTACKS_PATH.parent.mkdir(parents=True, exist_ok=True)
+    GENERATED_ADVERSARIAL_ATTACKS_PATH.parent.mkdir(parents=True, exist_ok=True)
+    GENERATED_SAFE_PATH.parent.mkdir(parents=True, exist_ok=True)
     SECURITY_STATUS_PATH.parent.mkdir(parents=True, exist_ok=True)
     (ROOT / "ops" / "reports" / "blogs").mkdir(parents=True, exist_ok=True)
 
 
 def load_attack_corpus() -> list[dict[str, Any]]:
-    return [*load_json(ATTACKS_PATH), *load_json(GENERATED_ATTACKS_PATH)]
+    dynamic = load_json(GENERATED_ADVERSARIAL_ATTACKS_PATH)
+    return [
+        *load_json(ATTACKS_PATH),
+        *load_json(GENERATED_ATTACKS_PATH),
+        *[sample for sample in dynamic if sample.get("expected_verdict") != "allow"],
+    ]
+
+
+def load_safe_corpus() -> list[dict[str, Any]]:
+    dynamic = load_json(GENERATED_ADVERSARIAL_ATTACKS_PATH)
+    return [
+        *load_json(SAFE_PATH),
+        *load_json(GENERATED_SAFE_PATH),
+        *[sample for sample in dynamic if sample.get("expected_verdict") == "allow"],
+    ]
 
 
 def default_rules_document() -> dict[str, Any]:
@@ -940,7 +958,7 @@ def run_loop(args: argparse.Namespace) -> None:
     ensure_runtime_paths()
     ensure_baseline_commit()
     attacks = load_attack_corpus()
-    safe_cases = load_json(SAFE_PATH)
+    safe_cases = load_safe_corpus()
     shared_state = SharedState()
     shared_state.port = args.port
     shared_state.corpus_counts = {"attacks": len(attacks), "safe_cases": len(safe_cases)}
@@ -963,7 +981,7 @@ def run_loop(args: argparse.Namespace) -> None:
     while time.monotonic() < deadline:
         iteration += 1
         attacks = load_attack_corpus()
-        safe_cases = load_json(SAFE_PATH)
+        safe_cases = load_safe_corpus()
         current_rules = load_rules()
         current_metrics = evaluate_rules(current_rules, attacks, safe_cases)
         with shared_state.lock:

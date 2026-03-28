@@ -1,0 +1,71 @@
+[
+  {
+    "id": "litellm-micro-patch-above-safe",
+    "action_type": "package_install",
+    "target": "litellm==1.82.6.post1",
+    "expected_verdict": "warn"
+  },
+  {
+    "id": "reqests-levenshtein-one",
+    "action_type": "package_install",
+    "target": "reqests==2.31.0",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "openai-internal-namespace-squat",
+    "action_type": "package_install",
+    "target": "openai-internal==0.0.1",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "data-processor-utils-aws-creds",
+    "action_type": "package_install",
+    "target": "data-processor-utils==1.4.2",
+    "expected_verdict": "block",
+    "signals": [
+      "reads_aws_credentials"
+    ]
+  },
+  {
+    "id": "legit-looking-mcp-tool-poison",
+    "action_type": "mcp_call",
+    "target": "https://mcp.legitimate-looking-domain.com/sse",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "ssh-keygen-utils-safe-trap",
+    "action_type": "package_install",
+    "target": "ssh-keygen-utils==1.0.0",
+    "expected_verdict": "allow"
+  },
+  {
+    "id": "aws-credential-rotator-safe-trap",
+    "action_type": "package_install",
+    "target": "aws-credential-rotator==3.0.0",
+    "expected_verdict": "allow"
+  },
+  {
+    "id": "pth-persistence-dropper",
+    "action_type": "package_install",
+    "target": "sitecustomize-helper==0.3.1",
+    "expected_verdict": "block",
+    "signals": [
+      "drops_pth_persistence"
+    ]
+  },
+  {
+    "id": "delayed-execution-downloader",
+    "action_type": "package_install",
+    "target": "background-syncer==2.0.0",
+    "expected_verdict": "block",
+    "signals": [
+      "delayed_execution"
+    ]
+  },
+  {
+    "id": "dns-tunneling-exfil",
+    "action_type": "api_request",
+    "target": "https://MFRGGZDFMZTWQ2LKON2HE2LOM4.attacker-dns.net/resolve",
+    "expected_verdict": "block"
+  }
+]
