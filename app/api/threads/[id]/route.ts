@@ -1,5 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
+import { readFile } from "fs/promises";
+import { join } from "path";
 import type { Thread } from "@/lib/types";
+import {
+  transformScenarioTrace,
+  type ScenarioReport,
+  type ScenarioTrace,
+} from "@/lib/scenario-transforms";
+
+const REPORTS_DIR = join(process.cwd(), "ops", "reports", "demo");
 
 const MOCK_THREADS: Record<string, Thread> = {
   "thread-litellm-001": {
@@ -98,16 +107,43 @@ const MOCK_THREADS: Record<string, Thread> = {
   },
 };
 
+async function loadScenarioThread(scenarioId: string): Promise<Thread | null> {
+  try {
+    const traceRaw = await readFile(
+      join(REPORTS_DIR, scenarioId, "trace.json"),
+      "utf-8",
+    );
+    const reportRaw = await readFile(
+      join(REPORTS_DIR, scenarioId, "report.json"),
+      "utf-8",
+    );
+    const trace = JSON.parse(traceRaw) as ScenarioTrace;
+    const report = JSON.parse(reportRaw) as ScenarioReport;
+    return transformScenarioTrace(trace, report);
+  } catch {
+    return null;
+  }
+}
+
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const thread = MOCK_THREADS[id];
 
-  if (!thread) {
-    return NextResponse.json({ error: "Thread not found" }, { status: 404 });
+  // Check mock threads first
+  if (MOCK_THREADS[id]) {
+    return NextResponse.json(MOCK_THREADS[id]);
   }
 
-  return NextResponse.json(thread);
+  // Try scenario trace: thread IDs are "thread-scenario-*"
+  if (id.startsWith("thread-scenario-")) {
+    const scenarioId = id.replace("thread-", "");
+    const thread = await loadScenarioThread(scenarioId);
+    if (thread) {
+      return NextResponse.json(thread);
+    }
+  }
+
+  return NextResponse.json({ error: "Thread not found" }, { status: 404 });
 }

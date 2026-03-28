@@ -21,6 +21,7 @@ const mockIterations: Iteration[] = [
     delta: 0,
     mutation: "Initial rule set",
     timestamp: "2026-03-28T10:00:00Z",
+    kept: true,
   },
   {
     id: "iter-1",
@@ -29,6 +30,7 @@ const mockIterations: Iteration[] = [
     delta: 9,
     mutation: "Reweighted typosquat distance",
     timestamp: "2026-03-28T11:15:00Z",
+    kept: true,
   },
   {
     id: "iter-2",
@@ -37,6 +39,29 @@ const mockIterations: Iteration[] = [
     delta: 7,
     mutation: "Added slopsquat detector",
     timestamp: "2026-03-28T12:30:00Z",
+    kept: true,
+  },
+];
+
+const mockIterationsWithRollback: Iteration[] = [
+  ...mockIterations,
+  {
+    id: "iter-2b",
+    label: "iter-2b",
+    score: 74,
+    delta: -4,
+    mutation: "Aggressive namespace-collision heuristic",
+    timestamp: "2026-03-28T12:48:00Z",
+    kept: false,
+  },
+  {
+    id: "iter-3",
+    label: "iter-3",
+    score: 85,
+    delta: 7,
+    mutation: "Combined MCP auth-bypass signals",
+    timestamp: "2026-03-28T13:45:00Z",
+    kept: true,
   },
 ];
 
@@ -151,5 +176,44 @@ describe("AutoResearcherPanel", () => {
     );
     // With only 1 point, sparkline renders a div placeholder, no SVG polyline
     expect(container.querySelector("polyline")).not.toBeInTheDocument();
+  });
+
+  // ── Rolled-back iteration tests ─────────────────────────────
+
+  it("shows rolled back label for reverted iterations", () => {
+    render(
+      <AutoResearcherPanel
+        score={mockScore}
+        iterations={mockIterationsWithRollback}
+      />,
+    );
+    expect(screen.getByText("rolled back", { exact: false })).toBeInTheDocument();
+  });
+
+  it("shows negative delta for rolled-back iterations", () => {
+    render(
+      <AutoResearcherPanel
+        score={mockScore}
+        iterations={mockIterationsWithRollback}
+      />,
+    );
+    expect(screen.getByText("-4")).toBeInTheDocument();
+  });
+
+  it("excludes rolled-back iterations from sparkline points", () => {
+    const { container } = render(
+      <AutoResearcherPanel
+        score={mockScore}
+        iterations={mockIterationsWithRollback}
+      />,
+    );
+    const svg = container.querySelector("svg");
+    expect(svg).toBeInTheDocument();
+    const polyline = svg!.querySelector("polyline");
+    expect(polyline).toBeInTheDocument();
+    // 4 kept iterations = 4 points in polyline (baseline, iter-1, iter-2, iter-3)
+    const pointsAttr = polyline!.getAttribute("points")!;
+    const pointCount = pointsAttr.split(" ").length;
+    expect(pointCount).toBe(4);
   });
 });

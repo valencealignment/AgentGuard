@@ -69,6 +69,22 @@ export function useDecisions() {
     }
   }, []);
 
+  // Seed scenario decisions once on mount (they're static artifacts)
+  useEffect(() => {
+    fetch("/api/scenarios")
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data: Decision[]) => {
+        if (data.length > 0) {
+          setDecisions((prev) => {
+            const existingIds = new Set(prev.map((d) => d.id));
+            const incoming = data.filter((d) => !existingIds.has(d.id));
+            return [...prev, ...incoming];
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   useEffect(() => {
     fetchDecisions();
     const id = setInterval(fetchDecisions, POLL_INTERVAL);
