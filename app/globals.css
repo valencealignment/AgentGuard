@@ -22,7 +22,7 @@
   --color-verdict-block: #ef4444;
   --color-verdict-allow: #22c55e;
   --color-verdict-escalate: #f59e0b;
-  --color-verdict-warn: #f59e0b;
+  --color-verdict-warn: #fb923c;
 
   /* Signal category colors */
   --color-signal-critical: #ef4444;

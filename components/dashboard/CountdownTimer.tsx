@@ -8,10 +8,21 @@ export function CountdownTimer({ resetKey }: { resetKey: string }) {
   useEffect(() => {
     setSeconds(600);
     const id = setInterval(() => {
-      setSeconds((s) => (s > 0 ? s - 1 : 0));
+      setSeconds((s) => {
+        if (s <= 0) return 0;
+        return s - 1;
+      });
     }, 1000);
     return () => clearInterval(id);
   }, [resetKey]);
+
+  if (seconds <= 0) {
+    return (
+      <span className="font-mono text-xs font-semibold text-verdict-block">
+        Expired
+      </span>
+    );
+  }
 
   const mins = Math.floor(seconds / 60);
   const secs = seconds % 60;

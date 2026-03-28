@@ -34,18 +34,33 @@ export default function EnforcementLog({
         const isSelected = d.id === selectedId;
         const isNew = newIds.has(d.id);
         const colors = VERDICT_COLORS[d.verdict];
+        const isRealAttack = d.is_real_attack;
+
+        // Resolve class conflicts: real-attack styling wins for bg/border,
+        // selected adds a subtle ring instead of competing background
+        const bg = isRealAttack
+          ? "bg-surface-1"
+          : isSelected
+            ? "bg-surface-2"
+            : "hover:bg-surface-2/50";
+        const border = isRealAttack
+          ? "border-verdict-block"
+          : isSelected
+            ? colors.border
+            : "border-transparent";
 
         return (
-          <button
+          <div
             key={d.id}
+            role="row"
+            tabIndex={0}
             onClick={() => onSelect(d.id)}
-            className={`text-left rounded-md px-3 py-2 transition-colors ${
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onSelect(d.id); } }}
+            className={`text-left rounded-md px-3 py-2 transition-colors cursor-pointer ${
               isNew ? "animate-fade-up" : ""
-            } ${
-              isSelected
-                ? `bg-surface-2 border-l-2 ${colors.border}`
-                : "border-l-2 border-transparent hover:bg-surface-2/50"
-            } ${d.is_real_attack ? "sticky top-0 z-10 bg-surface-1 border-l-2 border-verdict-block" : ""}`}
+            } border-l-2 ${border} ${bg} ${
+              isRealAttack ? "sticky top-0 z-10" : ""
+            } ${isSelected && isRealAttack ? "ring-1 ring-inset ring-foreground/10" : ""}`}
           >
             <div className="flex items-center gap-2">
               <VerdictBadge verdict={d.verdict} />
@@ -55,7 +70,7 @@ export default function EnforcementLog({
               {d.version && (
                 <span className="text-xs text-foreground/40">=={d.version}</span>
               )}
-              {d.is_real_attack && (
+              {isRealAttack && (
                 <>
                   <span className="rounded bg-verdict-block/20 px-1.5 py-0.5 text-[10px] font-bold text-verdict-block uppercase">
                     Real Attack
@@ -66,25 +81,17 @@ export default function EnforcementLog({
                 </>
               )}
               {hasKnownExposure(d) && (
-                <span
-                  role="button"
-                  tabIndex={0}
+                <button
+                  type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     const ip = d.target.replace(/^https?:\/\//, "").split(/[:/]/)[0];
                     onExposureClick?.(ip);
                   }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.stopPropagation();
-                      const ip = d.target.replace(/^https?:\/\//, "").split(/[:/]/)[0];
-                      onExposureClick?.(ip);
-                    }
-                  }}
                   className="rounded bg-accent-blue/15 px-1.5 py-0.5 text-[10px] font-medium text-accent-blue hover:bg-accent-blue/25 cursor-pointer"
                 >
                   ⬡ known exposure
-                </span>
+                </button>
               )}
               <span className="ml-auto text-[10px] text-foreground/30 tabular-nums">
                 {new Date(d.timestamp).toLocaleTimeString("en-US", { hour12: false })}
@@ -95,14 +102,14 @@ export default function EnforcementLog({
               {d.reason}
             </p>
 
-            {d.is_real_attack && d.signals.length > 0 && (
+            {isRealAttack && d.signals.length > 0 && (
               <div className="mt-1.5 flex flex-wrap gap-1">
                 {d.signals.map((s) => (
                   <SignalChip key={s} signal={s} />
                 ))}
               </div>
             )}
-          </button>
+          </div>
         );
       })}
 
