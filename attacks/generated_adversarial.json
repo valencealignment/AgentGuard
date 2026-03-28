@@ -1,0 +1,326 @@
+[
+  {
+    "id": "litellm-micro-patch-above-safe",
+    "action_type": "package_install",
+    "target": "litellm==1.82.6.post1",
+    "expected_verdict": "warn"
+  },
+  {
+    "id": "reqests-levenshtein-one",
+    "action_type": "package_install",
+    "target": "reqests==2.31.0",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "openai-internal-namespace-squat",
+    "action_type": "package_install",
+    "target": "openai-internal==0.0.1",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "data-processor-utils-aws-creds",
+    "action_type": "package_install",
+    "target": "data-processor-utils==1.4.2",
+    "expected_verdict": "block",
+    "signals": [
+      "reads_aws_credentials"
+    ]
+  },
+  {
+    "id": "legit-looking-mcp-tool-poison",
+    "action_type": "mcp_call",
+    "target": "https://mcp.legitimate-looking-domain.com/sse",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "ssh-keygen-utils-safe-trap",
+    "action_type": "package_install",
+    "target": "ssh-keygen-utils==1.0.0",
+    "expected_verdict": "allow"
+  },
+  {
+    "id": "aws-credential-rotator-safe-trap",
+    "action_type": "package_install",
+    "target": "aws-credential-rotator==3.0.0",
+    "expected_verdict": "allow"
+  },
+  {
+    "id": "pth-persistence-dropper",
+    "action_type": "package_install",
+    "target": "sitecustomize-helper==0.3.1",
+    "expected_verdict": "block",
+    "signals": [
+      "drops_pth_persistence"
+    ]
+  },
+  {
+    "id": "delayed-execution-downloader",
+    "action_type": "package_install",
+    "target": "background-syncer==2.0.0",
+    "expected_verdict": "block",
+    "signals": [
+      "delayed_execution"
+    ]
+  },
+  {
+    "id": "dns-tunneling-exfil",
+    "action_type": "api_request",
+    "target": "https://MFRGGZDFMZTWQ2LKON2HE2LOM4.attacker-dns.net/resolve",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "combo-requests-async",
+    "action_type": "package_install",
+    "target": "requests-async==0.1.0",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "slop-jwt-secure-validator",
+    "action_type": "package_install",
+    "target": "jwt-secure-validator==0.1.0",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "signal-crontab-writer",
+    "action_type": "package_install",
+    "target": "cron-helper==1.0.0",
+    "expected_verdict": "block",
+    "signals": [
+      "writes_crontab"
+    ]
+  },
+  {
+    "id": "mcp-rugpull-figma-helper",
+    "action_type": "mcp_call",
+    "target": "https://figma-helper-mcp.com/sse",
+    "expected_verdict": "block",
+    "signals": [
+      "tool_description_changed"
+    ]
+  },
+  {
+    "id": "depconf-company-auth",
+    "action_type": "package_install",
+    "target": "company-auth==0.9.1",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "combo-numpy-cuda",
+    "action_type": "package_install",
+    "target": "numpy-cuda==1.26.0",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "slop-fastapi-middleware-core",
+    "action_type": "package_install",
+    "target": "fastapi-middleware-core==0.2.1",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "signal-bashrc-modifier",
+    "action_type": "package_install",
+    "target": "shell-profile-sync==0.6.0",
+    "expected_verdict": "block",
+    "signals": [
+      "modifies_bashrc"
+    ]
+  },
+  {
+    "id": "mcp-rugpull-jira-bridge",
+    "action_type": "mcp_call",
+    "target": "https://jira-bridge-tools.dev/sse",
+    "expected_verdict": "block",
+    "signals": [
+      "tool_description_changed"
+    ]
+  },
+  {
+    "id": "depconf-internal-api-client",
+    "action_type": "package_install",
+    "target": "internal-api-client==1.2.0",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "pyc-hidden-loader",
+    "action_type": "package_install",
+    "target": "compiled-runtime-helper==0.5.0",
+    "expected_verdict": "block",
+    "signals": [
+      "hides_in_pyc"
+    ]
+  },
+  {
+    "id": "stego-image-payload",
+    "action_type": "package_install",
+    "target": "theme-assets-plus==3.2.0",
+    "expected_verdict": "block",
+    "signals": [
+      "downloads_stego_payload"
+    ]
+  },
+  {
+    "id": "combo-flask-admin-tools",
+    "action_type": "package_install",
+    "target": "flask-admin-tools==2.0.0",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "slop-openai-session-manager",
+    "action_type": "package_install",
+    "target": "openai-session-manager==0.0.3",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "signal-path-injector",
+    "action_type": "package_install",
+    "target": "path-bootstrapper==2.2.0",
+    "expected_verdict": "block",
+    "signals": [
+      "injects_path"
+    ]
+  },
+  {
+    "id": "mcp-rugpull-notion-sync",
+    "action_type": "mcp_call",
+    "target": "https://notion-sync-mcp.app/sse",
+    "expected_verdict": "block",
+    "signals": [
+      "tool_description_changed"
+    ]
+  },
+  {
+    "id": "depconf-corp-secrets-sdk",
+    "action_type": "package_install",
+    "target": "corp-secrets-sdk==0.0.4",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "combo-pandas-stream",
+    "action_type": "package_install",
+    "target": "pandas-stream-utils==0.4.0",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "slop-redis-queue-secure",
+    "action_type": "package_install",
+    "target": "redis-queue-secure==0.0.2",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "signal-browser-cookie-reader",
+    "action_type": "package_install",
+    "target": "browser-session-tools==1.3.0",
+    "expected_verdict": "block",
+    "signals": [
+      "reads_browser_cookies"
+    ]
+  },
+  {
+    "id": "mcp-rugpull-github-agent",
+    "action_type": "mcp_call",
+    "target": "https://github-agent-tools.app/sse",
+    "expected_verdict": "block",
+    "signals": [
+      "tool_description_changed"
+    ]
+  },
+  {
+    "id": "depconf-private-build-utils",
+    "action_type": "package_install",
+    "target": "private-build-utils==0.3.2",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "combo-fastapi-auth-kit",
+    "action_type": "package_install",
+    "target": "fastapi-auth-kit==0.3.0",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "slop-vector-db-router",
+    "action_type": "package_install",
+    "target": "vector-db-router==0.1.4",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "signal-zshrc-modifier",
+    "action_type": "package_install",
+    "target": "shell-login-helper==1.4.0",
+    "expected_verdict": "block",
+    "signals": [
+      "modifies_shell_rc"
+    ]
+  },
+  {
+    "id": "mcp-rugpull-linear-sync",
+    "action_type": "mcp_call",
+    "target": "https://linear-sync-mcp.dev/sse",
+    "expected_verdict": "block",
+    "signals": [
+      "tool_description_changed"
+    ]
+  },
+  {
+    "id": "depconf-enterprise-sso-client",
+    "action_type": "package_install",
+    "target": "enterprise-sso-client==1.0.1",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "combo-anthropic-cli-tools",
+    "action_type": "package_install",
+    "target": "anthropic-cli-tools==1.1.0",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "slop-llm-cache-proxy",
+    "action_type": "package_install",
+    "target": "llm-cache-proxy==0.0.8",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "signal-history-cleaner",
+    "action_type": "package_install",
+    "target": "session-cleaner==0.9.0",
+    "expected_verdict": "block",
+    "signals": [
+      "clears_shell_history"
+    ]
+  },
+  {
+    "id": "mcp-rugpull-obsidian-bridge",
+    "action_type": "mcp_call",
+    "target": "https://obsidian-bridge-mcp.net/sse",
+    "expected_verdict": "block",
+    "signals": [
+      "tool_description_changed"
+    ]
+  },
+  {
+    "id": "depconf-org-vault-sdk",
+    "action_type": "package_install",
+    "target": "org-vault-sdk==0.5.0",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "combo-openai-agent-utils",
+    "action_type": "package_install",
+    "target": "openai-agent-utils==0.7.0",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "slop-async-token-refresh",
+    "action_type": "package_install",
+    "target": "async-token-refresh==0.0.5",
+    "expected_verdict": "block"
+  },
+  {
+    "id": "signal-ssh-config-reader",
+    "action_type": "package_install",
+    "target": "ssh-profile-tools==2.0.0",
+    "expected_verdict": "block",
+    "signals": [
+      "reads_ssh_config"
+    ]
+  }
+]

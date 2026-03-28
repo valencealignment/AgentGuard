@@ -1,0 +1,50 @@
+[
+  {
+    "id": "pillow-safe",
+    "action_type": "package_install",
+    "target": "Pillow==10.2.0",
+    "expected_verdict": "allow"
+  },
+  {
+    "id": "beautifulsoup-safe",
+    "action_type": "package_install",
+    "target": "beautifulsoup4==4.12.3",
+    "expected_verdict": "allow"
+  },
+  {
+    "id": "dateutil-safe",
+    "action_type": "package_install",
+    "target": "python-dateutil==2.9.0",
+    "expected_verdict": "allow"
+  },
+  {
+    "id": "drf-simplejwt-safe",
+    "action_type": "package_install",
+    "target": "djangorestframework-simplejwt==5.4.0",
+    "expected_verdict": "allow"
+  },
+  {
+    "id": "anthropic-api-safe",
+    "action_type": "api_request",
+    "target": "https://api.anthropic.com/v1/messages",
+    "expected_verdict": "allow"
+  },
+  {
+    "id": "huggingface-hub-safe",
+    "action_type": "package_install",
+    "target": "huggingface_hub==0.23.0",
+    "expected_verdict": "allow"
+  },
+  {
+    "id": "linear-mcp-safe",
+    "action_type": "mcp_call",
+    "target": "https://mcp.linear.app/sse",
+    "expected_verdict": "allow"
+  },
+  {
+    "id": "github-api-safe",
+    "action_type": "api_request",
+    "target": "https://api.github.com/repos/openai/openai-python",
+    "expected_verdict": "allow"
+  }
+]

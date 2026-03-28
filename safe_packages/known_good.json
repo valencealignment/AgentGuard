@@ -1,0 +1,10 @@
+[
+  {"id":"requests-safe","action_type":"package_install","target":"requests==2.31.0","expected_verdict":"allow"},
+  {"id":"numpy-safe","action_type":"package_install","target":"numpy==1.26.0","expected_verdict":"allow"},
+  {"id":"fastapi-safe","action_type":"package_install","target":"fastapi==0.110.0","expected_verdict":"allow"},
+  {"id":"litellm-safe","action_type":"package_install","target":"litellm==1.82.6","expected_verdict":"allow"},
+  {"id":"openai-safe","action_type":"package_install","target":"openai==1.50.0","expected_verdict":"allow"},
+  {"id":"anthropic-safe","action_type":"package_install","target":"anthropic==0.40.0","expected_verdict":"allow"},
+  {"id":"good-mcp","action_type":"mcp_call","target":"https://mcp.figma.com/sse","expected_verdict":"allow"},
+  {"id":"safe-api","action_type":"api_request","target":"https://api.openai.com/v1/chat/completions","expected_verdict":"allow"}
+]

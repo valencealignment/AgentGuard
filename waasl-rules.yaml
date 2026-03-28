@@ -1,0 +1,214 @@
+version: 1
+rules:
+  package_blocklist:
+  - name: litellm
+    versions:
+    - 1.82.8
+    - 1.82.7
+    reason: Supply chain attack
+    severity: critical
+  - name: reqeusts
+    versions:
+    - 1.0.0
+    reason: MERCK learned exact block
+    severity: high
+  - name: llm-utils
+    versions:
+    - 0.0.1
+    reason: MERCK learned exact block
+    severity: high
+  - name: aiocpa
+    versions:
+    - 0.1.13
+    reason: Known sleeper-package takeover
+    severity: critical
+  - name: fshec2
+    versions:
+    - 0.1.0
+    reason: Compiled bytecode payload
+    severity: critical
+  - name: openai-internal
+    versions:
+    - 0.0.1
+    reason: MERCK learned exact block
+    severity: high
+  - name: requests-async
+    versions:
+    - 0.1.0
+    reason: MERCK learned exact block
+    severity: high
+  - name: jwt-secure-validator
+    versions:
+    - 0.1.0
+    reason: MERCK learned exact block
+    severity: high
+  - name: company-auth
+    versions:
+    - 0.9.1
+    reason: MERCK learned exact block
+    severity: high
+  - name: numpy-cuda
+    versions:
+    - 1.26.0
+    reason: MERCK learned exact block
+    severity: high
+  - name: fastapi-middleware-core
+    versions:
+    - 0.2.1
+    reason: MERCK learned exact block
+    severity: high
+  - name: internal-api-client
+    versions:
+    - 1.2.0
+    reason: MERCK learned exact block
+    severity: high
+  - name: flask-admin-tools
+    versions:
+    - 2.0.0
+    reason: MERCK learned exact block
+    severity: high
+  - name: openai-session-manager
+    versions:
+    - 0.0.3
+    reason: MERCK learned exact block
+    severity: high
+  - name: corp-secrets-sdk
+    versions:
+    - 0.0.4
+    reason: MERCK learned exact block
+    severity: high
+  - name: pandas-stream-utils
+    versions:
+    - 0.4.0
+    reason: MERCK learned exact block
+    severity: high
+  - name: redis-queue-secure
+    versions:
+    - 0.0.2
+    reason: MERCK learned exact block
+    severity: high
+  - name: private-build-utils
+    versions:
+    - 0.3.2
+    reason: MERCK learned exact block
+    severity: high
+  - name: fastapi-auth-kit
+    versions:
+    - 0.3.0
+    reason: MERCK learned exact block
+    severity: high
+  - name: vector-db-router
+    versions:
+    - 0.1.4
+    reason: MERCK learned exact block
+    severity: high
+  - name: enterprise-sso-client
+    versions:
+    - 1.0.1
+    reason: MERCK learned exact block
+    severity: high
+  - name: anthropic-cli-tools
+    versions:
+    - 1.1.0
+    reason: MERCK learned exact block
+    severity: high
+  - name: llm-cache-proxy
+    versions:
+    - 0.0.8
+    reason: MERCK learned exact block
+    severity: high
+  - name: org-vault-sdk
+    versions:
+    - 0.5.0
+    reason: MERCK learned exact block
+    severity: high
+  - name: openai-agent-utils
+    versions:
+    - 0.7.0
+    reason: MERCK learned exact block
+    severity: high
+  - name: async-token-refresh
+    versions:
+    - 0.0.5
+    reason: MERCK learned exact block
+    severity: high
+  reputation_thresholds:
+    block_below_score: 10
+    warn_below_score: 30
+  typosquatting:
+    enabled: true
+  behavioral_signals:
+    block_if:
+    - opens_network_socket_during_install
+    - reads_aws_credentials
+    - drops_pth_persistence
+    - delayed_execution
+    - writes_crontab
+    - modifies_bashrc
+    - hides_in_pyc
+    - downloads_stego_payload
+    - injects_path
+    - reads_browser_cookies
+    - modifies_shell_rc
+    - clears_shell_history
+    - reads_ssh_config
+    warn_if:
+    - reads_ssh_keys
+    - reads_env_vars
+    - spawns_child_processes
+  mcp_rules:
+    block_if:
+    - exact_target: npm:postmark-mcp@1.0.0
+    - exact_target: http://10.0.0.12:9000/sse
+    - exact_target: http://172.16.4.20:7001/sse
+    - exact_target: http://postmark-mcp.internal/sse
+    - exact_target: https://172.16.4.20:7443/sse
+    - exact_target: ws://10.0.0.12:9000/sse
+    - exact_target: http://127.0.0.1:8080/sse
+    - exact_target: https://mcp.legitimate-looking-domain.com/sse
+    - exact_target: https://figma-helper-mcp.com/sse
+    - exact_target: https://jira-bridge-tools.dev/sse
+    - exact_target: https://notion-sync-mcp.app/sse
+    - exact_target: https://github-agent-tools.app/sse
+    - exact_target: https://linear-sync-mcp.dev/sse
+    - exact_target: https://obsidian-bridge-mcp.net/sse
+    warn_if:
+    - contains: postmark-mcp
+  domain_blocklist:
+  - collect-data.evil.com
+  - packages.storeartifact.com
+  - models.litellm.cloud
+  - mfrggzdfmztwq2lkon2he2lom4.attacker-dns.net
+  domain_patterns:
+    block_if:
+    - openai.com.evil.example
+    warn_if:
+    - openai-platform.com
+    - anthropic-api.net
+    - api.openai.com.attacker.net
+    - auth-openai.net
+    - login-sync.net
+  regex_patterns:
+    block_if:
+    - npm:postmark\-mcp@1\.0\.0
+    - https://10\.1\.2\.3/v1/upload
+    - packages\.storeartifact\.com/npm/unused\-imports
+    - http://127\.0\.0\.1:8080/latest/meta-data/iam/security-credentials/
+    warn_if:
+    - litellm==1\.82\.9
+    - litellm==1\.83\.0
+    - https://api\.openai\.com\.attacker\.net/v1/chat/completions
+    - https://console\.anthropic\.com\.login\-sync\.net/v1/messages
+    - https://auth\-openai\.net/oauth/token
+    - https://api\.telegram\.org/bot[^/]+/sendMessage
+    - litellm==1\.82\.6\.post1
+  package_name_patterns:
+    block_if:
+    - requests-plus
+    - huggingface-cli
+    - rest_framework_simplejwt
+    - noblox.js-proxy-server
+    warn_if:
+    - ai-helper-toolkit
+  host_suffix_patterns:
+    block_if: []

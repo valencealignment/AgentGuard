@@ -1,3 +1,23 @@
+.pycache_local/
+.venv/
+__pycache__/
+merck_loop.out
+merck_results.jsonl
+packages/*/build/
+packages/*/dist/
+packages/*/*.egg-info/
+ops/approvals/
+ops/events/
+ops/kanban.json
+ops/notifications/
+ops/reports/integration/
+ops/status/aggregate.json
+ops/status/autoresearch-supervisor.json
+ops/status/computer-2-heartbeat.json
+ops/status/computer-2.jsonl
+ops/status/computer-2.md
+ops/status/security.json
+ops/watchboard-state.json
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
