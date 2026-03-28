@@ -1,0 +1,44 @@
+{
+  "scenario_id": "scenario-c-poor-reputation-external-agent",
+  "title": "Poor-reputation external agent interaction",
+  "summary": "A low-reputation external agent attempts to invoke our system with weak provenance and outbound notification side effects.",
+  "decision": "BLOCK",
+  "severity": "critical",
+  "reason": "External low-reputation agent lacks trusted provenance and requested unsafe side effects.",
+  "evidence": [
+    "poor_reputation",
+    "unsigned_provenance",
+    "network_side_effect_requested"
+  ],
+  "agent": {
+    "id": "agent-external-lowrep",
+    "name": "External Plugin Runner",
+    "reputation": "poor",
+    "origin": "external"
+  },
+  "action": {
+    "type": "agent_interaction",
+    "target": "notify-and-install",
+    "context": {
+      "workspace_only": false,
+      "network_required": true,
+      "package_install": true,
+      "provenance": "unsigned",
+      "requested_side_effects": [
+        "send_notification",
+        "install_dependency"
+      ]
+    }
+  },
+  "notifications": [
+    {
+      "channel": "security-alerts",
+      "message": "Blocked poor-reputation external agent before side effects executed."
+    },
+    {
+      "channel": "human-approval-queue",
+      "message": "Review external agent trust posture before allowing future interactions."
+    }
+  ],
+  "generated_at": "2026-03-28T12:58:21-07:00"
+}

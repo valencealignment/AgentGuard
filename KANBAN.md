@@ -1,17 +1,16 @@
 # WAAL Kanban
 
-Generated at `2026-03-28T19:55:21Z`
+Generated at `2026-03-28T20:07:34Z`
 
 ## Backlog
-- [ui] unknown (0%)
 - [security] unknown (0%)
-- [demo] unknown (0%)
 
 ## In Progress
 - [integration] api, hooks, and aggregate loop ready (55%)
+- [ui] watchboard UX shell, hierarchy, and live data wiring (42%)
 
 ## Blocked
 - none
 
 ## Done
-- none
+- [demo] Demo scenarios generated and reports refreshed (100%)

@@ -1,0 +1,24 @@
+{
+  "scenario_id": "scenario-d-remediation-follow-through",
+  "events": [
+    {
+      "type": "agent.registered",
+      "summary": "Remediation Assistant registered from internal."
+    },
+    {
+      "type": "action.requested",
+      "summary": "report_generation requested for litellm-remediation-brief."
+    },
+    {
+      "type": "decision.allow",
+      "summary": "Generating remediation guidance is safe and needed after the blocked scenario."
+    }
+  ],
+  "notifications": [
+    {
+      "channel": "human-approval-queue",
+      "message": "Approve publication of the LiteLLM remediation brief."
+    }
+  ],
+  "generated_at": "2026-03-28T12:58:21-07:00"
+}

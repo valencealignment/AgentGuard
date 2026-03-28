@@ -6,6 +6,7 @@ import { contracts } from "../../packages/contracts/index.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "../..");
+const webRoot = path.join(root, "apps", "web");
 const host = process.env.WAAL_API_HOST || "127.0.0.1";
 const port = Number(process.env.WAAL_API_PORT || 8787);
 
@@ -63,8 +64,59 @@ function json(res, status, payload) {
   res.end(JSON.stringify(payload, null, 2));
 }
 
+function contentType(filePath) {
+  if (filePath.endsWith(".css")) {
+    return "text/css; charset=utf-8";
+  }
+  if (filePath.endsWith(".js")) {
+    return "application/javascript; charset=utf-8";
+  }
+  if (filePath.endsWith(".json")) {
+    return "application/json; charset=utf-8";
+  }
+  if (filePath.endsWith(".svg")) {
+    return "image/svg+xml";
+  }
+  return "text/html; charset=utf-8";
+}
+
+function safeReadText(relPath, fallback = "") {
+  try {
+    return fs.readFileSync(path.join(root, relPath), "utf8");
+  } catch {
+    return fallback;
+  }
+}
+
+function serveFile(res, absolutePath) {
+  try {
+    const payload = fs.readFileSync(absolutePath);
+    res.writeHead(200, {
+      "Content-Type": contentType(absolutePath),
+      "Cache-Control": "no-store"
+    });
+    res.end(payload);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
+
+  if (url.pathname === "/" || url.pathname === "/index.html") {
+    if (serveFile(res, path.join(webRoot, "index.html"))) {
+      return;
+    }
+  }
+
+  if (url.pathname.startsWith("/assets/")) {
+    const relPath = url.pathname.replace(/^\/assets\//, "");
+    if (serveFile(res, path.join(webRoot, relPath))) {
+      return;
+    }
+  }
 
   if (url.pathname === "/health") {
     json(res, 200, {
@@ -117,6 +169,25 @@ const server = http.createServer((req, res) => {
   if (url.pathname === "/research") {
     const watchboard = safeReadJson("ops/watchboard-state.json", {});
     json(res, 200, watchboard.research || []);
+    return;
+  }
+
+  if (url.pathname === "/demo/latest-run") {
+    json(res, 200, safeReadJson("ops/reports/demo/latest-run.json", {}));
+    return;
+  }
+
+  if (url.pathname === "/demo/domain-events") {
+    json(res, 200, safeReadJson("ops/reports/demo/domain-events.json", []));
+    return;
+  }
+
+  if (url.pathname === "/demo/summary") {
+    res.writeHead(200, {
+      "Content-Type": "text/markdown; charset=utf-8",
+      "Cache-Control": "no-store"
+    });
+    res.end(safeReadText("ops/reports/demo/summary.md", "# Demo summary unavailable\n"));
     return;
   }
 

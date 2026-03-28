@@ -1,0 +1,19 @@
+{
+  "scenario_id": "scenario-a-clean-allow",
+  "events": [
+    {
+      "type": "agent.registered",
+      "summary": "Workspace Assistant registered from internal."
+    },
+    {
+      "type": "action.requested",
+      "summary": "file_read requested for docs/usage.md."
+    },
+    {
+      "type": "decision.allow",
+      "summary": "Trusted agent performing a benign read-only action inside the workspace."
+    }
+  ],
+  "notifications": [],
+  "generated_at": "2026-03-28T12:58:21-07:00"
+}

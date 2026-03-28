@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WAAS Wall</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <div class="backdrop"></div>
+    <main class="shell">
+      <header class="hero">
+        <div class="hero__meta stagger">
+          <p class="eyebrow">WAAL / WAAS Wall</p>
+          <h1>Agent supply chain risk made judge-readable in under a minute.</h1>
+          <p class="hero__copy">
+            The watchboard favors hierarchy over clutter: live lane readiness first, then decisions,
+            then approvals and evidence. If feeds go stale, the UI says so directly instead of hiding it.
+          </p>
+          <div class="hero__actions">
+            <span class="badge badge--live" id="live-badge">Refreshing</span>
+            <span class="badge" id="generated-at">Waiting for repo data</span>
+          </div>
+        </div>
+        <div class="hero__scoreboard stagger" id="scoreboard"></div>
+      </header>
+
+      <section class="panel panel--wide stagger">
+        <div class="panel__header">
+          <div>
+            <p class="eyebrow">Lane Radar</p>
+            <h2>Who is live, stale, blocked, or ready</h2>
+          </div>
+          <p class="panel__hint">High-contrast cards and progress bars surface coordination gaps immediately.</p>
+        </div>
+        <div class="lane-grid" id="lane-grid"></div>
+      </section>
+
+      <section class="content-grid">
+        <section class="panel stagger">
+          <div class="panel__header">
+            <div>
+              <p class="eyebrow">Decision Stream</p>
+              <h2>Allow, block, and escalation moments</h2>
+            </div>
+          </div>
+          <div class="decision-stream" id="decision-stream"></div>
+        </section>
+
+        <section class="panel stagger">
+          <div class="panel__header">
+            <div>
+              <p class="eyebrow">Approval Queue</p>
+              <h2>Human checkpoints</h2>
+            </div>
+          </div>
+          <div class="approval-list" id="approval-list"></div>
+        </section>
+
+        <section class="panel panel--wide stagger">
+          <div class="panel__header">
+            <div>
+              <p class="eyebrow">Scenario Stories</p>
+              <h2>Canonical demo paths and evidence</h2>
+            </div>
+            <p class="panel__hint">Each card leads with the narrative, then points judges to reports and traces.</p>
+          </div>
+          <div class="scenario-grid" id="scenario-grid"></div>
+        </section>
+
+        <section class="panel stagger">
+          <div class="panel__header">
+            <div>
+              <p class="eyebrow">Recent Lane Messages</p>
+              <h2>Control-plane timeline</h2>
+            </div>
+          </div>
+          <div class="timeline" id="timeline"></div>
+        </section>
+
+        <section class="panel stagger">
+          <div class="panel__header">
+            <div>
+              <p class="eyebrow">Research & Reports</p>
+              <h2>Artifacts ready for demo or follow-up</h2>
+            </div>
+          </div>
+          <div class="artifact-list" id="artifact-list"></div>
+        </section>
+      </section>
+    </main>
+    <script type="module" src="/assets/app.js"></script>
+  </body>
+</html>
