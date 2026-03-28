@@ -37,7 +37,7 @@ The complete end-of-run WAAL snapshot includes:
 - a local API that serves the watchboard and repo artifacts
 - deterministic demo scenarios for `ALLOW`, `BLOCK`, and `ESCALATE`
 - a MERCK self-improving package-risk loop
-- two separate research-loop execution backends: Modal and Vast.ai GPUs
+- two separately built research-loop implementations: Modal and Vast.ai RTX GPU
 - security research artifacts, advisories, and patch proposals
 - lane heartbeats, status files, and aggregate watchboard state under `ops/`
 
@@ -106,8 +106,9 @@ Important:
 - It is useful for showing the `main` dashboard with real merged WAAL data.
 - It is not the final implementation source of truth.
 - `codex/mail-core` remains the canonical final integrated implementation.
-- The research layer was implemented across two separate execution paths:
-  Modal and Vast.ai GPUs, to ensure the loop stayed functionally available.
+- The research loop was duplicated during creation across two implementations:
+  Modal and Vast.ai RTX GPU.
+- The version actually demoed used the Vast.ai RTX GPU path.
 
 ## Demo Narrative
 
@@ -137,7 +138,8 @@ The most important generated outputs are:
   dashboard code and the full WAAL artifact pipeline.
 - The off-`main` deployment should be described as an integration preview, not
   as the final implementation branch.
-- The research loop should be described as dual-backed: Modal plus Vast.ai GPU
-  execution, not as a single-host-only pipeline.
+- The research loop should be described as having duplicated implementations,
+  with the demoed version using the Vast.ai RTX GPU path and Modal remaining the
+  parallel implementation.
 - If you only need the public artifact for judges, use the Vercel link.
 - If you need the reproducible local demo, use `codex/mail-core`.
