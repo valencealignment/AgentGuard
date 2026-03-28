@@ -1,0 +1,119 @@
+{
+  "decisions": [],
+  "generated_at": "2026-03-28T19:55:21Z",
+  "lanes": [
+    {
+      "blockers": [],
+      "branch": "codex/mail-core",
+      "current_task": "api, hooks, and aggregate loop ready",
+      "demo_readiness": "substrate-ready",
+      "heartbeat_age_seconds": 0,
+      "lane": "integration",
+      "last_heartbeat": "2026-03-28T19:55:21Z",
+      "percent_complete": 55,
+      "stale": false
+    },
+    {
+      "blockers": [],
+      "branch": "",
+      "current_task": "unknown",
+      "demo_readiness": "unknown",
+      "heartbeat_age_seconds": null,
+      "lane": "ui",
+      "last_heartbeat": null,
+      "percent_complete": 0,
+      "stale": true
+    },
+    {
+      "blockers": [],
+      "branch": "",
+      "current_task": "unknown",
+      "demo_readiness": "unknown",
+      "heartbeat_age_seconds": null,
+      "lane": "security",
+      "last_heartbeat": null,
+      "percent_complete": 0,
+      "stale": true
+    },
+    {
+      "blockers": [],
+      "branch": "",
+      "current_task": "unknown",
+      "demo_readiness": "unknown",
+      "heartbeat_age_seconds": null,
+      "lane": "demo",
+      "last_heartbeat": null,
+      "percent_complete": 0,
+      "stale": true
+    }
+  ],
+  "notifications": [],
+  "recent_events": [
+    {
+      "branch": "codex/mail-core",
+      "current_task": "bootstrap shared substrate",
+      "id": "14e8a32ea00a229d",
+      "message_type": "CLAIM",
+      "source": "integration",
+      "status": "open",
+      "summary": "Starting task: bootstrap shared substrate",
+      "title": "integration claimed lane",
+      "ts": "2026-03-28T19:54:25Z",
+      "type": "claim.created"
+    },
+    {
+      "branch": "codex/mail-core",
+      "current_task": "build shared contracts, hooks, api, aggregation",
+      "id": "4e42fa22ea58160d",
+      "message_type": "STATUS",
+      "source": "integration",
+      "status": "open",
+      "summary": "Scaffolded shared substrate for WAAL",
+      "title": "integration bootstrap",
+      "ts": "2026-03-28T19:54:25Z",
+      "type": "lane.status"
+    },
+    {
+      "id": "ff7722874883e815",
+      "message_type": "STATUS",
+      "source": "integration",
+      "status": "ok",
+      "summary": "Heartbeat for integration monitor loop",
+      "title": "integration heartbeat",
+      "ts": "2026-03-28T19:55:21Z",
+      "type": "heartbeat"
+    },
+    {
+      "branch": "codex/mail-core",
+      "current_task": "api, hooks, and aggregate loop ready",
+      "id": "a3c9d24c5c69665f",
+      "message_type": "STATUS",
+      "source": "integration",
+      "status": "open",
+      "summary": "Contracts, API, hooks, and aggregate watchboard state are available",
+      "title": "integration ready for lane consumption",
+      "ts": "2026-03-28T19:55:21Z",
+      "type": "lane.status"
+    }
+  ],
+  "reports": {
+    "blogs": [],
+    "demo": [],
+    "integration": [
+      {
+        "path": "ops/reports/integration/bootstrap.md",
+        "updated_at": "2026-03-28T19:55:04Z"
+      },
+      {
+        "path": "ops/reports/integration/modal_research_summary.md",
+        "updated_at": "2026-03-28T19:54:25Z"
+      },
+      {
+        "path": "ops/reports/integration/modal_research_summary.json",
+        "updated_at": "2026-03-28T19:54:25Z"
+      }
+    ],
+    "security": []
+  },
+  "stale_threshold_seconds": 180
+}

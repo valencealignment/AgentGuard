@@ -1,0 +1,66 @@
+{
+  "product": {
+    "name": "WAAL",
+    "surface": "WAAS Wall"
+  },
+  "lanes": {
+    "ui": "Computer 1",
+    "security": "Computer 2",
+    "integration": "Computer 3",
+    "demo": "Computer 4"
+  },
+  "message_types": [
+    "CLAIM",
+    "STATUS",
+    "BLOCKER",
+    "HANDOFF",
+    "DONE"
+  ],
+  "decision_types": [
+    "ALLOW",
+    "BLOCK",
+    "ESCALATE"
+  ],
+  "event_types": [
+    "agent.registered",
+    "claim.created",
+    "reservation.granted",
+    "scan.requested",
+    "scan.result",
+    "research.generated",
+    "decision.allow",
+    "decision.block",
+    "decision.escalate",
+    "notification.sent",
+    "reputation.updated",
+    "human.approval_requested",
+    "human.approval_recorded",
+    "blog.generated",
+    "package.patch_proposed",
+    "package.patch_applied",
+    "external_agent.blocked",
+    "heartbeat"
+  ],
+  "required_event_fields": [
+    "id",
+    "ts",
+    "source",
+    "type",
+    "title",
+    "summary",
+    "status"
+  ],
+  "status_fields": [
+    "branch",
+    "current_task",
+    "percent_complete",
+    "last_heartbeat",
+    "blockers",
+    "demo_readiness"
+  ],
+  "watchboard_files": {
+    "aggregate": "ops/status/aggregate.json",
+    "watchboard": "ops/watchboard-state.json",
+    "kanban": "ops/kanban.json"
+  }
+}

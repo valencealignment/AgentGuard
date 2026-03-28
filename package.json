@@ -1,0 +1,16 @@
+{
+  "name": "waal",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "api": "node apps/api/server.js",
+    "aggregate": "python3 scripts/ops/aggregate_state.py",
+    "heartbeat:integration": "python3 scripts/ops/heartbeat.py --lane integration --task integration",
+    "status:integration": "python3 scripts/ops/status.py --lane integration --task integration --percent 5 --demo-readiness bootstrapping",
+    "modal:once": "python3 infra/modal/continuous_research.py --once"
+  }
+}

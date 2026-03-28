@@ -1,0 +1,70 @@
+{
+  "decisions": [],
+  "demo": [],
+  "generated_at": "2026-03-28T19:55:21Z",
+  "lane_cards": [
+    {
+      "blockers": [],
+      "branch": "codex/mail-core",
+      "current_task": "api, hooks, and aggregate loop ready",
+      "demo_readiness": "substrate-ready",
+      "heartbeat_age_seconds": 0,
+      "lane": "integration",
+      "last_heartbeat": "2026-03-28T19:55:21Z",
+      "percent_complete": 55,
+      "stale": false
+    },
+    {
+      "blockers": [],
+      "branch": "",
+      "current_task": "unknown",
+      "demo_readiness": "unknown",
+      "heartbeat_age_seconds": null,
+      "lane": "ui",
+      "last_heartbeat": null,
+      "percent_complete": 0,
+      "stale": true
+    },
+    {
+      "blockers": [],
+      "branch": "",
+      "current_task": "unknown",
+      "demo_readiness": "unknown",
+      "heartbeat_age_seconds": null,
+      "lane": "security",
+      "last_heartbeat": null,
+      "percent_complete": 0,
+      "stale": true
+    },
+    {
+      "blockers": [],
+      "branch": "",
+      "current_task": "unknown",
+      "demo_readiness": "unknown",
+      "heartbeat_age_seconds": null,
+      "lane": "demo",
+      "last_heartbeat": null,
+      "percent_complete": 0,
+      "stale": true
+    }
+  ],
+  "notifications": [],
+  "product": {
+    "name": "WAAL",
+    "surface": "WAAS Wall"
+  },
+  "research": [
+    {
+      "path": "ops/reports/integration/bootstrap.md",
+      "updated_at": "2026-03-28T19:55:04Z"
+    },
+    {
+      "path": "ops/reports/integration/modal_research_summary.md",
+      "updated_at": "2026-03-28T19:54:25Z"
+    },
+    {
+      "path": "ops/reports/integration/modal_research_summary.json",
+      "updated_at": "2026-03-28T19:54:25Z"
+    }
+  ]
+}
