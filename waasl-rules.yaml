@@ -75,6 +75,7 @@ rules:
     - delayed_execution
     - writes_crontab
     - modifies_bashrc
+    - hides_in_pyc
     warn_if:
     - reads_ssh_keys
     - reads_env_vars
