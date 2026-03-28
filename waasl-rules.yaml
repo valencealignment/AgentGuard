@@ -53,6 +53,7 @@ rules:
     - reads_aws_credentials
     - drops_pth_persistence
     - delayed_execution
+    - writes_crontab
     warn_if:
     - reads_ssh_keys
     - reads_env_vars
