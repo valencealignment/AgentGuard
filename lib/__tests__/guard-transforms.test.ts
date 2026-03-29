@@ -69,11 +69,23 @@ describe("transformLogRecords", () => {
       result: "reverted",
       remaining_mistakes: ["some-package"],
     },
+    {
+      timestamp: "2026-03-28T13:00:00Z",
+      iteration: 3,
+      accuracy: 1.0,
+      f1_score: 1.0,
+      catch_rate: 1.0,
+      false_pos_rate: 0.0,
+      mutation: "steady_state",
+      mutation_category: "none",
+      result: "steady",
+      remaining_mistakes: [],
+    },
   ];
 
   it("converts log records to Iteration array", () => {
     const iters = transformLogRecords(records);
-    expect(iters.length).toBe(3);
+    expect(iters.length).toBe(4);
   });
 
   it("rounds f1_score to integer percentage for score", () => {
@@ -89,15 +101,16 @@ describe("transformLogRecords", () => {
     expect(iters[2].delta).toBe(-3); // 68 - 71
   });
 
-  it("sets kept=true for kept results", () => {
+  it("sets kept=true for kept and steady results", () => {
     const iters = transformLogRecords(records);
-    expect(iters[0].kept).toBe(true);
-    expect(iters[1].kept).toBe(true);
+    expect(iters[0].kept).toBe(true);  // "kept"
+    expect(iters[1].kept).toBe(true);  // "kept"
+    expect(iters[3].kept).toBe(true);  // "steady"
   });
 
   it("sets kept=false for reverted results", () => {
     const iters = transformLogRecords(records);
-    expect(iters[2].kept).toBe(false);
+    expect(iters[2].kept).toBe(false);  // "reverted"
   });
 
   it("generates correct id and label", () => {

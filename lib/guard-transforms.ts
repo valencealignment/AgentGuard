@@ -60,7 +60,7 @@ export function transformLogRecords(records: GuardLogRecord[]): Iteration[] {
       delta,
       mutation: rec.mutation,
       timestamp: rec.timestamp,
-      kept: rec.result === "kept",
+      kept: rec.result !== "reverted",
     };
   });
 }
