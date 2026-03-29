@@ -47,27 +47,32 @@ export default function ArchitectureDiagram({ score, iterationCount }: Architect
       </div>
 
       {/* ── Local zone ─────────────────────────────────── */}
-      <div className="rounded-xl border border-dashed border-surface-3 bg-surface-1/50 p-6 mb-4">
+      <div className="rounded-xl border border-dashed border-surface-3 bg-surface-1/50 p-6 mb-3">
         <p className="mb-5 text-[10px] font-semibold uppercase tracking-wider text-foreground/30">
           User&apos;s laptop (local)
         </p>
 
-        {/* Row 1: Codex → Guard → Rules */}
-        <div className="flex items-center justify-center gap-6 mb-6">
-          <Node id="codex" label="Codex Agent" sub="Writes code" color="blue" active={activeNode === "codex"} />
+        {/* 3-column grid: left=Codex col, center=Guard col, right=Rules col */}
+        <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-y-5">
+          {/* Row 1: Codex → Guard → Rules */}
+          <div className="flex justify-center">
+            <Node id="codex" label="Codex Agent" sub="Writes code" color="blue" active={activeNode === "codex"} />
+          </div>
           <Arrow label="pip install" active={activeNode === "codex"} />
-          <Node id="guard" label="WAASL Guard" sub="Deterministic checker" color="red" active={activeNode === "guard"} primary counter={score ? `${score.total_evaluated} evaluated` : undefined} />
+          <div className="flex justify-center">
+            <Node id="guard" label="WAASL Guard" sub="Deterministic checker" color="red" active={activeNode === "guard"} primary counter={score ? `${score.total_evaluated} evaluated` : undefined} />
+          </div>
           <Arrow active={activeNode === "guard"} />
-          <Node id="rules" label="waasl-rules.yaml" sub="Firewall rules" color="green" active={activeNode === "guard"} />
-        </div>
+          <div className="flex justify-center">
+            <Node id="rules" label="waasl-rules.yaml" sub="Firewall rules" color="green" active={activeNode === "guard"} />
+          </div>
 
-        {/* Row 2: Hook + Verdicts */}
-        <div className="flex items-start justify-center gap-16">
+          {/* Row 2: Hook (under Codex) | Verdicts (under Guard) | empty (under Rules) */}
           <div className="flex flex-col items-center gap-2">
             <Arrow vertical active={activeNode === "codex"} />
             <Node id="hook" label="Pre-action Hook" sub="Intercepts actions" color="purple" active={activeNode === "codex"} />
           </div>
-
+          <div /> {/* arrow spacer */}
           <div className="flex flex-col items-center gap-2">
             <Arrow vertical active={activeNode === "guard"} />
             <div className="flex items-center gap-3">
@@ -76,16 +81,18 @@ export default function ArchitectureDiagram({ score, iterationCount }: Architect
               <VerdictChip label="Block" variant="block" count={score?.total_blocked} />
             </div>
           </div>
+          <div /> {/* arrow spacer */}
+          <div /> {/* empty right column */}
         </div>
       </div>
 
       {/* ── Dashed connector between zones ────────────── */}
       <div className="flex justify-center my-1">
-        <div className="h-6 w-px border-l border-dashed border-surface-3" />
+        <div className="h-8 w-px border-l border-dashed border-surface-3" />
       </div>
 
       {/* ── Cloud zone ─────────────────────────────────── */}
-      <div className="rounded-xl border border-dashed border-surface-3 bg-surface-1/50 p-6 mb-4">
+      <div className="rounded-xl border border-dashed border-surface-3 bg-surface-1/50 p-6 mb-3">
         <div className="flex items-center justify-between mb-5">
           <p className="text-[10px] font-semibold uppercase tracking-wider text-foreground/30">
             Cloud compute
@@ -93,27 +100,37 @@ export default function ArchitectureDiagram({ score, iterationCount }: Architect
           <RuleSyncBadge active={activeNode === "merck"} />
         </div>
 
-        {/* Row: Research → Enforcement → MERCK */}
-        <div className="flex items-center justify-center gap-6">
-          <Node id="research" label="Research Agent" sub="CVEs, packages, MCP scans" color="purple" active={activeNode === "research"} />
+        {/* 3-column grid matching the local zone columns */}
+        <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center">
+          <div className="flex justify-center">
+            <Node id="research" label="Research Agent" sub="CVEs, packages, MCP scans" color="purple" active={activeNode === "research"} />
+          </div>
           <Arrow active={activeNode === "research"} />
-          <Node id="enforcement" label="Enforcement Agent" sub="Decides & explains" color="red" active={activeNode === "enforcement"} />
+          <div className="flex justify-center">
+            <Node id="enforcement" label="Enforcement Agent" sub="Decides & explains" color="red" active={activeNode === "enforcement"} />
+          </div>
           <Arrow active={activeNode === "enforcement"} />
-          <Node id="merck" label="MERCK Loop" sub="Self-improving rules" color="green" active={activeNode === "merck"} counter={`${iterationCount} iterations`} />
+          <div className="flex justify-center">
+            <Node id="merck" label="MERCK Loop" sub="Self-improving rules" color="green" active={activeNode === "merck"} counter={`${iterationCount} iterations`} />
+          </div>
         </div>
       </div>
 
-      {/* ── Bottom outputs ─────────────────────────────── */}
-      <div className="flex items-start justify-center gap-16 mt-2">
+      {/* ── Bottom outputs: aligned to cloud columns ──── */}
+      <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-start mt-2">
+        {/* Dashboard under Research (col 1) */}
         <div className="flex flex-col items-center gap-2">
           <Arrow vertical dashed active={activeNode === "research"} />
           <Node id="dashboard" label="Dashboard" sub="Real-time verdicts" color="blue" active={activeNode === "dashboard"} counter="Live" />
         </div>
-
+        <div /> {/* arrow spacer */}
+        {/* Human under Enforcement (col 3) */}
         <div className="flex flex-col items-center gap-2">
           <Arrow vertical label="Escalations" active={activeNode === "enforcement"} />
           <Node id="human" label="Human" sub="Approves, decides" color="yellow" active={activeNode === "enforcement"} />
         </div>
+        <div /> {/* arrow spacer */}
+        <div /> {/* empty right column */}
       </div>
     </div>
   );
@@ -141,7 +158,7 @@ function Node({
   const s = NODE_STYLES[color];
   return (
     <div
-      className={`relative flex flex-col items-center justify-center rounded-xl px-6 py-4 border transition-all duration-500 min-w-[140px] ${s.bg} ${s.border} ${
+      className={`relative flex flex-col items-center justify-center rounded-xl px-6 py-4 border transition-all duration-500 min-w-[160px] ${s.bg} ${s.border} ${
         primary ? "border-2" : ""
       } ${active ? `ring-2 ring-offset-2 ring-offset-surface-0 ${s.ring} shadow-lg shadow-current/10` : ""}`}
     >
@@ -172,39 +189,44 @@ function Arrow({
 }) {
   if (vertical) {
     return (
-      <div className="flex flex-col items-center gap-0.5">
-        <div
-          className={`w-px h-8 transition-colors duration-500 ${dashed ? "border-l border-dashed" : ""} ${
-            active ? "bg-accent-blue border-accent-blue" : "bg-surface-3 border-surface-3"
-          }`}
-        />
-        {active && (
-          <div className="h-1.5 w-1.5 rounded-full bg-accent-blue animate-pulse-dot -mt-1" />
-        )}
+      <div className="flex flex-col items-center">
         {label && (
-          <span className="text-[9px] text-foreground/30">{label}</span>
+          <span className="text-[9px] text-foreground/30 mb-1">{label}</span>
+        )}
+        <div className="flex flex-col items-center">
+          <div
+            className={`w-px h-8 transition-colors duration-500 ${
+              dashed ? "border-l border-dashed" : ""
+            } ${active ? "bg-accent-blue border-accent-blue" : "bg-surface-3 border-surface-3"}`}
+          />
+          <svg viewBox="0 0 8 6" className={`h-1.5 w-2 ${active ? "text-accent-blue" : "text-surface-3"} transition-colors duration-500`}>
+            <path d="M0 0 L4 6 L8 0 Z" fill="currentColor" />
+          </svg>
+        </div>
+        {active && (
+          <div className="h-1.5 w-1.5 rounded-full bg-accent-blue animate-pulse-dot mt-0.5" />
         )}
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center gap-0.5">
+    <div className="flex flex-col items-center px-2">
       {label && (
-        <span className="text-[9px] text-foreground/30 mb-0.5">{label}</span>
+        <span className="text-[9px] text-foreground/30 mb-1">{label}</span>
       )}
-      <div className="flex items-center gap-0.5">
+      <div className="flex items-center">
         <div
-          className={`h-px w-12 transition-colors duration-500 ${dashed ? "border-t border-dashed" : ""} ${
-            active ? "bg-accent-blue border-accent-blue" : "bg-surface-3 border-surface-3"
-          }`}
+          className={`h-px w-14 transition-colors duration-500 ${
+            dashed ? "border-t border-dashed" : ""
+          } ${active ? "bg-accent-blue border-accent-blue" : "bg-surface-3 border-surface-3"}`}
         />
-        {active && (
-          <div className="h-1.5 w-1.5 rounded-full bg-accent-blue animate-pulse-dot" />
-        )}
-        <svg viewBox="0 0 8 8" className={`h-2 w-2 ${active ? "text-accent-blue" : "text-surface-3"} transition-colors duration-500`}>
-          <path d="M0 0 L8 4 L0 8 Z" fill="currentColor" />
+        <svg viewBox="0 0 6 8" className={`h-2 w-1.5 ${active ? "text-accent-blue" : "text-surface-3"} transition-colors duration-500`}>
+          <path d="M0 0 L6 4 L0 8 Z" fill="currentColor" />
         </svg>
+        {active && (
+          <div className="h-1.5 w-1.5 rounded-full bg-accent-blue animate-pulse-dot ml-0.5" />
+        )}
       </div>
     </div>
   );
