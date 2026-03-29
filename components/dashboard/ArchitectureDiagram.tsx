@@ -89,17 +89,11 @@ export default function ArchitectureDiagram({ score, iterationCount }: Architect
         </div>
       </div>
 
-      {/* ── Connectors between zones (center + right "rule sync" column) ── */}
-      <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] my-1">
-        <div />
-        <div />
-        <div className="flex justify-center">
-          <div className="h-8 w-px border-l border-dashed border-surface-3" />
-        </div>
-        <div />
-        {/* Rule sync dashed line — middle segment */}
+      {/* ── Connectors between zones ── */}
+      <div className="flex justify-end px-6 my-1" style={{ paddingRight: "calc(16.67% - 12px)" }}>
+        {/* Rule sync dashed line — right column aligned with MERCK/rules */}
         <div className="flex flex-col items-center">
-          <div className={`w-px h-8 border-l border-dashed transition-colors duration-500 ${activeNode === "merck" ? "border-verdict-allow/60" : "border-surface-3"}`} />
+          <div className={`w-px h-10 border-l border-dashed transition-colors duration-500 ${activeNode === "merck" ? "border-verdict-allow/60" : "border-surface-3"}`} />
           <span className={`text-[8px] transition-colors duration-500 ${activeNode === "merck" ? "text-verdict-allow" : "text-foreground/25"}`}>Rule sync</span>
         </div>
       </div>
