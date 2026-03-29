@@ -1,4 +1,4 @@
-type Tab = "enforcement" | "threat-intel";
+type Tab = "enforcement" | "threat-intel" | "architecture";
 
 interface TabBarProps {
   activeTab: Tab;
@@ -8,6 +8,7 @@ interface TabBarProps {
 const TABS: { id: Tab; label: string }[] = [
   { id: "enforcement", label: "Enforcement Log" },
   { id: "threat-intel", label: "Threat Intel" },
+  { id: "architecture", label: "Architecture" },
 ];
 
 export default function TabBar({ activeTab, onTabChange }: TabBarProps) {

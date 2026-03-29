@@ -8,6 +8,7 @@ import DecisionDetail from "@/components/dashboard/DecisionDetail";
 import { EscalationPanel } from "@/components/dashboard/EscalationPanel";
 import AutoResearcherPanel from "@/components/dashboard/AutoResearcherPanel";
 import DemoStepper from "@/components/dashboard/DemoStepper";
+import ArchitectureDiagram from "@/components/dashboard/ArchitectureDiagram";
 import { ExposedInstanceTable } from "@/components/threat-intel/ExposedInstanceTable";
 import WorldMap from "@/components/threat-intel/WorldMap";
 import { InstanceDetail } from "@/components/threat-intel/InstanceDetail";
@@ -19,7 +20,7 @@ import { APT_DESCRIPTIONS } from "@/lib/constants";
 import { getIterations } from "@/lib/mock-iterations";
 import type { Iteration, EscalationReport } from "@/lib/types";
 
-type Tab = "enforcement" | "threat-intel";
+type Tab = "enforcement" | "threat-intel" | "architecture";
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<Tab>("enforcement");
@@ -186,7 +187,7 @@ export default function DashboardPage() {
               />
             </section>
           </div>
-        ) : (
+        ) : activeTab === "threat-intel" ? (
           <div className="flex flex-1">
             {/* 45% Instance Table + Map */}
             <section className="flex w-[45%] flex-col border-r border-surface-2 overflow-hidden">
@@ -220,6 +221,8 @@ export default function DashboardPage() {
               )}
             </section>
           </div>
+        ) : (
+          <ArchitectureDiagram score={score} iterationCount={iterations.length} />
         )}
       </main>
     </div>
