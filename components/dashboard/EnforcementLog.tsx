@@ -80,6 +80,12 @@ export default function EnforcementLog({
                   </span>
                 </>
               )}
+              {d.is_live && (
+                <span className="flex items-center gap-1 rounded bg-accent-blue/20 px-1.5 py-0.5 text-[10px] font-bold text-accent-blue uppercase">
+                  <span className="h-1.5 w-1.5 rounded-full bg-accent-blue animate-pulse-dot" />
+                  Live
+                </span>
+              )}
               {hasKnownExposure(d) && (
                 <button
                   type="button"

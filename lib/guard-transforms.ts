@@ -94,3 +94,28 @@ export function transformCheckResult(r: GuardCheckResponse): Partial<Decision> {
     is_real_attack: false,
   };
 }
+
+/** Transform a persisted live verdict record into a full Decision for the enforcement log. */
+export function transformLiveVerdict(r: GuardCheckResponse, index: number): Decision {
+  // Stable ID from timestamp so dedup works across polls
+  const slug = r.action.target.replace(/[^a-z0-9]+/gi, "-").toLowerCase();
+  return {
+    id: `live-${slug}-${index}`,
+    timestamp: r.timestamp,
+    action_type: (r.action.action_type === "package_install" || r.action.action_type === "mcp_call" || r.action.action_type === "api_request")
+      ? r.action.action_type
+      : "api_request",
+    target: r.action.target,
+    agent_id: "live-demo",
+    verdict: transformVerdict(r.verdict),
+    confidence: Math.max(0.01, Math.min(1, r.risk_score / 100)),
+    rules_triggered: [r.reason],
+    signals: r.action.signals ?? [],
+    reason: r.reason,
+    provenance: "live-guard",
+    thread_id: "",
+    duration_ms: 0,
+    is_real_attack: false,
+    is_live: true,
+  };
+}

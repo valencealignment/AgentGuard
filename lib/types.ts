@@ -27,6 +27,7 @@ export interface Decision {
   pypi_status?: "available" | "yanked" | "unknown";
   version?: string;
   advisory_md?: string;
+  is_live?: boolean;
 }
 
 // Thread & Message interfaces

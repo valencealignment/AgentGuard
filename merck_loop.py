@@ -38,6 +38,7 @@ GENERATED_ADVERSARIAL_ATTACKS_PATH = ROOT / "attacks" / "generated_adversarial.j
 SAFE_PATH = ROOT / "safe_packages" / "known_good.json"
 GENERATED_SAFE_PATH = ROOT / "safe_packages" / "generated.json"
 RESULTS_PATH = ROOT / "merck_results.jsonl"
+LIVE_VERDICTS_PATH = ROOT / "ops" / "events" / "live_verdicts.jsonl"
 SECURITY_STATUS_PATH = ROOT / "ops" / "status" / "security.json"
 DEFAULT_PROGRESS_SECONDS = 30 * 60
 DEFAULT_STATUS_SECONDS = 60
@@ -957,11 +958,16 @@ def create_app(shared_state: SharedState) -> FastAPI:
     def post_check(sample: dict[str, Any]) -> dict[str, Any]:
         rules_document = load_rules()
         result = build_live_verdict(sample, rules_document)
-        return {
+        response = {
             "ok": True,
             "timestamp": current_timestamp(),
             **result,
         }
+        # Persist live verdict so the dashboard can poll it
+        LIVE_VERDICTS_PATH.parent.mkdir(parents=True, exist_ok=True)
+        with LIVE_VERDICTS_PATH.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(response, sort_keys=True) + "\n")
+        return response
 
     return app
 
