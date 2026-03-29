@@ -82,23 +82,33 @@ export default function ArchitectureDiagram({ score, iterationCount }: Architect
             </div>
           </div>
           <div /> {/* arrow spacer */}
-          <div /> {/* empty right column */}
+          {/* Rule sync dashed line going down from rules column — top half */}
+          <div className="flex flex-col items-center">
+            <div className={`w-px h-full min-h-[40px] border-l border-dashed transition-colors duration-500 ${activeNode === "merck" ? "border-verdict-allow/60" : "border-surface-3"}`} />
+          </div>
         </div>
       </div>
 
-      {/* ── Dashed connector between zones ────────────── */}
-      <div className="flex justify-center my-1">
-        <div className="h-8 w-px border-l border-dashed border-surface-3" />
+      {/* ── Connectors between zones (center + right "rule sync" column) ── */}
+      <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] my-1">
+        <div />
+        <div />
+        <div className="flex justify-center">
+          <div className="h-8 w-px border-l border-dashed border-surface-3" />
+        </div>
+        <div />
+        {/* Rule sync dashed line — middle segment */}
+        <div className="flex flex-col items-center">
+          <div className={`w-px h-8 border-l border-dashed transition-colors duration-500 ${activeNode === "merck" ? "border-verdict-allow/60" : "border-surface-3"}`} />
+          <span className={`text-[8px] transition-colors duration-500 ${activeNode === "merck" ? "text-verdict-allow" : "text-foreground/25"}`}>Rule sync</span>
+        </div>
       </div>
 
       {/* ── Cloud zone ─────────────────────────────────── */}
       <div className="rounded-xl border border-dashed border-surface-3 bg-surface-1/50 p-6 mb-3">
-        <div className="flex items-center justify-between mb-5">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-foreground/30">
-            Cloud compute
-          </p>
-          <RuleSyncBadge active={activeNode === "merck"} />
-        </div>
+        <p className="mb-5 text-[10px] font-semibold uppercase tracking-wider text-foreground/30">
+          Cloud compute
+        </p>
 
         {/* 3-column grid matching the local zone columns */}
         <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center">
@@ -110,7 +120,12 @@ export default function ArchitectureDiagram({ score, iterationCount }: Architect
             <Node id="enforcement" label="Enforcement Agent" sub="Decides & explains" color="red" active={activeNode === "enforcement"} />
           </div>
           <Arrow active={activeNode === "enforcement"} />
-          <div className="flex justify-center">
+          <div className="flex flex-col items-center gap-1">
+            {/* Dashed line going up toward Rule sync connector */}
+            <div className={`w-px h-4 border-l border-dashed transition-colors duration-500 ${activeNode === "merck" ? "border-verdict-allow/60" : "border-surface-3"}`} />
+            <svg viewBox="0 0 8 6" className={`h-1.5 w-2 rotate-180 ${activeNode === "merck" ? "text-verdict-allow" : "text-surface-3"} transition-colors duration-500`}>
+              <path d="M0 0 L4 6 L8 0 Z" fill="currentColor" />
+            </svg>
             <Node id="merck" label="MERCK Loop" sub="Self-improving rules" color="green" active={activeNode === "merck"} counter={`${iterationCount} iterations`} />
           </div>
         </div>
@@ -245,14 +260,3 @@ function VerdictChip({ label, variant, count }: { label: string; variant: "allow
   );
 }
 
-function RuleSyncBadge({ active }: { active: boolean }) {
-  return (
-    <span className={`flex items-center gap-1.5 text-[9px] transition-colors duration-500 ${active ? "text-verdict-allow" : "text-foreground/30"}`}>
-      {active && <span className="h-1.5 w-1.5 rounded-full bg-verdict-allow animate-pulse-dot" />}
-      Rule sync
-      <svg viewBox="0 0 8 8" className="h-2 w-2">
-        <path d="M0 4 L4 0 L4 3 L8 3 L8 5 L4 5 L4 8 Z" fill="currentColor" />
-      </svg>
-    </span>
-  );
-}
