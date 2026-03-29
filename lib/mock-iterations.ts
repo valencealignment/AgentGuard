@@ -46,20 +46,83 @@ const MOCK_ITERATIONS: Iteration[] = [
     timestamp: "2026-03-28T13:45:00Z",
     kept: true,
   },
+  {
+    id: "iter-4",
+    label: "iter-4",
+    score: 89,
+    delta: 4,
+    mutation: "Blocklist requests-async, jwt-secure-validator; block writes_crontab signal",
+    timestamp: "2026-03-28T22:01:12Z",
+    kept: true,
+  },
+  {
+    id: "iter-5",
+    label: "iter-5",
+    score: 92,
+    delta: 3,
+    mutation: "Blocklist numpy-cuda, fastapi-middleware-core; block modifies_bashrc signal",
+    timestamp: "2026-03-28T22:03:14Z",
+    kept: true,
+  },
+  {
+    id: "iter-5b",
+    label: "iter-5b",
+    score: 88,
+    delta: -4,
+    mutation: "Broad regex pattern blocked legitimate internal packages",
+    timestamp: "2026-03-28T22:03:50Z",
+    kept: false,
+  },
+  {
+    id: "iter-6",
+    label: "iter-6",
+    score: 95,
+    delta: 3,
+    mutation: "Block pyc hidden loaders, stego payloads; blocklist flask-admin-tools",
+    timestamp: "2026-03-28T22:04:37Z",
+    kept: true,
+  },
+  {
+    id: "iter-7",
+    label: "iter-7",
+    score: 97,
+    delta: 2,
+    mutation: "MCP rug-pull detection for notion-sync, corp-secrets-sdk blocklist",
+    timestamp: "2026-03-28T22:05:57Z",
+    kept: true,
+  },
+  {
+    id: "iter-8",
+    label: "iter-8",
+    score: 99,
+    delta: 2,
+    mutation: "MCP rug-pull detection for github-agent-tools; block shell_rc modification",
+    timestamp: "2026-03-28T22:07:19Z",
+    kept: true,
+  },
+  {
+    id: "iter-9",
+    label: "iter-9",
+    score: 100,
+    delta: 1,
+    mutation: "Final tuning — 89 attacks, 18 safe cases, 0 false positives. F1=1.0",
+    timestamp: "2026-03-28T22:10:04Z",
+    kept: true,
+  },
 ];
 
 export const NEXT_MUTATIONS: string[] = [
-  "Fine-tune confidence weights for multi-agent consensus voting",
   "Expand typosquat corpus with npm/crates.io cross-ecosystem data",
   "Add temporal analysis — flag packages with install-time code changes",
   "Integrate EPSS scores as dynamic signal weights for CVE severity",
-  "Lower false-positive rate on namespace collision heuristic",
   "Add maintainer reputation scoring based on package history graph",
+  "Fine-tune confidence weights for multi-agent consensus voting",
+  "Cross-registry dependency chain analysis for transitive risks",
 ];
 
 let mutationIndex = 0;
-let currentScore = 85;
-let iterationCount = 3;
+let currentScore = 100;
+let iterationCount = 9;
 
 export function getIterations(): Iteration[] {
   return [...MOCK_ITERATIONS];
@@ -102,7 +165,7 @@ export function runNextIteration(): Iteration {
   mutationIndex++;
 
   const delta = 2 + Math.floor(Math.random() * 4);
-  currentScore = Math.min(99, currentScore + delta);
+  currentScore = Math.min(100, currentScore + delta);
 
   const iteration: Iteration = {
     id: `iter-${iterationCount}`,

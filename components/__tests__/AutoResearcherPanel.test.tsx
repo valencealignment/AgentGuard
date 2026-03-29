@@ -174,8 +174,11 @@ describe("AutoResearcherPanel", () => {
         iterations={[mockIterations[0]]}
       />,
     );
-    // With only 1 point, sparkline renders a div placeholder, no SVG polyline
-    expect(container.querySelector("polyline")).not.toBeInTheDocument();
+    // With only 1 point, score sparkline renders a placeholder div (no polyline).
+    // The training card's loss sparkline still renders its own polyline,
+    // so we expect exactly 1 polyline (loss) instead of 2 (loss + score).
+    const polylines = container.querySelectorAll("polyline");
+    expect(polylines.length).toBe(1);
   });
 
   // ── Rolled-back iteration tests ─────────────────────────────

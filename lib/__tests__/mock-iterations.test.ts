@@ -15,31 +15,32 @@ beforeEach(async () => {
 });
 
 describe("getIterations", () => {
-  it("returns the 5 baseline iterations initially (including one rollback)", () => {
+  it("returns the 12 baseline iterations initially (including two rollbacks)", () => {
     const iters = mod.getIterations();
-    expect(iters.length).toBe(5);
+    expect(iters.length).toBe(12);
     expect(iters[0].label).toBe("baseline");
     expect(iters[0].score).toBe(62);
+    expect(iters[iters.length - 1].score).toBe(100);
   });
 
   it("returns a copy (mutations do not affect internal state)", () => {
     const iters = mod.getIterations();
     iters.pop();
-    expect(mod.getIterations().length).toBe(5);
+    expect(mod.getIterations().length).toBe(12);
   });
 
-  it("includes a rolled-back iteration with kept === false", () => {
+  it("includes rolled-back iterations with kept === false", () => {
     const iters = mod.getIterations();
-    const rollback = iters.find((i) => i.kept === false);
-    expect(rollback).toBeDefined();
-    expect(rollback!.id).toBe("iter-2b");
-    expect(rollback!.delta).toBeLessThan(0);
+    const rollbacks = iters.filter((i) => i.kept === false);
+    expect(rollbacks.length).toBe(2);
+    expect(rollbacks[0].id).toBe("iter-2b");
+    expect(rollbacks.every((r) => r.delta < 0)).toBe(true);
   });
 
   it("all non-rollback iterations have kept === true", () => {
     const iters = mod.getIterations();
     const kept = iters.filter((i) => i.kept === true);
-    expect(kept.length).toBe(4);
+    expect(kept.length).toBe(10);
   });
 });
 
@@ -56,21 +57,21 @@ describe("runNextIteration", () => {
     expect(iter.label).toMatch(/^iter-\d+$/);
   });
 
-  it("appends to the MOCK_ITERATIONS array", () => {
+  it("appends to the iterations array", () => {
     mod.runNextIteration();
     const iters = mod.getIterations();
-    expect(iters.length).toBe(6);
+    expect(iters.length).toBe(13);
   });
 
-  it("caps score at 99 for kept iterations", () => {
+  it("caps score at 100 for kept iterations", () => {
     // Run many iterations to approach cap
     let lastKept;
     for (let i = 0; i < 30; i++) {
       const iter = mod.runNextIteration();
       if (iter.kept) lastKept = iter;
     }
-    expect(lastKept!.score).toBeLessThanOrEqual(99);
-    expect(mod.getCurrentScore()).toBeLessThanOrEqual(99);
+    expect(lastKept!.score).toBeLessThanOrEqual(100);
+    expect(mod.getCurrentScore()).toBeLessThanOrEqual(100);
   });
 
   it("rolled-back iterations have negative delta and kept === false", () => {
@@ -90,20 +91,19 @@ describe("runNextIteration", () => {
 });
 
 describe("getCurrentScore", () => {
-  it("returns 85 initially (baseline score after iter-3)", () => {
-    expect(mod.getCurrentScore()).toBe(85);
+  it("returns 100 initially (F1=1.0 after iter-9)", () => {
+    expect(mod.getCurrentScore()).toBe(100);
   });
 
-  it("increases after a kept iteration", () => {
-    const before = mod.getCurrentScore();
-    // Run until we get a kept iteration
+  it("stays at cap after a kept iteration when already at max", () => {
+    // Score starts at 100 (cap), so kept iterations stay at 100
     let iter;
     for (let i = 0; i < 20; i++) {
       iter = mod.runNextIteration();
       if (iter.kept) break;
     }
     if (iter?.kept) {
-      expect(mod.getCurrentScore()).toBeGreaterThan(before);
+      expect(mod.getCurrentScore()).toBe(100);
     }
   });
 });
