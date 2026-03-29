@@ -14,7 +14,7 @@ export default function DecisionDetail({ decision, onViewThread }: DecisionDetai
     return (
       <div className="flex h-full items-center justify-center p-4">
         <p className="text-xs text-foreground/40">
-          Select an entry to view details
+          Select a decision to see threat analysis
         </p>
       </div>
     );
@@ -35,12 +35,12 @@ export default function DecisionDetail({ decision, onViewThread }: DecisionDetai
 
       {/* Real attack callout */}
       {decision.is_real_attack && (
-        <div className="rounded border border-verdict-escalate/30 bg-verdict-escalate/10 px-3 py-2">
-          <p className="text-xs font-semibold text-verdict-escalate">
-            Confirmed Real Attack
+        <div className="rounded border-l-4 border-verdict-escalate bg-verdict-escalate/15 px-3 py-3">
+          <p className="text-xs font-bold text-verdict-escalate">
+            Confirmed Real-World Attack
           </p>
-          <p className="text-[10px] text-verdict-escalate/80 mt-0.5">
-            This is a verified supply-chain attack detected in the wild.
+          <p className="text-[10px] text-verdict-escalate/80 mt-1">
+            This is a verified supply-chain attack actively exploited in the wild.
           </p>
         </div>
       )}
@@ -153,20 +153,18 @@ export default function DecisionDetail({ decision, onViewThread }: DecisionDetai
           </div>
         </div>
       )}
-      {/* Agent-Generated Advisory */}
+      {/* AI-Generated Threat Analysis */}
       {decision.advisory_md && (
-        <div>
+        <div className="rounded border border-accent-blue/20 bg-accent-blue/5 p-3">
           <div className="mb-2 flex items-center gap-2">
-            <p className="text-[10px] uppercase tracking-wider text-foreground/50">
-              Agent-Generated Advisory
+            <p className="text-[10px] font-bold uppercase tracking-wider text-foreground/70">
+              AI-Generated Threat Analysis
             </p>
-            <span className="rounded bg-accent-blue/20 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-accent-blue">
+            <span className="rounded bg-accent-blue/30 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-accent-blue">
               Auto
             </span>
           </div>
-          <div className="rounded border border-surface-3 bg-surface-1 p-3">
-            <SimpleMarkdown content={decision.advisory_md} />
-          </div>
+          <SimpleMarkdown content={decision.advisory_md} />
         </div>
       )}
 

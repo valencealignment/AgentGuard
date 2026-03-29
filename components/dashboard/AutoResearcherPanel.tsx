@@ -63,7 +63,13 @@ export default function AutoResearcherPanel({
       </div>
 
       {/* Sparkline — only kept iterations represent actual score progression */}
-      <Sparkline points={iterations.filter((i) => i.kept !== false).map((i) => i.score)} />
+      <div>
+        <div className="mb-1 flex items-center justify-between px-1">
+          <span className="text-[9px] text-foreground/40">Policy Score Trend</span>
+          <span className="text-[9px] text-foreground/40">{iterations.length} iterations</span>
+        </div>
+        <Sparkline points={iterations.filter((i) => i.kept !== false).map((i) => i.score)} />
+      </div>
 
       {/* Training infrastructure card */}
       <TrainingCard />
@@ -119,9 +125,14 @@ export default function AutoResearcherPanel({
       <button
         onClick={onRunIteration}
         disabled={isRunning}
-        className="shrink-0 rounded bg-accent-blue px-3 py-2 text-xs font-semibold uppercase tracking-wider text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+        className="shrink-0 rounded-lg bg-accent-blue px-4 py-2.5 text-sm font-bold uppercase tracking-wider text-white transition-all hover:opacity-90 hover:shadow-lg hover:shadow-accent-blue/30 disabled:opacity-50"
       >
-        {isRunning ? "Running…" : "Run Iteration"}
+        {isRunning ? (
+          <span className="flex items-center justify-center gap-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse-dot" />
+            Running…
+          </span>
+        ) : "Run Iteration"}
       </button>
     </div>
   );

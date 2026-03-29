@@ -34,21 +34,20 @@ export default function TopBar({ score }: TopBarProps) {
       </div>
 
       <div className="flex items-center gap-4">
-        {score && (
-          <>
-            <StatPill label="Evaluated" value={score.total_evaluated} />
-            <StatPill
-              label="Blocked"
-              value={score.total_blocked}
-              color="text-verdict-block"
-            />
-            <StatPill
-              label="Policy Score"
-              value={`${score.policy_score}%`}
-              color="text-verdict-allow"
-            />
-          </>
-        )}
+        <StatPill label="Evaluated" value={score?.total_evaluated ?? "—"} />
+        <StatPill
+          label="Blocked"
+          value={score?.total_blocked ?? "—"}
+          color="text-verdict-block"
+        />
+        <div className="flex items-center gap-2 rounded-lg border border-verdict-allow/20 bg-verdict-allow/10 px-3 py-1">
+          <span className="text-[10px] uppercase tracking-wider text-verdict-allow/70">
+            Policy Score
+          </span>
+          <span className="text-lg font-bold tabular-nums text-verdict-allow">
+            {score?.policy_score ?? "—"}%
+          </span>
+        </div>
         <span className="text-xs text-foreground/40 font-mono tabular-nums">
           {time}
         </span>

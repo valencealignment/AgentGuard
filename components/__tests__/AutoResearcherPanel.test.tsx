@@ -150,8 +150,9 @@ describe("AutoResearcherPanel", () => {
         isRunning={true}
       />,
     );
-    const button = screen.getByText("Running…");
-    expect(button).toBeInTheDocument();
+    expect(screen.getByText("Running…")).toBeInTheDocument();
+    // The button wraps the running text in a span, so find the button by role
+    const button = screen.getByRole("button", { name: /running/i });
     expect(button).toBeDisabled();
   });
 

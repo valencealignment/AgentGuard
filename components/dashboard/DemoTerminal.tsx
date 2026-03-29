@@ -108,7 +108,7 @@ export default function DemoTerminal({ open, onClose }: DemoTerminalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
-      <div className="relative flex h-[80vh] w-[90vw] max-w-4xl flex-col rounded-lg border border-surface-3 bg-[#0c0c0c] shadow-2xl">
+      <div className="relative flex h-[80vh] w-[90vw] max-w-4xl flex-col rounded-lg border border-surface-3 bg-surface-0 shadow-2xl">
         {/* Title bar */}
         <div className="flex items-center justify-between border-b border-surface-3 px-4 py-2">
           <div className="flex items-center gap-2">
@@ -140,6 +140,12 @@ export default function DemoTerminal({ open, onClose }: DemoTerminalProps) {
           {!done && (
             <span className="inline-block h-4 w-2 animate-pulse bg-foreground/60" />
           )}
+        </div>
+
+        {/* Status bar */}
+        <div className="flex items-center justify-between border-t border-surface-3 px-4 py-1.5 text-[10px] text-foreground/40">
+          <span>{visibleCount} / {allLines.current.length} lines</span>
+          <span>{done ? "Demo complete" : "Streaming..."}</span>
         </div>
       </div>
     </div>

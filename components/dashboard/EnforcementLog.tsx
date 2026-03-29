@@ -99,7 +99,7 @@ export default function EnforcementLog({
                   ⬡ known exposure
                 </button>
               )}
-              <span className="ml-auto text-[10px] text-foreground/30 tabular-nums">
+              <span className="ml-auto text-[10px] text-foreground/50 tabular-nums">
                 {new Date(d.timestamp).toLocaleTimeString("en-US", { hour12: false })}
               </span>
             </div>

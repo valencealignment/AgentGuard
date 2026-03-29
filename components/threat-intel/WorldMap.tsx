@@ -47,9 +47,10 @@ export default function WorldMap({ instances, selectedId, onSelect }: WorldMapPr
   const H = 180;
 
   return (
+    <>
     <svg
       viewBox={`0 0 ${W} ${H}`}
-      className="h-[180px] w-full rounded bg-surface-1"
+      className="h-[160px] w-full rounded bg-surface-1"
       preserveAspectRatio="xMidYMid meet"
     >
       {/* Ocean background */}
@@ -103,5 +104,21 @@ export default function WorldMap({ instances, selectedId, onSelect }: WorldMapPr
         );
       })}
     </svg>
+    {/* Risk legend */}
+    <div className="mt-1 flex items-center justify-center gap-4 text-[9px] text-foreground/50">
+      <div className="flex items-center gap-1">
+        <div className="h-1.5 w-1.5 rounded-full bg-verdict-block" />
+        <span>Critical</span>
+      </div>
+      <div className="flex items-center gap-1">
+        <div className="h-1.5 w-1.5 rounded-full bg-verdict-escalate" />
+        <span>High</span>
+      </div>
+      <div className="flex items-center gap-1">
+        <div className="h-1.5 w-1.5 rounded-full bg-verdict-allow" />
+        <span>Normal</span>
+      </div>
+    </div>
+    </>
   );
 }

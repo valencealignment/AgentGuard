@@ -23,7 +23,7 @@ const baseDecision: Decision = {
 describe("DecisionDetail", () => {
   it("shows placeholder when no decision selected", () => {
     render(<DecisionDetail decision={null} />);
-    expect(screen.getByText("Select an entry to view details")).toBeInTheDocument();
+    expect(screen.getByText("Select a decision to see threat analysis")).toBeInTheDocument();
   });
 
   it("renders decision target", () => {
@@ -39,7 +39,7 @@ describe("DecisionDetail", () => {
 
   it("does not render advisory section when advisory_md is absent", () => {
     render(<DecisionDetail decision={baseDecision} />);
-    expect(screen.queryByText("Agent-Generated Advisory")).not.toBeInTheDocument();
+    expect(screen.queryByText("AI-Generated Threat Analysis")).not.toBeInTheDocument();
   });
 
   it("renders advisory section when advisory_md is present", () => {
@@ -57,7 +57,7 @@ This is a test advisory.
 - Reads environment variables.`,
     };
     render(<DecisionDetail decision={decisionWithAdvisory} />);
-    expect(screen.getByText("Agent-Generated Advisory")).toBeInTheDocument();
+    expect(screen.getByText("AI-Generated Threat Analysis")).toBeInTheDocument();
     expect(screen.getByText("Auto")).toBeInTheDocument();
   });
 
@@ -101,6 +101,6 @@ Some summary text.
       is_real_attack: true,
     };
     render(<DecisionDetail decision={realAttack} />);
-    expect(screen.getByText("Confirmed Real Attack")).toBeInTheDocument();
+    expect(screen.getByText("Confirmed Real-World Attack")).toBeInTheDocument();
   });
 });

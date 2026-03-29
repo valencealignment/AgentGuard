@@ -89,9 +89,9 @@ export default function DemoStepper({
               onClick={() => onStep(i)}
               className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider transition-all ${
                 isActive
-                  ? "bg-accent-blue/20 text-accent-blue ring-1 ring-accent-blue/40"
+                  ? "bg-accent-blue/25 text-accent-blue ring-2 ring-accent-blue/60 shadow-lg shadow-accent-blue/20"
                   : isCompleted
-                    ? "bg-surface-2 text-foreground/60"
+                    ? "bg-surface-2 text-verdict-allow"
                     : "text-foreground/30 hover:text-foreground/50"
               }`}
             >
@@ -100,7 +100,7 @@ export default function DemoStepper({
                   isActive
                     ? "bg-accent-blue text-white"
                     : isCompleted
-                      ? "bg-foreground/20 text-foreground/60"
+                      ? "bg-verdict-allow/20 text-verdict-allow"
                       : "bg-surface-2 text-foreground/30"
                 }`}
               >
