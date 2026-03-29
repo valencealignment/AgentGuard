@@ -14,17 +14,11 @@ const DEMO_STEPS = [
 interface DemoStepperProps {
   currentStep: number | null;
   onStep: (step: number) => void;
-  onRunUnprotected: () => void;
-  onRunProtected: () => void;
-  isProtectedRunning: boolean;
 }
 
 export default function DemoStepper({
   currentStep,
   onStep,
-  onRunUnprotected,
-  onRunProtected,
-  isProtectedRunning,
 }: DemoStepperProps) {
   // Keyboard navigation: arrow keys and number keys
   useEffect(() => {
@@ -52,32 +46,7 @@ export default function DemoStepper({
   }, [currentStep, onStep]);
 
   return (
-    <div className="flex shrink-0 items-center justify-between border-b border-surface-2 bg-surface-1 px-4 py-2">
-      {/* Demo scenario buttons — left side */}
-      <div className="flex items-center gap-2">
-        <button
-          onClick={onRunUnprotected}
-          className="rounded bg-verdict-block/15 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-verdict-block transition-colors hover:bg-verdict-block/25"
-        >
-          Unprotected Agent
-        </button>
-        <button
-          onClick={onRunProtected}
-          disabled={isProtectedRunning}
-          className="rounded bg-verdict-allow/15 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-verdict-allow transition-colors hover:bg-verdict-allow/25 disabled:opacity-50"
-        >
-          {isProtectedRunning ? (
-            <span className="flex items-center gap-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-verdict-allow animate-pulse-dot" />
-              Running Guard…
-            </span>
-          ) : (
-            "Protected Agent"
-          )}
-        </button>
-      </div>
-
-      {/* Step navigation — center/right */}
+    <div className="flex shrink-0 items-center justify-center border-b border-surface-2 bg-surface-1 px-4 py-2">
       <div className="flex items-center gap-3">
         {DEMO_STEPS.map((step, i) => {
           const isActive = currentStep === i;
