@@ -8,6 +8,7 @@ import DecisionDetail from "@/components/dashboard/DecisionDetail";
 import { EscalationPanel } from "@/components/dashboard/EscalationPanel";
 import AutoResearcherPanel from "@/components/dashboard/AutoResearcherPanel";
 import DemoStepper from "@/components/dashboard/DemoStepper";
+import DemoTerminal from "@/components/dashboard/DemoTerminal";
 import { ExposedInstanceTable } from "@/components/threat-intel/ExposedInstanceTable";
 import WorldMap from "@/components/threat-intel/WorldMap";
 import { InstanceDetail } from "@/components/threat-intel/InstanceDetail";
@@ -32,6 +33,22 @@ export default function DashboardPage() {
   const [isRunning, setIsRunning] = useState(false);
   const [escalation, setEscalation] = useState<EscalationReport | null>(null);
   const [demoStep, setDemoStep] = useState<number | null>(null);
+  const [showTerminal, setShowTerminal] = useState(false);
+  const [isProtectedRunning, setIsProtectedRunning] = useState(false);
+
+  const handleRunUnprotected = useCallback(() => {
+    setShowTerminal(true);
+  }, []);
+
+  const handleRunProtected = useCallback(async () => {
+    setIsProtectedRunning(true);
+    try {
+      await fetch("/api/demo/run-protected", { method: "POST" });
+    } catch {
+      // ignore — verdicts stream in via live poll regardless
+    }
+    setIsProtectedRunning(false);
+  }, []);
 
   const handleDemoStep = useCallback((step: number) => {
     setDemoStep(step);
@@ -148,7 +165,15 @@ export default function DashboardPage() {
     <div className="flex h-screen flex-col bg-surface-0 text-foreground">
       <TopBar score={score} />
       <TabBar activeTab={activeTab} onTabChange={setActiveTab} />
-      <DemoStepper currentStep={demoStep} onStep={handleDemoStep} />
+      <DemoStepper
+        currentStep={demoStep}
+        onStep={handleDemoStep}
+        onRunUnprotected={handleRunUnprotected}
+        onRunProtected={handleRunProtected}
+        isProtectedRunning={isProtectedRunning}
+      />
+
+      <DemoTerminal open={showTerminal} onClose={() => setShowTerminal(false)} />
 
       <main className="flex min-h-0 flex-1">
         {activeTab === "enforcement" ? (
