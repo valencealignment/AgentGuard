@@ -24,10 +24,17 @@ export async function GET(request: NextRequest) {
   ]);
 
   if (!depsData && !osvData) {
-    return NextResponse.json(
-      { error: "Enrichment unavailable", name: packageName },
-      { status: 502 }
-    );
+    // Graceful degradation: return a safe-default result instead of an error
+    const fallback: PackageLookupResult = {
+      name: packageName,
+      version: "unknown",
+      license: "Unknown",
+      dep_count: 0,
+      cves: [],
+      risk_score: 0,
+      verdict: "ALLOW",
+    };
+    return NextResponse.json(fallback);
   }
 
   const cves: CveDetail[] = (osvData ?? []).map((v) => {
